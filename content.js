@@ -261,7 +261,11 @@ home: {
      meta    the small grey line under the panel title
      video   a file OR an embed link
      poster  the still shown before a video file plays
-     photos  the pictures inside the panel
+     photos  the pictures inside the panel, shown first. Each one:
+               { src: "assets/x.png", alt: "what it shows", caption: "small line under it", wide: true }
+             caption is optional. wide: true gives a picture the full width.
+             Click a picture and it opens full size in a new tab.
+             Leave src as "" AND a labelled empty tile stands in.
      story   the write-up: a heading, THEN text OR bullets
      hidden  true = keep the entry in this file but do not show it anywhere
    ================================================================ */
@@ -297,8 +301,9 @@ cases: {
       video: "",
       poster: "",
       photos: [
-        { src: "", alt: "Flow map" },
-        { src: "", alt: "n8n workflow" }
+        { src: "assets/case1-n8n-workflow.png", alt: "The n8n workflow: twelve nodes from the Shopify order to the Klaviyo event", caption: "The n8n workflow", wide: true },
+        { src: "assets/case1-klaviyo-flow-1.png", alt: "The Klaviyo flow, top half: trigger, 4 hour wait, Reminder, 1 day wait, Deciding or thinking why to buy", caption: "The Klaviyo flow, top half" },
+        { src: "assets/case1-klaviyo-flow-2.png", alt: "The Klaviyo flow, bottom half: Deciding or thinking why to buy, 2 day wait, The close", caption: "The Klaviyo flow, bottom half" }
       ],
       story: [
         {

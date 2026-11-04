@@ -440,6 +440,21 @@ function photoNode(src, alt, cls){
   return i;
 }
 
+/* a picture inside a case: it opens full size in a new tab, so small text stays readable.
+   An optional caption sits under it. wide: true gives it the whole row. */
+function shotFigure(p){
+  const fig = make("figure", "shot" + (p.wide ? " shot--wide" : ""));
+  const a = document.createElement("a");
+  a.href = p.src;
+  a.target = "_blank";
+  a.rel = "noopener noreferrer";
+  a.setAttribute("aria-label", (p.alt || "Picture") + " (opens full size)");
+  a.appendChild(photoNode(p.src, p.alt));
+  fig.appendChild(a);
+  if (p.caption) fig.appendChild(make("figcaption", null, p.caption));
+  return fig;
+}
+
 /* a picture that is not there yet: a slim tile that says what goes there */
 function emptyShot(alt){
   const f = make("figure", "shot--empty");
@@ -886,7 +901,7 @@ function casePanel(item, n){
 
   if (item.photos && item.photos.length){
     const wrap = make("div", "shots");
-    item.photos.forEach(p => wrap.appendChild(p.src ? photoNode(p.src, p.alt) : emptyShot(p.alt)));
+    item.photos.forEach(p => wrap.appendChild(p.src ? shotFigure(p) : emptyShot(p.alt)));
     art.appendChild(wrap);
   }
 

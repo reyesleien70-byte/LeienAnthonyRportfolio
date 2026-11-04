@@ -1348,3 +1348,12 @@ h1 + .lede,h2 + .lede{margin-top:clamp(12px,1.6vw,18px)}
   .nav__link{padding:0 6px;font-size:12.5px}
   .nav__link[aria-current="page"]::after{left:6px;right:6px}
 }
+
+/* --- pictures inside a case: a screenshot may be tall or very wide --- */
+.shot{margin:0}
+.shot a{display:block;cursor:zoom-in}
+.shot img{width:100%;height:auto;max-height:640px;object-fit:contain;background:var(--surface-2);transition:opacity var(--dur-2) var(--ease-out)}
+.shot--wide{grid-column:1 / -1}
+.shot--wide img{max-height:none}
+.shot figcaption{margin-top:8px;font-size:13px;color:var(--muted)}
+@media (hover:hover) and (pointer:fine){ .shot a:hover img{opacity:.92} }
