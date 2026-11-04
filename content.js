@@ -1481,7 +1481,8 @@ AND goodluck building!`
       poster: "",
       photos: [
         { src: "assets/case4-pp-flow-1.png", alt: "The post-purchase flow, part 1: trigger on Placed Order, first time buyer split, E1 Welcome or E1B Thanks for coming back", wide: true },
-        { src: "assets/case4-pp-flow-2.png", alt: "The post-purchase flow, part 2: 14 day wait, Can receive SMS split, SMS1 or E3 Something to put through it on Day 21", wide: true }
+        { src: "assets/case4-pp-flow-2.png", alt: "The post-purchase flow, part 2: 7 day wait, E2 Getting the most out of your bag, 10 day wait, Can receive SMS split" },
+        { src: "assets/case4-pp-flow-3.png", alt: "The post-purchase flow, part 3: 14 day wait, Can receive SMS split, SMS1 or E3 Something to put through it on Day 21", wide: true }
       ],
       story: [
         {
