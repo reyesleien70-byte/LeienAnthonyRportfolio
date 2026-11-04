@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#F8F9FA">
+<meta name="color-scheme" content="light">
+<!-- These two are a fallback only. The live ones come from content.js -->
+<title>Case studies · Leien</title>
+<meta name="description" content="Email flows and automations I have built, end to end.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<!-- page-to-page fades are the browser's own. IF one is skipped (e.g. the tab is hidden)
+     THEN the page simply shows. This must run before the first paint, SO it lives here. -->
+<script>
+["pageswap","pagereveal"].forEach(function(t){addEventListener(t,function(e){var v=e.viewTransition;if(v){v.ready.catch(function(){});v.finished.catch(function(){});}});});
+</script>
+<!-- smooth scrolling for a mouse OR trackpad. IF it fails to load THEN the page scrolls normally. -->
+<script async id="lenis-lib" src="https://cdn.jsdelivr.net/npm/lenis@1.3.26/dist/lenis.min.js"></script>
+</head>
+<body>
+
+<!-- ============================================================
+     THIS FILE HOLDS NO WORDS AND NO PICTURES.
+     The cards AND the panels they open are built from
+     content.js -> cases.items. Edit that file.
+     ============================================================ -->
+
+<!-- ============ THE SKY ============ -->
+<div class="sky" aria-hidden="true">
+  <div class="aurora aurora--1"></div>
+  <div class="aurora aurora--2"></div>
+  <div class="aurora aurora--3"></div>
+  <canvas id="stars"></canvas>
+</div>
+
+<!-- ============ HEADER ============ -->
+<header class="nav">
+  <a class="nav__mark" href="index.html"><span data-site="name">Leien</span></a>
+  <nav class="nav__links" aria-label="Pages">
+    <span class="nav__pill" aria-hidden="true"></span>
+    <a class="nav__link" href="index.html" data-nav="home">Home</a>
+    <a class="nav__link" href="case-studies.html" aria-current="page" data-nav="cases">Case studies</a>
+    <a class="nav__link" href="certifications.html" data-nav="certs">Certifications</a>
+    <a class="nav__link" href="contact.html" data-nav="contact">Contact me</a>
+  </nav>
+  <div class="nav__rail" aria-hidden="true"><span class="nav__comet"></span></div>
+</header>
+
+<main class="page">
+  <div class="wrap">
+    <section class="reveal" id="case-intro"></section>
+    <ul class="cases reveal" id="case-list"></ul>
+
+    <noscript>
+      <div class="noscript">This site needs JavaScript switched on.</div>
+    </noscript>
+  </div>
+</main>
+
+<footer class="foot">
+  <div class="foot__inner">
+    <span class="foot__name" data-site="name">Leien</span>
+    <div class="foot__links">
+      <a data-site="email" href="#">email</a>
+      <button class="foot__top" type="button" data-top><span data-label="backToTop">Back to top</span></button>
+    </div>
+  </div>
+</footer>
+
+<!-- ============ THE CASE READER — filled when a card is clicked ============ -->
+<div class="modal modal--case" id="case-modal" hidden role="dialog" aria-modal="true" aria-label="Case study">
+  <div class="modal__scrim"></div>
+  <div class="modal__panel" data-lenis-prevent>
+    <div class="reader__bar">
+      <span class="sheet__grip" aria-hidden="true"></span>
+      <p class="reader__title" aria-hidden="true"></p>
+      <button class="reader__toc-btn" type="button" aria-expanded="false" aria-controls="case-toc">Contents</button>
+      <button class="modal__close" data-close aria-label="Close">&#10005;</button>
+      <span class="reader__progress" aria-hidden="true"></span>
+    </div>
+    <div class="reader">
+      <nav class="reader__toc" aria-label="Contents">
+        <ol class="reader__toc-list" id="case-toc"></ol>
+      </nav>
+      <div class="reader__main">
+        <div class="modal__content"></div>
+        <nav class="reader__pager" aria-label="More case studies"></nav>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ THE DOCUMENTATION WINDOW — opens on top of a case, from its file ============ -->
+<div class="modal modal--case modal--doc" id="doc-modal" hidden role="dialog" aria-modal="true" aria-label="Documentation">
+  <div class="modal__scrim"></div>
+  <div class="modal__panel" data-lenis-prevent>
+    <div class="reader__bar">
+      <span class="sheet__grip" aria-hidden="true"></span>
+      <span class="reader__file" aria-hidden="true"></span>
+      <p class="reader__title" aria-hidden="true"></p>
+      <button class="reader__toc-btn" type="button" aria-expanded="false" aria-controls="doc-toc">Contents</button>
+      <button class="modal__close" data-close aria-label="Close">&#10005;</button>
+      <span class="reader__progress" aria-hidden="true"></span>
+    </div>
+    <div class="reader">
+      <nav class="reader__toc" aria-label="Documentation contents">
+        <ol class="reader__toc-list" id="doc-toc"></ol>
+      </nav>
+      <div class="reader__main">
+        <div class="modal__content"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="content.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#F8F9FA">
+<meta name="color-scheme" content="light">
+<!-- These two are a fallback only. The live ones come from content.js -->
+<title>Leien · Email &amp; automation for Shopify brands</title>
+<meta name="description" content="Klaviyo lifecycle email and n8n automation for Shopify and DTC brands.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<!-- page-to-page fades are the browser's own. IF one is skipped (e.g. the tab is hidden)
+     THEN the page simply shows. This must run before the first paint, SO it lives here. -->
+<script>
+["pageswap","pagereveal"].forEach(function(t){addEventListener(t,function(e){var v=e.viewTransition;if(v){v.ready.catch(function(){});v.finished.catch(function(){});}});});
+</script>
+<!-- smooth scrolling for a mouse OR trackpad. IF it fails to load THEN the page scrolls normally. -->
+<script async id="lenis-lib" src="https://cdn.jsdelivr.net/npm/lenis@1.3.26/dist/lenis.min.js"></script>
+</head>
+<body>
+
+<!-- ============================================================
+     THIS FILE HOLDS NO WORDS AND NO PICTURES.
+     It is the frame only. Everything you can read on this page
+     comes from content.js. Edit that file.
+     ============================================================ -->
+
+<!-- ============ THE SKY ============ -->
+<div class="sky" aria-hidden="true">
+  <div class="aurora aurora--1"></div>
+  <div class="aurora aurora--2"></div>
+  <div class="aurora aurora--3"></div>
+  <canvas id="stars"></canvas>
+</div>
+
+<!-- ============ HEADER ============ -->
+<header class="nav">
+  <a class="nav__mark" href="index.html"><span data-site="name">Leien</span></a>
+  <nav class="nav__links" aria-label="Pages">
+    <span class="nav__pill" aria-hidden="true"></span>
+    <a class="nav__link" href="index.html" aria-current="page" data-nav="home">Home</a>
+    <a class="nav__link" href="case-studies.html" data-nav="cases">Case studies</a>
+    <a class="nav__link" href="certifications.html" data-nav="certs">Certifications</a>
+    <a class="nav__link" href="contact.html" data-nav="contact">Contact me</a>
+  </nav>
+  <div class="nav__rail" aria-hidden="true"><span class="nav__comet"></span></div>
+</header>
+
+<main class="page landing">
+
+  <!-- the photo. Its src comes from content.js -> home.photo -->
+  <aside class="portrait" aria-hidden="true">
+    <div class="portrait__ring"></div>
+    <img class="portrait__img" draggable="false" alt="" src="">
+  </aside>
+
+  <!-- every section is built here from content.js -> home.blocks -->
+  <div class="stream" id="home-blocks"></div>
+
+  <noscript>
+    <div class="noscript">This site needs JavaScript switched on.</div>
+  </noscript>
+
+</main>
+
+<footer class="foot">
+  <div class="foot__inner">
+    <span class="foot__name" data-site="name">Leien</span>
+    <div class="foot__links">
+      <a data-site="email" href="#">email</a>
+      <button class="foot__top" type="button" data-top><span data-label="backToTop">Back to top</span></button>
+    </div>
+  </div>
+</footer>
+
+<script src="content.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
