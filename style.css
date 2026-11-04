@@ -1357,3 +1357,11 @@ h1 + .lede,h2 + .lede{margin-top:clamp(12px,1.6vw,18px)}
 .shot--wide img{max-height:none}
 .shot figcaption{margin-top:8px;font-size:13px;color:var(--muted)}
 @media (hover:hover) and (pointer:fine){ .shot a:hover img{opacity:.92} }
+
+/* a plain note where a case has no pictures */
+.shots-note{
+  margin:20px 0 26px;padding:14px 18px;
+  border:1px solid var(--line);border-radius:var(--radius);
+  background:var(--tint);
+  color:var(--muted);font-size:14.5px;max-width:none;
+}

@@ -904,6 +904,8 @@ function casePanel(item, n){
     item.photos.forEach(p => wrap.appendChild(p.src ? shotFigure(p) : emptyShot(p.alt)));
     art.appendChild(wrap);
   }
+  /* a case too big to draw: one plain sentence stands where the pictures would be */
+  if (item.photosNote) art.appendChild(make("p", "shots-note", item.photosNote));
 
   const used = new Set();
   const idFor = text => {

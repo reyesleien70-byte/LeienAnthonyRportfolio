@@ -262,10 +262,13 @@ home: {
      video   a file OR an embed link
      poster  the still shown before a video file plays
      photos  the pictures inside the panel, shown first. Each one:
-               { src: "assets/x.png", alt: "what it shows", caption: "small line under it", wide: true }
-             caption is optional. wide: true gives a picture the full width.
+               { src: "assets/x.png", alt: "what it shows", wide: true }
+             wide: true gives a picture the full width. Pictures show on their
+             own, with no text under them. (caption: "..." adds a line, IF wanted.)
              Click a picture and it opens full size in a new tab.
-             Leave src as "" AND a labelled empty tile stands in.
+             Leave a case with no pictures: photos: [] shows nothing.
+     photosNote  optional. One plain sentence shown where the pictures would be,
+             e.g. for a case too big to draw. Leave it out for no note.
      story   the write-up: a heading, THEN text OR bullets
      hidden  true = keep the entry in this file but do not show it anywhere
    ================================================================ */
@@ -301,9 +304,9 @@ cases: {
       video: "",
       poster: "",
       photos: [
-        { src: "assets/case1-n8n-workflow.png", alt: "The n8n workflow: twelve nodes from the Shopify order to the Klaviyo event", caption: "The n8n workflow", wide: true },
-        { src: "assets/case1-klaviyo-flow-1.png", alt: "The Klaviyo flow, top half: trigger, 4 hour wait, Reminder, 1 day wait, Deciding or thinking why to buy", caption: "The Klaviyo flow, top half" },
-        { src: "assets/case1-klaviyo-flow-2.png", alt: "The Klaviyo flow, bottom half: Deciding or thinking why to buy, 2 day wait, The close", caption: "The Klaviyo flow, bottom half" }
+        { src: "assets/case1-n8n-workflow.png", alt: "The n8n workflow: twelve nodes from the Shopify order to the Klaviyo event", wide: true },
+        { src: "assets/case1-klaviyo-flow-1.png", alt: "The Klaviyo flow, top half: trigger, 4 hour wait, Reminder, 1 day wait, Deciding or thinking why to buy" },
+        { src: "assets/case1-klaviyo-flow-2.png", alt: "The Klaviyo flow, bottom half: Deciding or thinking why to buy, 2 day wait, The close" }
       ],
       story: [
         {
@@ -804,8 +807,9 @@ Reminder: Add more to this the more updates/changes/error encounter happens.`
       video: "",
       poster: "",
       photos: [
-        { src: "", alt: "Flow map" },
-        { src: "", alt: "Discount email, versions A and B" }
+        { src: "assets/case2-acr-flow-1.png", alt: "The abandoned checkout flow, part 1: trigger, 1 hour 30 minute wait, E1 Reminder, 11 hour 30 minute wait, first split" },
+        { src: "assets/case2-acr-flow-2.png", alt: "The abandoned checkout flow, part 2: first split between can receive email or SMS and everyone else, E2 or SMS1, 12 hour wait, second split", wide: true },
+        { src: "assets/case2-acr-flow-3.png", alt: "The abandoned checkout flow, part 3: second split between opened email and everyone else, E3A What roast, E3B What size, 13 hour wait, third split", wide: true },
       ],
       story: [
         {
@@ -1225,8 +1229,8 @@ Goodluck building!`
       video: "",
       poster: "",
       photos: [
-        { src: "", alt: "Flow map" },
-        { src: "", alt: "Email 1, versions A and B" }
+        { src: "assets/case3-ba-flow-1.png", alt: "The browse abandonment flow, part 1: trigger on Viewed Product, 4 hour wait, E1 Still thinking about it, 20 hour wait, click check" },
+        { src: "assets/case3-ba-flow-2.png", alt: "The browse abandonment flow, part 2: click check, SMS subscriber check, then SMS1 or the second email", wide: true },
       ],
       story: [
         {
@@ -1476,8 +1480,9 @@ AND goodluck building!`
       video: "",
       poster: "",
       photos: [
-        { src: "", alt: "Flow map" },
-        { src: "", alt: "First cup email, versions A and B" }
+        { src: "assets/case4-pp-flow-1.png", alt: "The post-purchase flow, part 1: trigger on Placed Order, first time buyer split, E1 Welcome or E1B Thanks for coming back", wide: true },
+        { src: "assets/case4-pp-flow-2.png", alt: "The post-purchase flow, part 2: 7 day wait, E2 Getting the most out of your bag, 10 day wait, Can receive SMS split" },
+        { src: "assets/case4-pp-flow-3.png", alt: "The post-purchase flow, part 3: Can receive SMS split, SMS1 or E3 Something to put through it", wide: true }
       ],
       story: [
         {
@@ -1756,10 +1761,8 @@ Goodluck building!`
       meta: "Klaviyo + Shopify · 9 flows · 6 lifecycle segments · 2 signup forms · 4 A/B tests · email only · practice store",
       video: "",
       poster: "",
-      photos: [
-        { src: "", alt: "Lifecycle map" },
-        { src: "", alt: "Reporting dashboard" }
-      ],
+      photos: [],
+      photosNote: "Too many flows inside to render, the visual is inside the documentation.",
       story: [
         {
           heading: "The problem",
@@ -2370,10 +2373,7 @@ That's all of it, goodluck building!`
       meta: "Klaviyo + Shopify · 1 banner, 1 email, 1 text · US only · Thu Dec 17, 2026 · practice build, not launched",
       video: "",
       poster: "",
-      photos: [
-        { src: "", alt: "Campaign day timeline" },
-        { src: "", alt: "Klaviyo campaign calendar" }
-      ],
+      photos: [],
       story: [
         {
           heading: "The problem",
