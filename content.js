@@ -107,8 +107,8 @@ home: {
   tabTitle: "Leien · Email & automation for Shopify brands",
   tabNote: "Klaviyo lifecycle email automation for Shopify brands.",
 
-  photo: "",
-  photoAlt: "",
+  photo: "assets/profile.jpg",
+  photoAlt: "Leien Anthony R.",
 
   /* the small hint under the first screen, on a wide screen. "" hides it. */
   scrollHint: "Scroll",
