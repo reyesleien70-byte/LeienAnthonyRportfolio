@@ -254,7 +254,13 @@ home: {
    Add a seventh by copying a whole { … } block.
 
    Every entry:
-     tag     the small line above the card title
+     type    flow | campaign | email-design. Decides which tab it appears under.
+     date    YYYY-MM-DD. Shown as "Month YYYY" AND used to sort. "" hides it.
+     slug    a short name, e.g. "welcome-flow". Also works as a link: case-studies.html#case-welcome-flow
+     url     OPTIONAL. A link to a page of its own. The card opens that instead of a panel.
+     draft   true = keep the entry here but hide it from visitors (hidden: true does the same)
+     blurb   the one-line summary on the card
+     tag     a small technology note (kept in the data, not shown on the card)
      title   the card title AND the panel title
      blurb   the sentence on the card
      photo   the picture on the card
@@ -279,7 +285,7 @@ cases: {
   tabNote: "Email flows and automations I have built, end to end.",
 
   eyebrow: "Case studies",
-  heading: "Five builds, opened up.",
+  heading: "Builds, opened up.",
   lede: "Each card holds the walkthrough: what was broken, what I built, what it does now.",
   openLabel: "Open case",
 
@@ -298,6 +304,9 @@ cases: {
     {
       tag: "Klaviyo · n8n · Shopify",
       title: "Item-Specific Abandoned Cart Recovery",
+      slug: "item-specific-abandoned-cart-recovery",
+      type: "flow",                       // flow | campaign | email-design
+      date: "2026-09-18",
       blurb: "Stops only when they buy the item they left",
       photo: "",
       meta: "Klaviyo + n8n + Shopify · Started Checkout · 3 emails · 12-node n8n workflow · practice store",
@@ -801,6 +810,9 @@ Reminder: Add more to this the more updates/changes/error encounter happens.`
     {
       tag: "Klaviyo grouped flows",
       title: "Abandoned Cart Recovery(Grouped)",
+      slug: "abandoned-cart-recovery-grouped",
+      type: "flow",                       // flow | campaign | email-design
+      date: "2026-09-15",
       blurb: "1 of the 3 flows in ESO",
       photo: "",
       meta: "Klaviyo · Checkout Started · email + SMS · 5 messages per opener, 3 per non-opener · one discount",
@@ -1223,6 +1235,9 @@ Goodluck building!`
     {
       tag: "Klaviyo grouped flows",
       title: "Browse Abandonment Flow(Grouped)",
+      slug: "browse-abandonment-flow-grouped",
+      type: "flow",                       // flow | campaign | email-design
+      date: "2026-09-15",
       blurb: "2 of the 3 flows in ESO",
       photo: "",
       meta: "Klaviyo · Viewed Product · 2 emails, 1 SMS · at most 2 per shopper · no discounts",
@@ -1474,6 +1489,9 @@ AND goodluck building!`
     {
       tag: "Klaviyo grouped flows",
       title: "Post-Purchase Flow(Grouped)",
+      slug: "post-purchase-flow-grouped",
+      type: "flow",                       // flow | campaign | email-design
+      date: "2026-09-15",
       blurb: "3 of the 3 flows in ESO",
       photo: "",
       meta: "Klaviyo · Placed Order · email + SMS · 3 messages over 21 days · no discounts",
@@ -1756,6 +1774,9 @@ Goodluck building!`
     {
       tag: "Klaviyo · Shopify · Lifecycle system",
       title: "TLRE: The Lifecycle Revenue Engine",
+      slug: "tlre-lifecycle-revenue-engine",
+      type: "flow",                       // flow | campaign | email-design
+      date: "",                        // YYYY-MM-DD. "" = not stated, shows no date
       blurb: "Nine flows, one stage per customer",
       photo: "",
       meta: "Klaviyo + Shopify · 9 flows · 6 lifecycle segments · 2 signup forms · 4 A/B tests · email only · practice store",
@@ -2365,9 +2386,215 @@ That's all of it, goodluck building!`
     },
 
     {
+      tag: "Klaviyo · Welcome flow",
+      title: "Welcome Flow, \"Did They Buy\" Edition",
+      slug: "welcome-flow-did-they-buy",
+      type: "flow",                       // flow | campaign | email-design
+      date: "2026-11-04",
+      blurb: "Buyers and non-buyers get a different second email",
+      photo: "",
+      meta: "Klaviyo · Welcome flow · 3 emails, at most 2 per shopper · one split on Day 3 · test data",
+      video: "",
+      poster: "",
+      photos: [
+        { src: "assets/case6-welcome-flow-1.png", alt: "The welcome flow, top half: trigger when someone is added to the email subscribers list, E1 Thanks, Incentives and Reviews, 3 day wait, Did they buy split", wide: true },
+        { src: "assets/case6-welcome-flow-2.png", alt: "The welcome flow, bottom half: Did they buy split, E2A Thanks and best sellers for buyers, E2B Brand story and Reminders for everyone else", wide: true }
+      ],
+      story: [
+        {
+          heading: "The problem",
+          text: "A normal welcome flow sends the same emails to everyone. Buyers still get first-order pushes and nothing invites them back for a second order. Non-buyers get no extra reason to trust the brand."
+        },
+        {
+          heading: "What I built",
+          bullets: [
+            "A welcome flow that sends E1 (thanks, incentives and reviews) on Day 0, then waits 3 days.",
+            "On Day 3 a split checks: did they buy? Buyers get thanks and best sellers, aiming for a repeat order.",
+            "Everyone else gets the brand story and an incentive reminder, aiming for a first order before the discount ends on Day 5.",
+            "At most 2 emails per shopper, no flow filters, and Smart Sending on for every email."
+          ]
+        },
+        {
+          heading: "Result",
+          text: "Built on test data for Off-Bolt and documented well enough to rebuild from scratch. It is judged by Placed Order rate."
+        },
+        {
+          heading: "Documentation",
+          text: `# Off-Bolt · Welcome Flow, "Did They Buy" Edition
+
+**Rebuild doc** · Client: Off-Bolt · Data: test data · 2026-11-04
+
+---
+
+## 1. Purpose / Goal
+
+**The problem**
+A normal welcome flow sends the same emails to everyone.
+- Buyers still get first-order pushes. Nothing invites them back for a second order.
+- Non-buyers get no extra reason to trust the brand.
+
+**How this flow solves it**
+On Day 3, a split checks: did they buy?
+- IF yes, THEN thanks + best sellers. Goal: a repeat order.
+- IF no, THEN brand story + incentive reminder. Goal: trust AND a first order, before the discount ends on Day 5.
+
+| | Normal welcome flow | This flow |
+|---|---|---|
+| Buyers | Same emails as non-buyers | Thanks + best sellers → repeat order |
+| Non-buyers | Same emails as buyers | Brand story + reminder → first order |
+| Emails per shopper | Same path for all | AT MOST 2, matched to behavior |
+
+**Value:** more first AND repeat orders → more revenue. Measured by Placed Order rate.
+
+## 2. The five rules
+
+1. AT MOST 2 emails per shopper.
+2. NO flow filters. NO ONE is taken out.
+3. Smart Sending ON for ALL emails. Campaigns come first.
+4. Deadlines count from the join date: discount = 5 days, free shipping = 15 days.
+5. Success = Placed Order rate.
+
+## 3. Variables and data
+
+### 3.1 Data the flow needs
+
+| Data | Source | Used in |
+|---|---|---|
+| List: OB \\| Email Sub… | Klaviyo list | Trigger |
+| first_name | Profile property | E1, E2B greeting |
+| Placed Order | Shopify integration | Split |
+| OFFBOLT1 (discount) | Shopify discount code | E1, E2B |
+| OFFBOLT2 (free shipping) | Shopify discount code | E1, E2B |
+| Best sellers | Depends on the data used | E1 (optional), E2A |
+
+### 3.2 Merge tags
+
+**Greeting**
+\`{{ person.first_name|default:'shopper' }}\`
+IF there is no first name, THEN it shows "shopper".
+
+**Expiry dates**
+
+- Discount ends: join date + 5 days.
+- Free shipping ends: join date + 15 days.
+- Code: NOT in the inputs. **OFFBOLT1 and OFFBOLT2**
+
+\`\`\`
+Day:      0        3     5                            15
+          |--------|-----|-----------------------------|
+OFFBOLT1  [==============]  discount, ends Day 5
+OFFBOLT2  [============================================]  free shipping, ends Day 15
+          E1       E2A / E2B
+\`\`\`
+
+**Rebuild check:** E2B sends on Day 3.
+IF the code counts from the send date, THEN E2B must show +2 AND +12 days.
+ELSE merge tag is wrong
+
+### 3.3 Placeholders and setup
+
+- **Review block (E1):** custom HTML, no personalization. Code NOT in the inputs.
+- **Best-sellers block (E1):** optional.
+- **Palette:** warm AND natural. Hex values: NOT in the inputs.
+
+## 4. Flow settings
+
+### 4.1 Placed Order rule
+
+- **Condition:** Placed Order at least once since starting this flow.
+- Checked ONCE, when the profile reaches the split on Day 3.
+- Orders before joining do NOT count. Orders after Day 3 do NOT move anyone.
+
+### 4.2 Collision control
+
+- Smart Sending ON for E1, E2A AND E2B.
+- Email window: 16 hours by default.
+- IF the shopper got an email inside the window, THEN this email is skipped AND NOT rescheduled.
+- THEREFORE a shopper MAY get fewer than 2 emails.
+
+## 5. Flow: Welcome, "Did They Buy" Edition
+
+**Flow map**
+Build it top to bottom, exactly as shown.
+
+\`\`\`
+      ┌────────────────────────────────────────────────┐
+      │ TRIGGER (list)                           Day 0 │
+      │ Added to: OB | Email Sub...                    │
+      │ Flow filters: NONE                             │
+      └────────────────────────┬───────────────────────┘
+                               │
+      ┌────────────────────────▼───────────────────────┐
+      │ EMAIL E1                                 Day 0 │
+      │ Thanks + Incentives + Reviews                  │
+      │ Smart Sending: ON                              │
+      │                                                │
+      │ - OFFBOLT1 discount       -> ends Day 5        │
+      │ - OFFBOLT2 free shipping  -> ends Day 15       │
+      │ - Review block (custom HTML)                   │
+      │ - Best sellers (optional)                      │
+      └────────────────────────┬───────────────────────┘
+                               │
+                     ┌─────────▼────────┐
+                     │    WAIT 3 days   │
+                     └─────────┬────────┘
+                               │
+      ┌────────────────────────▼───────────────────────┐
+      │ SPLIT: Did they buy?                     Day 3 │
+      │ Path 1 Yes: Placed Order at least once         │
+      │             since starting this flow           │
+      │ Path 2 Everyone else: the rest                 │
+      └────────────────────────┬───────────────────────┘
+                               │
+               ┌───────────────┴───────────────┐
+               │                               │
+             1 Yes                      2 Everyone else
+               │                               │
+ ┌─────────────▼────────────┐    ┌─────────────▼────────────┐
+ │ EMAIL E2A          Day 3 │    │ EMAIL E2B          Day 3 │
+ │ Thanks + best sellers    │    │ Brand story + Reminders  │
+ │ Smart Sending: ON        │    │ Smart Sending: ON        │
+ │ Job: repeat order        │    │ Job: trust + 1st order   │
+ └─────────────┬────────────┘    └─────────────┬────────────┘
+               │                               │
+              END                             END
+\`\`\`
+
+Each shopper gets E1, then EITHER E2A OR E2B.
+Only people added AFTER the flow is live enter. Earlier adds need "Add past profiles".
+
+**Messages and emails**
+
+**E1: Thanks + Incentives + Reviews** (everyone, Day 0)
+
+- Subject : \`Hi {{ person.first_name|default:'shopper' }}...\`
+- Content: thanks, OFFBOLT1 AND OFFBOLT2 with expiry dates, review block, best sellers (optional).
+
+**E2A: Thanks + best sellers** (Path 1 "Yes", Day 3)
+
+- Subject: "You're officially part of the Off-Bolt family"
+- Content: thanks + best sellers.
+
+**E2B: Brand story + Reminders** (Path 2 "Everyone else", Day 3)
+
+- Subject: \`Hi {{ person.first_name|default:'shopper' }} ...\`
+- Content: brand story + incentive reminder with expiry dates.
+- On Day 3: 2 days left on the discount, 12 on free shipping.
+
+---
+
+This documentation is for rebuilding the build, happy building!`
+        }
+      ]
+    },
+
+    {
       hidden: true,                    // not shown for now. Delete this line to show it again.
       tag: "Klaviyo · Shopify · Campaign",
       title: "Dec 17 \"Last Day to Order\" Campaign",
+      slug: "dec-17-last-day-to-order",
+      type: "campaign",                       // flow | campaign | email-design
+      date: "2026-10-15",
       blurb: "Banner, email and text for one real shipping deadline",
       photo: "",
       meta: "Klaviyo + Shopify · 1 banner, 1 email, 1 text · US only · Thu Dec 17, 2026 · practice build, not launched",
@@ -3212,6 +3439,34 @@ The final wording is NOT recorded in this version. Paste it here so a new owner 
 - Other Klaviyo help pages listed in Part 12 were checked earlier in this project. Their links were not recorded.`
         }
       ]
+    },
+
+    {
+      draft: true,                     // hidden from visitors. Delete this line to publish it.
+      tag: "Placeholder",
+      title: "Campaign case study (placeholder)",
+      slug: "campaign-placeholder",
+      type: "campaign",
+      date: "",
+      blurb: "Placeholder. Replace this with a real campaign project.",
+      photo: "",
+      meta: "",
+      photos: [],
+      story: []
+    },
+
+    {
+      draft: true,                     // hidden from visitors. Delete this line to publish it.
+      tag: "Placeholder",
+      title: "Email design case study (placeholder)",
+      slug: "email-design-placeholder",
+      type: "email-design",
+      date: "",
+      blurb: "Placeholder. Replace this with a real email design project.",
+      photo: "",
+      meta: "",
+      photos: [],
+      story: []
     }
 
   ]

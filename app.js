@@ -9,9 +9,13 @@
 
 const SITE = CONTENT.site;
 
-/* a case marked  hidden: true  in content.js stays in the file but is not shown anywhere:
-   no card, no panel, no next/previous. Filtered here once, SO every index below stays in step. */
-if (CONTENT.cases && CONTENT.cases.items) CONTENT.cases.items = CONTENT.cases.items.filter(c => !c.hidden);
+/* A case marked  hidden: true  OR  draft: true  in content.js stays in the file but is not shown
+   anywhere: no card, no panel, no next/previous. Every case first gets its number (its place in the
+   file), SO "#case-3" keeps pointing at the same case, even when others are hidden. */
+if (CONTENT.cases && CONTENT.cases.items){
+  CONTENT.cases.items.forEach((c, i) => { c._n = i + 1; });
+  CONTENT.cases.items = CONTENT.cases.items.filter(c => !c.hidden && !c.draft);
+}
 
 /* the small words the site itself uses. content.js may change any of them. */
 const LABELS = Object.assign({
@@ -840,6 +844,46 @@ function toolIcon(icon){
   return "<svg viewBox='0 0 24 24' aria-hidden='true'>" + (ICONS[raw] || "") + "</svg>";
 }
 
+/* ------------------------------------------------------------
+   CASE STUDIES — cards, four filter tabs, a sort control.
+   Each case in content.js has a type (flow | campaign | email-design)
+   AND a date. The tabs AND the sort are built from those.
+   ------------------------------------------------------------ */
+const TAB_KEYS  = ["all", "flows", "campaigns", "email-designs"];
+const TAB_TYPE  = { "all": null, "flows": "flow", "campaigns": "campaign", "email-designs": "email-design" };
+const SORT_KEYS = ["az", "za", "latest"];
+const MONTHS    = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+/* the small words of the controls. content.js -> cases.filters may change any of them. */
+const FILTER_LABELS = Object.assign({
+  tabs: "Case study type",
+  sort: "Sort",
+  "all": "All", "flows": "Flows", "campaigns": "Campaigns", "email-designs": "Email designs",
+  az: "A–Z", za: "Z–A", latest: "Latest to oldest",
+  "flow": "Flow", "campaign": "Campaign", "email-design": "Email design",
+  backToAll: "Back to All",
+  empty: {
+    "flows": "Flow case studies coming soon.",
+    "campaigns": "Campaign case studies coming soon.",
+    "email-designs": "Email design case studies coming soon."
+  }
+}, (CONTENT.cases && CONTENT.cases.filters) || {});
+
+/* "2026-09-15" -> "September 2026". Anything else -> "" (no date shown). */
+function fmtDate(iso){
+  const m = /^(\d{4})-(\d{2})/.exec(String(iso || ""));
+  return m && MONTHS[Number(m[2]) - 1] ? MONTHS[Number(m[2]) - 1] + " " + m[1] : "";
+}
+
+/* case-insensitive, and a leading "The" does not count */
+const sortName = t => String(t || "").toLowerCase().replace(/^the\s+/, "").trim();
+const byName = (a, b) => sortName(a.item.title).localeCompare(sortName(b.item.title), "en", { sensitivity: "base", numeric: true });
+const byDate = (a, b) => {
+  const da = a.item.date || "", db = b.item.date || "";
+  if (da !== db){ if (!da) return 1; if (!db) return -1; return da < db ? 1 : -1; }   // newest first, no date last
+  return byName(a, b);                                                                  // same date -> A–Z
+};
+
 function renderCases(){
   const list = document.getElementById("case-list");
   if (!list) return;                      // NOT the case page -> do nothing
@@ -854,39 +898,216 @@ function renderCases(){
     if (c.lede)    head.appendChild(splitWords(make("p", "lede", c.lede), 14));
   }
 
+  const entries = [];
   c.items.forEach((item, i) => {
-    const id = "case-" + (i + 1);
+    const hasPanel = !item.url;            // a case with its own page just links there
+    const type = item.type || "flow";
 
-    const btn = make("button", "case-card spot");
-    btn.type = "button";
-    btn.dataset.case = id;
-    btn.dataset.index = i;
+    /* the whole card is ONE link */
+    const card = make("a", "case-card spot");
+    card.href = hasPanel ? "#case-" + item._n : item.url;
+    if (!hasPanel && /^https?:/i.test(item.url)){ card.target = "_blank"; card.rel = "noopener noreferrer"; }
+    if (hasPanel){ card.dataset.case = "case-" + item._n; card.dataset.index = i; }
+    card.dataset.type = type;
 
-    /* no photo -> a small drawn flow stands in */
+    /* no thumbnail -> a small drawn flow stands in */
     const media = make("div", "case-card__media");
-    media.appendChild(item.photo ? photoNode(item.photo, "", "case-card__shot") : caseArt(i));
-    btn.appendChild(media);
+    const thumb = item.thumbnail || item.photo;
+    media.appendChild(thumb ? photoNode(thumb, item.thumbnailAlt || "", "case-card__shot") : caseArt(i));
+    card.appendChild(media);
 
     const body = make("div", "case-card__body");
-    if (item.tag)   body.appendChild(make("p", "case-card__tag", item.tag));
+    const meta = make("p", "case-card__meta");
+    meta.appendChild(make("span", "case-card__type", FILTER_LABELS[type] || type));
+    const when = fmtDate(item.date);
+    if (when){ const t = make("time", null, when); t.dateTime = item.date; meta.appendChild(t); }
+    body.appendChild(meta);
     body.appendChild(make("h3", null, item.title));
-    if (item.blurb) body.appendChild(make("p", null, item.blurb));
+    const summary = item.blurb || item.summary;
+    if (summary) body.appendChild(make("p", "case-card__summary", summary));
     const open = make("p", "case-card__open");
     open.appendChild(make("span", null, c.openLabel || "Open case"));
     open.insertAdjacentHTML("beforeend", UI.arrow);
     body.appendChild(open);
-    btn.appendChild(body);
+    card.appendChild(body);
 
     const li = document.createElement("li");
-    li.appendChild(btn);
+    li.appendChild(card);
     list.appendChild(li);
+    entries.push({ i, li, item, type });
 
     /* the panel this card opens */
-    const tpl = document.createElement("template");
-    tpl.id = id;
-    tpl.content.appendChild(casePanel(item, i + 1));
-    document.body.appendChild(tpl);
+    if (hasPanel){
+      const tpl = document.createElement("template");
+      tpl.id = "case-" + item._n;
+      tpl.content.appendChild(casePanel(item, i + 1));
+      document.body.appendChild(tpl);
+    }
   });
+
+  if (head) initCaseFilter(entries, list, head);
+}
+
+/* ------------------------------------------------------------
+   The four tabs AND the sort. Everything is visible at once,
+   nothing is hidden in a menu. The state lives in the address:
+     ?type=all|flows|campaigns|email-designs&sort=az|za|latest
+   ------------------------------------------------------------ */
+function initCaseFilter(entries, list, head){
+  const L = FILTER_LABELS;
+
+  /* --- build the controls --- */
+  const box = make("div", "cs-controls");
+
+  const tabs = make("div", "cs-tabs");
+  tabs.setAttribute("role", "tablist");
+  tabs.setAttribute("aria-label", L.tabs);
+  TAB_KEYS.forEach(k => {
+    const b = make("button", "cs-tab");
+    b.type = "button";
+    b.id = "cs-tab-" + k;
+    b.dataset.tab = k;
+    b.setAttribute("role", "tab");
+    b.setAttribute("aria-controls", "case-list");
+    b.appendChild(make("span", "cs-tab__label", L[k]));
+    b.appendChild(make("span", "cs-tab__count"));
+    tabs.appendChild(b);
+  });
+  box.appendChild(tabs);
+
+  const sortRow = make("div", "cs-sort");
+  const sortLabel = make("span", "cs-sort__label", L.sort);
+  sortLabel.id = "cs-sort-label";
+  const group = make("div", "cs-seg-group");
+  group.setAttribute("role", "radiogroup");
+  group.setAttribute("aria-labelledby", "cs-sort-label");
+  SORT_KEYS.forEach(k => {
+    const lab = make("label", "cs-seg");
+    const input = document.createElement("input");
+    input.type = "radio";
+    input.name = "cs-sort";
+    input.value = k;
+    lab.appendChild(input);
+    lab.appendChild(make("span", null, L[k]));
+    group.appendChild(lab);
+  });
+  sortRow.append(sortLabel, group);
+  box.appendChild(sortRow);
+
+  const status = make("p", "cs-status");
+  status.setAttribute("aria-live", "polite");
+  box.appendChild(status);
+  head.appendChild(box);
+
+  /* an empty tab says so, AND offers the way back */
+  const empty = make("div", "cs-empty");
+  empty.hidden = true;
+  const emptyText = make("p");
+  const emptyBtn = make("button", "btn btn--ghost", L.backToAll);
+  emptyBtn.type = "button";
+  empty.append(emptyText, emptyBtn);
+  list.after(empty);
+
+  list.setAttribute("role", "tabpanel");
+
+  /* --- counts --- */
+  const count = k => entries.filter(e => !TAB_TYPE[k] || e.type === TAB_TYPE[k]).length;
+  TAB_KEYS.forEach(k => { tabs.querySelector('[data-tab="' + k + '"] .cs-tab__count').textContent = "(" + count(k) + ")"; });
+
+  /* --- the state, read from the address --- */
+  let lastAllSort = "az";
+  function readUrl(){
+    const q = new URLSearchParams(location.search);
+    let type = q.get("type"), sort = q.get("sort"), bad = false;
+    if (type !== null && !TAB_KEYS.includes(type)){ type = null; bad = true; }
+    if (sort !== null && !SORT_KEYS.includes(sort)){ sort = null; bad = true; }
+    type = type || "all";
+    if (type === "all"){ sort = sort || "az"; lastAllSort = sort; }
+    else sort = "latest";                       // the other tabs always list newest first
+    return { st: { type, sort }, bad };
+  }
+  const urlFor = st => location.pathname + "?type=" + st.type + "&sort=" + st.sort;
+
+  let state = readUrl().st;
+  if (readUrl().bad) history.replaceState(history.state, "", urlFor(state));   // a broken link falls back to All, A–Z
+
+  /* --- draw --- */
+  function render(animate){
+    const type = TAB_TYPE[state.type];
+    const vis = entries.filter(e => !type || e.type === type).sort(state.sort === "latest" ? byDate : state.sort === "za" ? (a, b) => byName(b, a) : byName);
+
+    entries.forEach(e => { e.li.hidden = !vis.includes(e); });
+    vis.forEach(e => list.appendChild(e.li));                // the order on the page
+    window.CASE_ORDER = vis.map(e => e.i);                   // next / previous inside a case follows it
+
+    tabs.querySelectorAll(".cs-tab").forEach(b => {
+      const on = b.dataset.tab === state.type;
+      b.setAttribute("aria-selected", String(on));
+      b.tabIndex = on ? 0 : -1;
+      b.classList.toggle("is-on", on);
+    });
+    list.setAttribute("aria-labelledby", "cs-tab-" + state.type);
+
+    sortRow.hidden = state.type !== "all";                   // sorting is for All only
+    group.querySelectorAll("input").forEach(r => { r.checked = r.value === state.sort; });
+
+    const none = vis.length === 0;
+    list.hidden = none;
+    empty.hidden = !none;
+    if (none){ emptyText.textContent = L.empty[state.type] || ""; }
+
+    const n = vis.length, noun = n === 1 ? "case study" : "case studies";
+    const kind = type ? (L[type] || type).toLowerCase() + " " : "";
+    status.textContent = none
+      ? "No " + kind + "case studies yet."
+      : "Showing " + n + " " + kind + noun + ", " + (state.sort === "latest" ? L.latest.toLowerCase() : L[state.sort]) + ".";
+
+    if (animate){
+      list.classList.add("is-in");                           // a list that started empty has never been revealed
+      list.classList.remove("is-swapping");
+      void list.offsetWidth;
+      list.classList.add("is-swapping");
+    }
+  }
+
+  function set(next, push){
+    const same = next.type === state.type && next.sort === state.sort;
+    state = next;
+    if (state.type === "all") lastAllSort = state.sort;
+    if (push && !same) history.pushState(history.state, "", urlFor(state));
+    render(true);
+  }
+
+  /* --- tabs: a click, OR the arrow keys --- */
+  tabs.addEventListener("click", e => {
+    const b = e.target.closest(".cs-tab");
+    if (b) set({ type: b.dataset.tab, sort: b.dataset.tab === "all" ? lastAllSort : "latest" }, true);
+  });
+  tabs.addEventListener("keydown", e => {
+    const keys = ["ArrowLeft", "ArrowRight", "Home", "End"];
+    if (!keys.includes(e.key)) return;
+    e.preventDefault();
+    const at = TAB_KEYS.indexOf(state.type);
+    const to = e.key === "Home" ? 0 : e.key === "End" ? TAB_KEYS.length - 1
+      : (at + (e.key === "ArrowRight" ? 1 : -1) + TAB_KEYS.length) % TAB_KEYS.length;
+    set({ type: TAB_KEYS[to], sort: TAB_KEYS[to] === "all" ? lastAllSort : "latest" }, true);
+    tabs.querySelector('[data-tab="' + TAB_KEYS[to] + '"]').focus();
+  });
+
+  /* --- sort: native radio buttons, so the arrow keys work too --- */
+  group.addEventListener("change", e => {
+    if (e.target.name === "cs-sort") set({ type: "all", sort: e.target.value }, true);
+  });
+
+  emptyBtn.addEventListener("click", () => {
+    set({ type: "all", sort: lastAllSort }, true);
+    tabs.querySelector('[data-tab="all"]').focus();
+  });
+
+  /* --- Back AND Forward restore the earlier tab and sort --- */
+  window.addEventListener("popstate", () => { state = readUrl().st; render(false); });
+
+  render(false);
 }
 
 function casePanel(item, n){
@@ -1882,7 +2103,7 @@ function wireModal(modal, onClose){
    ============================================================ */
 function initCaseModal(){
   const modal = document.getElementById("case-modal");
-  const cards = [...document.querySelectorAll(".case-card")];
+  const cards = [...document.querySelectorAll(".case-card[data-index]")];     // only cards that open a panel
   if (!modal || !cards.length) return;
 
   const items  = CONTENT.cases.items;
@@ -1907,7 +2128,7 @@ function initCaseModal(){
   /* --- fill the panel with case i --- */
   function fill(i){
     current = i;
-    const tpl = document.getElementById("case-" + (i + 1));
+    const tpl = document.getElementById("case-" + items[i]._n);
     slot.replaceChildren(tpl.content.cloneNode(true));
     title.textContent = items[i].title;
     modal.setAttribute("aria-label", items[i].title);
@@ -1939,13 +2160,21 @@ function initCaseModal(){
     if (tocBtn) tocBtn.hidden = !toc.children.length;
   }
 
+  /* the cases next / previous walk through: the ones on screen, in the order shown */
+  function caseOrder(){
+    const all = items.map((c, i) => i).filter(i => !items[i].url);
+    const seen = (window.CASE_ORDER || []).filter(i => all.includes(i));
+    return seen.length && (current < 0 || seen.includes(current)) ? seen : all;
+  }
+
   function buildPager(){
     if (!pager) return;
     pager.replaceChildren();
-    const n = items.length;
+    const list = caseOrder(), n = list.length;
     if (n < 2){ pager.hidden = true; return; }
+    pager.hidden = false;
     const one = (dir, label) => {
-      const i = (current + dir + n) % n;
+      const i = list[(Math.max(0, list.indexOf(current)) + dir + n) % n];
       const b = make("button", "pager__btn spot pager__btn--" + (dir < 0 ? "prev" : "next"));
       b.type = "button";
       b.dataset.go = dir;
@@ -2030,12 +2259,13 @@ function initCaseModal(){
   });
 
   function go(dir, focusTitle){
-    if (busy || current < 0 || items.length < 2) return;
+    const order = caseOrder();
+    if (busy || current < 0 || order.length < 2) return;
     busy = true;
-    const n = items.length, i = (current + dir + n) % n;
+    const n = order.length, i = order[(Math.max(0, order.indexOf(current)) + dir + n) % n];
     const swap = () => {
       fill(i);
-      history.replaceState({ case: i }, "", "#case-" + (i + 1));
+      history.replaceState({ case: i }, "", "#case-" + items[i]._n);
       if (!REDUCED) slot.animate(
         [{ opacity: 0, transform: `translate3d(${dir * 28}px,0,0)` }, { opacity: 1, transform: "none" }],
         { duration: 460, easing: EASE });
@@ -2066,7 +2296,7 @@ function initCaseModal(){
     if (i < 0 || i >= items.length) return;
     const wasOpen = !modal.hidden;
     fill(i);
-    if (push){ history.pushState({ case: i }, "", "#case-" + (i + 1)); pushed = true; }
+    if (push){ history.pushState({ case: i }, "", "#case-" + items[i]._n); pushed = true; }
     if (wasOpen) return;
 
     modal.hidden = false;
@@ -2100,7 +2330,7 @@ function initCaseModal(){
     closing = true;
     if (docOpen) closeDoc(true);                   // Back, OR a link away, takes the document with it
     closeToc();
-    const card = cards[current];
+    const card = cardOf(current);
     const from = panel.style.transform || "none";  // IF it was being dragged, start from there
     let anim;
     if (REDUCED){
@@ -2143,21 +2373,30 @@ function initCaseModal(){
   }
   wireModal(modal, requestClose);
 
+  /* #case-3 is the third case in the file. #case-welcome-flow (its slug) works too. */
   const hashIndex = () => {
-    const m = location.hash.match(/^#case-(\d+)$/);
-    const i = m ? Number(m[1]) - 1 : -1;
-    return i >= 0 && i < items.length ? i : -1;
+    const m = location.hash.match(/^#case-(.+)$/);
+    if (!m) return -1;
+    let key = m[1];
+    try { key = decodeURIComponent(key); } catch (e) {}
+    const i = /^\d+$/.test(key) ? items.findIndex(c => c._n === Number(key)) : items.findIndex(c => c.slug === key);
+    return i >= 0 && !items[i].url ? i : -1;
   };
+  const cardOf = i => document.querySelector('.case-card[data-index="' + i + '"]');
 
   window.addEventListener("popstate", () => {
     pushed = false;
     const i = hashIndex();
-    if (i >= 0){ if (modal.hidden) openCase(i, cards[i], false); else if (i !== current) fill(i); }
+    if (i >= 0){ if (modal.hidden) openCase(i, cardOf(i), false); else if (i !== current) fill(i); }
     else closeCase();
   });
 
   cards.forEach(card => {
-    card.addEventListener("click", () => openCase(Number(card.dataset.index), card, true));
+    card.addEventListener("click", e => {
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button > 0) return;   // a new tab: let the link be
+      e.preventDefault();
+      openCase(Number(card.dataset.index), card, true);
+    });
   });
 
   /* --- a phone: drag the bar down to close the sheet --- */
