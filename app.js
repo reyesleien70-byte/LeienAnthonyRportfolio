@@ -1015,16 +1015,12 @@ function initCaseFilter(entries, list, head){
   TAB_KEYS.forEach(k => { tabs.querySelector('[data-tab="' + k + '"] .cs-tab__count').textContent = "(" + count(k) + ")"; });
 
   /* --- the state, read from the address --- */
-  let lastAllSort = "az";
   function readUrl(){
     const q = new URLSearchParams(location.search);
     let type = q.get("type"), sort = q.get("sort"), bad = false;
     if (type !== null && !TAB_KEYS.includes(type)){ type = null; bad = true; }
     if (sort !== null && !SORT_KEYS.includes(sort)){ sort = null; bad = true; }
-    type = type || "all";
-    if (type === "all"){ sort = sort || "az"; lastAllSort = sort; }
-    else sort = "latest";                       // the other tabs always list newest first
-    return { st: { type, sort }, bad };
+    return { st: { type: type || "all", sort: sort || "az" }, bad };   // the sort works on every tab, A–Z to begin with
   }
   const urlFor = st => location.pathname + "?type=" + st.type + "&sort=" + st.sort;
 
@@ -1048,7 +1044,6 @@ function initCaseFilter(entries, list, head){
     });
     list.setAttribute("aria-labelledby", "cs-tab-" + state.type);
 
-    sortRow.hidden = state.type !== "all";                   // sorting is for All only
     group.querySelectorAll("input").forEach(r => { r.checked = r.value === state.sort; });
 
     const none = vis.length === 0;
@@ -1073,7 +1068,6 @@ function initCaseFilter(entries, list, head){
   function set(next, push){
     const same = next.type === state.type && next.sort === state.sort;
     state = next;
-    if (state.type === "all") lastAllSort = state.sort;
     if (push && !same) history.pushState(history.state, "", urlFor(state));
     render(true);
   }
@@ -1081,7 +1075,7 @@ function initCaseFilter(entries, list, head){
   /* --- tabs: a click, OR the arrow keys --- */
   tabs.addEventListener("click", e => {
     const b = e.target.closest(".cs-tab");
-    if (b) set({ type: b.dataset.tab, sort: b.dataset.tab === "all" ? lastAllSort : "latest" }, true);
+    if (b) set({ type: b.dataset.tab, sort: state.sort }, true);            // the tab changes, the sort stays
   });
   tabs.addEventListener("keydown", e => {
     const keys = ["ArrowLeft", "ArrowRight", "Home", "End"];
@@ -1090,17 +1084,17 @@ function initCaseFilter(entries, list, head){
     const at = TAB_KEYS.indexOf(state.type);
     const to = e.key === "Home" ? 0 : e.key === "End" ? TAB_KEYS.length - 1
       : (at + (e.key === "ArrowRight" ? 1 : -1) + TAB_KEYS.length) % TAB_KEYS.length;
-    set({ type: TAB_KEYS[to], sort: TAB_KEYS[to] === "all" ? lastAllSort : "latest" }, true);
+    set({ type: TAB_KEYS[to], sort: state.sort }, true);
     tabs.querySelector('[data-tab="' + TAB_KEYS[to] + '"]').focus();
   });
 
   /* --- sort: native radio buttons, so the arrow keys work too --- */
   group.addEventListener("change", e => {
-    if (e.target.name === "cs-sort") set({ type: "all", sort: e.target.value }, true);
+    if (e.target.name === "cs-sort") set({ type: state.type, sort: e.target.value }, true);
   });
 
   emptyBtn.addEventListener("click", () => {
-    set({ type: "all", sort: lastAllSort }, true);
+    set({ type: "all", sort: state.sort }, true);
     tabs.querySelector('[data-tab="all"]').focus();
   });
 
