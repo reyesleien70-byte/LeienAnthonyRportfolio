@@ -3442,6 +3442,33 @@ The final wording is NOT recorded in this version. Paste it here so a new owner 
     },
 
     {
+      tag: "Klaviyo · Email design",
+      title: "Welcome Email for Off-Bolt",
+      slug: "welcome-email-off-bolt",
+      type: "email-design",
+      date: "",                         // YYYY-MM-DD. Add the date to show it and to sort by it
+      blurb: "A welcome email that builds trust first, then drives the click",
+      photo: "assets/email-welcome-1.png",
+      thumbnailAlt: "The top of the Off-Bolt welcome email",
+      meta: "Klaviyo · Welcome email · Off-Bolt · judged by click rate",
+      video: "",
+      poster: "",
+      photos: [
+        { src: "assets/email-welcome-1.png", alt: "The Off-Bolt welcome email, top half: header, fabric hero picture, welcome message with the two codes, a Visit Website button" },
+        { src: "assets/email-welcome-2.png", alt: "The Off-Bolt welcome email, bottom half: a customer review with stars, a Use code button, the footer" }
+      ],
+      story: [
+        {
+          heading: "About this email",
+          text: "Welcome Email to induce trust and warmth through brand story telling first and applied visual hierarchy to induce click rate therefore increases chances of order, if it's sent to a a big number of people it will surely increase placed order rate."
+        },
+        {
+          text: "The block sequence is specifically designed to increase click rate, so this email is judged by click rate."
+        }
+      ]
+    },
+
+    {
       draft: true,                     // hidden from visitors. Delete this line to publish it.
       tag: "Placeholder",
       title: "Campaign case study (placeholder)",

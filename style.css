@@ -1416,3 +1416,6 @@ h1 + .lede,h2 + .lede{margin-top:clamp(12px,1.6vw,18px)}
 
 /* the filters are tools, not decoration: they are there the moment the page opens, no fade-in */
 .reveal > .cs-controls{opacity:1;transform:none;transition:none}
+
+/* a tall card picture (an email) shows its top, not its middle */
+.case-card__shot{object-position:top center}
