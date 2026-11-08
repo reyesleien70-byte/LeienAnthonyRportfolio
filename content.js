@@ -3469,6 +3469,42 @@ The final wording is NOT recorded in this version. Paste it here so a new owner 
     },
 
     {
+      tag: "Klaviyo · Email design",
+      title: "Browse Abandonment Email for Off-Bolt",
+      slug: "browse-abandonment-email-off-bolt",
+      type: "email-design",
+      date: "",                         // YYYY-MM-DD. Add the date to show it and to sort by it
+      blurb: "A browse abandonment email that helps the shopper remember the product",
+      photo: "assets/email-browse-1.png",
+      thumbnailAlt: "The top of the Off-Bolt browse abandonment email",
+      meta: "Klaviyo · Browse abandonment email · Off-Bolt · judged by click rate",
+      video: "",
+      poster: "",
+      photos: [
+        { src: "assets/email-browse-1.png", alt: "The Off-Bolt browse abandonment email, top half: Still looking at Selvage jacket, the product picture, a View product button" },
+        { src: "assets/email-browse-2.png", alt: "The Off-Bolt browse abandonment email, bottom half: a customer review with stars, two similar products with Order Now buttons, the footer" }
+      ],
+      story: [
+        {
+          heading: "About this email",
+          text: "This browse abandonment email is designed to make the viewer remember the product therefore increases the chances of them liking it more, even if it comes from a low intent cue which is browse abandonment, if it's sent to a big number of customer who already likes the product a little and/or the products that we sell, it will surely generate clicks therefore more chances of placed order, then after it revenue comes."
+        },
+        {
+          text: "This email uses visual hierarchy to lead them to the button which takes them to the product. and a not too aggressive color palette to induce comfort and trust."
+        },
+        {
+          text: "It also uses reviews to make the viewer trust the product even more."
+        },
+        {
+          text: "And at the end if the customer doesn't get convinced it shows them 2 products that's similar to the product that might fit their taste again increasing the chances of clicks."
+        },
+        {
+          text: "This email is judged by click."
+        }
+      ]
+    },
+
+    {
       draft: true,                     // hidden from visitors. Delete this line to publish it.
       tag: "Placeholder",
       title: "Campaign case study (placeholder)",
