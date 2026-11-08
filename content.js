@@ -3481,7 +3481,7 @@ The final wording is NOT recorded in this version. Paste it here so a new owner 
       video: "",
       poster: "",
       photos: [
-        { src: "assets/email-browse-1.png", alt: "The Off-Bolt browse abandonment email, top half: Still looking at Selvage jacket, the product picture, a View product button" },
+        { src: "assets/email-browse-1.png", alt: "The Off-Bolt browse abandonment email, top half: the Off-Bolt logo, Still looking at Selvage jacket, the product picture, a View product button" },
         { src: "assets/email-browse-2.png", alt: "The Off-Bolt browse abandonment email, bottom half: a customer review with stars, two similar products with Order Now buttons, the footer" }
       ],
       story: [
