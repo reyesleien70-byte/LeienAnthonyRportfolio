@@ -3505,6 +3505,36 @@ The final wording is NOT recorded in this version. Paste it here so a new owner 
     },
 
     {
+      tag: "Klaviyo · Email design",
+      title: "Cart Abandonment Email for Off-Bolt",
+      slug: "cart-abandonment-email-off-bolt",
+      type: "email-design",
+      date: "",                         // YYYY-MM-DD. Add the date to show it and to sort by it
+      blurb: "A cart abandonment email that brings the shopper back to the cart",
+      photo: "assets/email-cart-1.png",
+      thumbnailAlt: "The top of the Off-Bolt cart abandonment email",
+      meta: "Klaviyo · Cart abandonment email · Off-Bolt",
+      video: "",
+      poster: "",
+      photos: [
+        { src: "assets/email-cart-1.png", alt: "The Off-Bolt cart abandonment email, top half: You left this on your cart, the cart item, a Return To Cart button, a free returns code" },
+        { src: "assets/email-cart-2.png", alt: "The Off-Bolt cart abandonment email, bottom half: a customer review with stars, three similar products with Order Now buttons, Continue order here and a second Return To Cart button" }
+      ],
+      story: [
+        {
+          heading: "About this email",
+          text: "This is a cart abandonment email, it solves the problem of brands where the customer leaves right almost at the checkout. This email's purpose is to firstly make them remember the intent why they add the product to induce a feeling of wanting the product again so they order it, secondly it leverages visual hierarchy using dark background and light headers and body and font sizing to lead them to the return to cart button and Thirdly it shows them a big picture of the product at the start to make them see the product and again induce the remembrance of the reason why they add it to cart."
+        },
+        {
+          text: "There are some very crucial blocks here, the free return block, what this does is it removes the risk of buying the product and not liking it because they can return it. Another one is the review block, in this part we will remove the doubt if the product is really good or not so once they see it they will think 'there's a good review on this product it must be really good\", one important thing it's better for this part to be dynamic so it changes based on cart and makes it more personalized but if not possible general store review is most recommended."
+        },
+        {
+          text: "Finally, last part, we will show them similar products and another button directly to the cart. What this does is it gives them 2 choices, buy a similar product or buy the original cart product since they might just not realize they have already been convinced by the past block, here they can make the choice. In case they really don't like it they are one click away from the product that is similar to it and might fit their actual taste since they might not like a certain part of the original product like it has blue buttons which they don't like and the similar product has red which they really like, so basically we will maximize the intent's potential to become an order by filtering their thoughts down the full email using the most important blocks first."
+        }
+      ]
+    },
+
+    {
       draft: true,                     // hidden from visitors. Delete this line to publish it.
       tag: "Placeholder",
       title: "Campaign case study (placeholder)",
