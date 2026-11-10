@@ -231,15 +231,11 @@ home: {
       eyebrow: "What I automate and specialize in",
       heading: "Flows that run 24/7 and HTML code to fit the situation",
       bullets: [
-        "Abandoned cart and abandoned checkout recovery",
-        "Browse abandonment, catching intent before a cart exists",
-        "Post-purchase upsell, cross-sell, and repeat-order timing",
-        "Win-back flows for lapsed buyers",
-        "Welcome series for new subscribers",
-        "Sunset flows to protect deliverability and sender reputation",
-        "Rule-based and AI-driven logic: segments, branching, timing, suppression",
-        "Custom HTML email builds or blocks in Klaviyo",
-        "Custom JS or Python code for better data control in n8n"
+        "Abandonment recovery: Cart, checkout, and browse flows that win back buyers, even before a cart exists.",
+        "Retention flows: Post-purchase upsell, cross-sell, and repeat-order timing, plus win-back for lapsed buyers.",
+        "List health: Welcome series that convert new subscribers. Sunset flows that protect deliverability and sender reputation.",
+        "Smart logic: Rule-based and AI-driven segments, branching, timing, and suppression.",
+        "Custom builds: Hand-coded HTML emails and Klaviyo blocks, with JS or Python in n8n for tighter data control."
       ]
     },
 
