@@ -3460,7 +3460,10 @@ The final wording is NOT recorded in this version. Paste it here so a new owner 
       story: [
         {
           heading: "About this email",
-          text: "Welcome Email to induce trust and warmth through brand story telling first and applied visual hierarchy to induce click rate therefore increases chances of order, if it's sent to a a big number of people it will surely increase placed order rate."
+          text: "Welcome Email to induce trust and warmth through brand story telling first and applied visual hierarchy to induce click rate therefore increases chances of order."
+        },
+        {
+          text: "If it's sent to a a big number of people it will surely increase placed order rate."
         },
         {
           text: "The block sequence is specifically designed to increase click rate, so this email is judged by click rate."
@@ -3487,7 +3490,10 @@ The final wording is NOT recorded in this version. Paste it here so a new owner 
       story: [
         {
           heading: "About this email",
-          text: "This browse abandonment email is designed to make the viewer remember the product therefore increases the chances of them liking it more, even if it comes from a low intent cue which is browse abandonment, if it's sent to a big number of customer who already likes the product a little and/or the products that we sell, it will surely generate clicks therefore more chances of placed order, then after it revenue comes."
+          text: "This browse abandonment email is designed to make the viewer remember the product therefore increases the chances of them liking it more, even if it comes from a low intent cue which is browse abandonment."
+        },
+        {
+          text: "If it's sent to a big number of customer who already likes the product a little and/or the products that we sell, it will surely generate clicks therefore more chances of placed order, then after it revenue comes."
         },
         {
           text: "This email uses visual hierarchy to lead them to the button which takes them to the product. and a not too aggressive color palette to induce comfort and trust."
@@ -3523,13 +3529,37 @@ The final wording is NOT recorded in this version. Paste it here so a new owner 
       story: [
         {
           heading: "About this email",
-          text: "This is a cart abandonment email, it solves the problem of brands where the customer leaves right almost at the checkout. This email's purpose is to firstly make them remember the intent why they add the product to induce a feeling of wanting the product again so they order it, secondly it leverages visual hierarchy using dark background and light headers and body and font sizing to lead them to the return to cart button and Thirdly it shows them a big picture of the product at the start to make them see the product and again induce the remembrance of the reason why they add it to cart."
+          text: "This is a cart abandonment email, it solves the problem of brands where the customer leaves right almost at the checkout."
         },
         {
-          text: "There are some very crucial blocks here, the free return block, what this does is it removes the risk of buying the product and not liking it because they can return it. Another one is the review block, in this part we will remove the doubt if the product is really good or not so once they see it they will think 'there's a good review on this product it must be really good\", one important thing it's better for this part to be dynamic so it changes based on cart and makes it more personalized but if not possible general store review is most recommended."
+          text: "This email's purpose is to:",
+          bullets: [
+            "**Firstly** make them remember the intent why they add the product to induce a feeling of wanting the product again so they order it.",
+            "**Secondly** it leverages visual hierarchy using dark background and light headers and body and font sizing to lead them to the return to cart button.",
+            "**Thirdly** it shows them a big picture of the product at the start to make them see the product and again induce the remembrance of the reason why they add it to cart."
+          ]
         },
         {
-          text: "Finally, last part, we will show them similar products and another button directly to the cart. What this does is it gives them 2 choices, buy a similar product or buy the original cart product since they might just not realize they have already been convinced by the past block, here they can make the choice. In case they really don't like it they are one click away from the product that is similar to it and might fit their actual taste since they might not like a certain part of the original product like it has blue buttons which they don't like and the similar product has red which they really like, so basically we will maximize the intent's potential to become an order by filtering their thoughts down the full email using the most important blocks first."
+          text: "There are some very crucial blocks here:",
+          bullets: [
+            "**The free return block**, what this does is it removes the risk of buying the product and not liking it because they can return it.",
+            "**The review block**, in this part we will remove the doubt if the product is really good or not so once they see it they will think 'there's a good review on this product it must be really good\"."
+          ]
+        },
+        {
+          text: "One important thing it's better for this part to be dynamic so it changes based on cart and makes it more personalized but if not possible general store review is most recommended."
+        },
+        {
+          text: "**Finally, last part**, we will show them similar products and another button directly to the cart."
+        },
+        {
+          text: "What this does is it gives them 2 choices, buy a similar product or buy the original cart product since they might just not realize they have already been convinced by the past block, here they can make the choice."
+        },
+        {
+          text: "In case they really don't like it they are one click away from the product that is similar to it and might fit their actual taste since they might not like a certain part of the original product like it has blue buttons which they don't like and the similar product has red which they really like."
+        },
+        {
+          text: "So basically we will maximize the intent's potential to become an order by filtering their thoughts down the full email using the most important blocks first."
         }
       ]
     },
@@ -3560,6 +3590,82 @@ The final wording is NOT recorded in this version. Paste it here so a new owner 
       meta: "",
       photos: [],
       story: []
+    },
+
+    {
+      tag: "Klaviyo · Email design",
+      title: "Checkout Abandonment Email for Off-Bolt",
+      slug: "checkout-abandonment-email-off-bolt",
+      type: "email-design",
+      date: "",                         // YYYY-MM-DD. Add the date to show it and to sort by it
+      blurb: "A checkout abandonment email that brings the shopper back to checkout",
+      photo: "assets/email-checkout-1.png",
+      thumbnailAlt: "The top of the Off-Bolt checkout abandonment email",
+      meta: "Klaviyo · Checkout abandonment email · Off-Bolt",
+      video: "",
+      poster: "",
+      photos: [
+        { src: "assets/email-checkout-1.png", alt: "The Off-Bolt checkout abandonment email, top part: the Off-Bolt logo, You left checkout, Continue Checkout here, a Checkout button, the product picture" },
+        { src: "assets/email-checkout-2.png", alt: "The Off-Bolt checkout abandonment email, middle part: a free return code, What customers say with a customer review and stars" },
+        { src: "assets/email-checkout-3.png", alt: "The Off-Bolt checkout abandonment email, bottom part: You might like with two products and Order Now buttons, Return to checkout with a second Checkout button, the footer" }
+      ],
+      story: [
+        {
+          heading: "About this email",
+          text: "This checkout abandonment email solves 1 problem (Abandoned checkout) optimally using multiple ways.",
+          bullets: [
+            "Reminds them of the interrupted checkout immediately once opened",
+            "The return to checkout button and product is guaranteed to be seen at open",
+            "Free return offer removes the risk for them, making them much likely to order it if they stopped because of doubts",
+            "Reviews removes the doubt about the specific product quality or store's honesty",
+            "Visual hierarchy gets them scrolling until the end if they are still looking for reason",
+            "Visual hierarchy also leads them to the important buttons"
+          ]
+        },
+        {
+          text: "If this is sent to a large number of customers it will surely generate significant amount of revenue SINCE the intent this email sits on is the highest level of intent we can get."
+        },
+        {
+          text: "Mix this with right timing via flows, right subject and preview line it will generate significant amount improvements for a brands revenue."
+        }
+      ]
+    },
+
+    {
+      tag: "Klaviyo · Email design",
+      title: "SMS Subscription Campaign Email for Off-Bolt",
+      slug: "sms-subscription-campaign-email-off-bolt",
+      type: "email-design",
+      date: "",                         // YYYY-MM-DD. Add the date to show it and to sort by it
+      blurb: "A campaign email that improves SMS subscription rate",
+      photo: "assets/email-sms-1.webp",
+      thumbnailAlt: "The top of the Off-Bolt SMS subscription campaign email",
+      meta: "Klaviyo · SMS subscription campaign email · Off-Bolt",
+      video: "",
+      poster: "",
+      photos: [
+        { src: "assets/email-sms-1.webp", alt: "The Off-Bolt SMS subscription campaign email, top part: the Off-Bolt logo, SMS Early Access, Originals Undeniable, a Subscribe button, a white t-shirt on a hanger" },
+        { src: "assets/email-sms-2.png", alt: "The Off-Bolt SMS subscription campaign email, middle part: Mill left on the bolt with a Learn More button, Perks for SMS subscriber, What to expect with six ticked points" },
+        { src: "assets/email-sms-3.png", alt: "The Off-Bolt SMS subscription campaign email, bottom part: What our customer says with a review, Subscribe and get 20% off with a Subscribe button, the footer" }
+      ],
+      story: [
+        {
+          heading: "About this email",
+          text: "This SMS subscription campaign email improves SMS subscription rate using informative sections, supporting sections and visual hierarchy."
+        },
+        {
+          text: "**Visual hierarchy** helps them know immediately what the email is about and leads them right to the button, preferably once opened. It also keeps them scrolling until the end to let them know what benefits awaits them upon subscribing."
+        },
+        {
+          text: "**Informative sections** does the heavy lifting, this section convinces the viewer why they should subscribe by showing them the benefits and if they are still doubtful they can see the full section via clicking the button in the section again leading them to be convinced to subscribe."
+        },
+        {
+          text: "**Supporting sections** removes the doubt to the store since it gives them the social proof that customers really like it making them think the store must be really good since customers like it."
+        },
+        {
+          text: "So this SMS subscription campaign increases SMS subscription further improving CRM and therefore improving order rates so you have more revenue."
+        }
+      ]
     }
 
   ]
