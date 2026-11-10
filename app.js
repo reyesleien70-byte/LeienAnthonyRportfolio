@@ -512,6 +512,11 @@ function setTab(title, note){
   if (title) document.title = title;
   const m = document.querySelector('meta[name="description"]');
   if (m && note) m.setAttribute("content", note);
+  /* the link-preview tags follow content.js too, for every reader that runs scripts.
+     (Preview robots do not, SO the same words are also typed in each page's <head>.) */
+  const set = (sel, v) => { const n = document.querySelector(sel); if (n && v) n.setAttribute("content", v); };
+  set('meta[property="og:title"]', title);        set('meta[name="twitter:title"]', title);
+  set('meta[property="og:description"]', note);   set('meta[name="twitter:description"]', note);
 }
 
 /* a heading's words -> a safe id, e.g. "What I built" -> "what-i-built" */
@@ -674,17 +679,40 @@ function renderContactPage(){
     if (c.lede)    head.appendChild(splitWords(make("p", "lede", c.lede), 14));
   }
 
-  /* left: the lines */
-  const ul = make("ul", "contact-lines");
-  (c.lines || []).forEach(l => {
-    const li = document.createElement("li");
-    li.appendChild(make("span", "k", l.label));
+  /* the lines */
+  const ul = contactLines(c.lines, "contact-lines");
+  body.appendChild(ul);
+
+  /* the form */
+  const form = make("div", "contact-form");
+  form.appendChild(make("h2", null, t.heading));
+  form.appendChild(make("p", "muted", t.note));
+  form.appendChild(composeForm({ subject: "pcs", message: "pcm", send: "pSend" }));
+
+  /* Side by side, the lines come first. Stacked (a phone), the form comes first: it is why the
+     visitor came. The order in the page changes too, SO the Tab key follows what is seen. */
+  const stacked = window.matchMedia("(max-width:859px)");
+  const place = () => { stacked.matches ? body.prepend(form) : body.append(form); };
+  place();
+  if (stacked.addEventListener) stacked.addEventListener("change", place);
+}
+
+/* ------------------------------------------------------------
+   CONTACT LINES — the label + value rows on the home page AND the
+   contact page. A line with nothing to show is left out (rule 4 in
+   content.js), e.g. LinkedIn while site.linkedin is still "".
+   ------------------------------------------------------------ */
+function contactLines(lines, cls){
+  const ul = make("ul", cls);
+  (lines || []).forEach(l => {
     const v = make("span", "v");
     if (l.email){
+      if (!SITE.email) return;
       const a = document.createElement("a");
-      a.setAttribute("data-site", "email");
+      a.setAttribute("data-site", "email");     // filled by fillSiteText()
       a.href = "#";
       v.appendChild(a);
+      /* a one-tap copy next to the address, IF this browser allows it */
       if (canCopy()){
         const chip = make("button", "chip");
         chip.type = "button";
@@ -692,45 +720,145 @@ function renderContactPage(){
         chip.innerHTML = UI.copy + "<span>" + esc(LABELS.copyEmail) + "</span>";
         v.appendChild(chip);
       }
+    } else if (l.profile){
+      const url = String(SITE[l.profile] || "").trim();
+      if (!url) return;                         // no address yet -> no line
+      const a = make("a", null, l.text || prettyUrl(url));
+      a.href = /^https?:\/\//i.test(url) ? url : "https://" + url;
+      a.target = "_blank";
+      a.rel = "noopener noreferrer";
+      v.appendChild(a);
     } else {
+      if (!l.value) return;
       v.appendChild(make("span", null, l.value));
     }
+    const li = document.createElement("li");
+    li.appendChild(make("span", "k", l.label));
     li.appendChild(v);
     ul.appendChild(li);
   });
-  body.appendChild(ul);
+  return ul;
+}
 
-  /* right: the form */
-  const form = make("div", "contact-form");
-  form.appendChild(make("h2", null, t.heading));
-  form.appendChild(make("p", "muted", t.note));
-  const fields = document.createElement("div");
-  fields.className = "compose";
-  fields.innerHTML = `
+/* "https://www.linkedin.com/in/name/" -> "linkedin.com/in/name" */
+function prettyUrl(url){
+  return String(url).replace(/^https?:\/\//i, "").replace(/^www\./i, "").replace(/[?#].*$/, "").replace(/\/+$/, "");
+}
+
+/* ------------------------------------------------------------
+   THE MESSAGE FORM — used by the contact page AND the contact box.
+   Two dropdowns sit above the two boxes: picking a subject fills the
+   Subject box, picking a starter fills the Message box. The visitor
+   may still change every word, OR type their own.
+   Nothing is sent from here: the button opens the visitor's own mail app.
+   Every word comes from content.js -> contactBox.
+   ------------------------------------------------------------ */
+function composeForm(ids, extras){
+  const t = CONTENT.contactBox;
+  const x = extras || {};
+  const subjects = (t.subjects || []).filter(Boolean);
+  const starters = (t.starters || []).filter(s => s && s.text);
+  const blank = t.blank || "";
+  const startAt = Math.min(Math.max(Math.round(Number(t.startWith) || 0), 0), starters.length);   // 0 = start empty
+  const options = (pick, list) => `<option value="">${esc(pick)}</option>` +
+    list.map((label, i) => `<option value="${i}">${esc(label)}</option>`).join("");
+
+  const box = make("div", "compose");
+  box.innerHTML =
+    (x.to ? `
     <div>
-      <label for="pcs">${esc(t.subjectLabel)}</label>
-      <input id="pcs" type="text" value="${esc(t.subject)}" autocomplete="off">
+      <label>${esc(t.toLabel)}</label>
+      <div class="to" data-site="email"></div>
+    </div>` : "") + `
+    <div class="compose__field">
+      <label for="${ids.subject}">${esc(t.subjectLabel)}</label>` +
+      (subjects.length ? `
+      <select class="compose__pick" id="${ids.subject}-pick" aria-label="${esc(t.subjectPick)}">${options(t.subjectPick, subjects)}</select>` : "") + `
+      <input id="${ids.subject}" type="text" autocomplete="off">
     </div>
-    <div>
-      <label for="pcm">${esc(t.messageLabel)}</label>
-      <textarea id="pcm" placeholder="${esc(t.placeholder)}"></textarea>
+    <div class="compose__field">
+      <label for="${ids.message}">${esc(t.messageLabel)}</label>` +
+      (starters.length ? `
+      <select class="compose__pick" id="${ids.message}-pick" aria-label="${esc(t.messagePick)}">${options(t.messagePick, starters.map(s => s.label || s.text.split("\n")[0]))}</select>` : "") + `
+      <textarea id="${ids.message}" placeholder="${esc(t.placeholder)}" aria-describedby="${ids.message}-hint"></textarea>
+      <p class="compose__hint" id="${ids.message}-hint" role="status" hidden></p>
     </div>
     <div class="compose__actions">
-      <button class="btn" id="pSend" type="button">${esc(t.send)}</button>
+      <button class="btn" id="${ids.send}" type="button">${esc(t.send)}</button>` +
+      (x.cancel ? `
+      <button class="btn btn--ghost" data-close type="button">${esc(t.cancel)}</button>` : "") + `
     </div>`;
-  form.appendChild(fields);
-  body.appendChild(form);
 
-  fields.querySelector("#pSend").addEventListener("click", () => {
-    mailTo(fields.querySelector("#pcs").value, fields.querySelector("#pcm").value);
+  const subj  = box.querySelector("#" + ids.subject);
+  const msg   = box.querySelector("#" + ids.message);
+  const sPick = box.querySelector("#" + ids.subject + "-pick");
+  const mPick = box.querySelector("#" + ids.message + "-pick");
+  const hint  = box.querySelector(".compose__hint");
+
+  /* the hint shows WHILE the store blank is still in the message */
+  const checkBlank = () => {
+    const on = !!blank && !!t.blankHint && msg.value.includes(blank);
+    hint.hidden = !on;
+    hint.textContent = on ? String(t.blankHint).replace("{blank}", blank) : "";
+  };
+  /* the subject dropdown shows a subject ONLY WHILE the box still holds exactly that subject */
+  const syncSubject = () => {
+    if (!sPick) return;
+    const at = subjects.indexOf(subj.value);
+    sPick.value = at >= 0 ? String(at) : "";
+  };
+
+  /* the box is tall enough to show a whole starter, SO the store blank is never hidden below the edge */
+  const fitRows = () => { msg.rows = Math.min(Math.max(5, msg.value.split("\n").length + 1), 16); };
+
+  /* what the form starts with */
+  subj.value = t.subject || "";
+  syncSubject();
+  let placed = startAt ? starters[startAt - 1].text : "";     // the starter now in the box, untouched. "" = the words are the visitor's own.
+  msg.value = placed;
+  if (mPick) mPick.value = startAt ? String(startAt - 1) : "";
+  fitRows();
+  checkBlank();
+
+  if (sPick) sPick.addEventListener("change", () => {
+    if (sPick.value === "") return;                           // the first line is a label, NOT a subject
+    subj.value = subjects[Number(sPick.value)];
   });
+  subj.addEventListener("input", syncSubject);
+
+  if (mPick) mPick.addEventListener("change", () => {
+    const s = starters[Number(mPick.value)];
+    if (mPick.value === "" || !s) return;
+    const now = msg.value;
+    if (!now.trim() || now === placed){                       // empty, OR a starter nobody touched -> swap it
+      msg.value = placed = s.text;
+    } else {                                                  // the visitor's own words stay. The starter goes under them.
+      msg.value = now.replace(/\s+$/, "") + "\n\n" + s.text;
+      placed = "";
+    }
+    fitRows();
+    checkBlank();
+  });
+  msg.addEventListener("input", () => {
+    if (mPick && !msg.value.trim()) mPick.value = "";
+    checkBlank();
+  });
+
+  box.querySelector("#" + ids.send).addEventListener("click", () => mailTo(subj.value, msg.value));
+  return box;
+}
+
+/* the address that opens a mail app with the subject AND the message filled in.
+   A new line in an email address like this is written %0D%0A, SO every line break becomes that. */
+function mailUrl(subject, message){
+  return "mailto:" + SITE.email +
+    "?subject=" + encodeURIComponent(subject || "Hello") +
+    "&body=" + encodeURIComponent(String(message || "").replace(/\r\n?|\n/g, "\r\n"));
 }
 
 /* hand a message to the visitor's own mail app */
 function mailTo(subject, message){
-  window.location.href = "mailto:" + SITE.email +
-    "?subject=" + encodeURIComponent(subject || "Hello") +
-    "&body=" + encodeURIComponent(message || "");
+  window.location.href = mailUrl(subject, message);
 }
 
 function renderHome(){
@@ -746,7 +874,10 @@ function renderHome(){
     img.alt = c.photoAlt || "";
   }
 
-  c.blocks.forEach((b, i) => stream.appendChild(homeBlock(b, i === 0)));
+  c.blocks.forEach((b, i) => {
+    const s = homeBlock(b, i === 0);
+    if (s) stream.appendChild(s);           // a section with nothing to show is left out
+  });
   renderSkills(stream);
 
   /* the "scroll" hint under the first screen. "" hides it. */
@@ -777,12 +908,82 @@ function homeBlock(b, isFirst){
     return s;
   }
 
+  /* "builds": a few case studies picked in content.js, each card a link to its case */
+  let picks = null;
+  if (b.type === "builds"){
+    picks = (b.cases || []).map(caseBySlug).filter(Boolean);
+    if (!picks.length) return null;        // none of the slugs is on show -> no section at all
+    s.classList.add("block--builds");
+  }
+
   if (b.eyebrow) s.appendChild(make("p", "eyebrow", b.eyebrow));
   if (b.heading) s.appendChild(splitWords(make(isFirst ? "h1" : "h2", null, b.heading)));
   if (b.lede)    s.appendChild(splitWords(make("p", "lede", b.lede), 14));
 
   const media = mediaFor(b);
   if (media) s.appendChild(media);
+
+  /* buttons under the lede. They are links, SO they work with a keyboard AND open in a new tab IF asked. */
+  const buttons = (b.buttons || []).filter(x => x && x.label && x.url);
+  if (buttons.length){
+    const row = make("div", "actions");
+    buttons.forEach(x => {
+      const a = make("a", "btn" + (x.primary ? "" : " btn--ghost"), x.label);
+      a.href = x.url;
+      row.appendChild(a);
+    });
+    s.appendChild(row);
+  }
+
+  /* one small line of proof. {count} = the case studies on show, counted here, never typed. */
+  const proof = (b.proof || []).filter(x => x && x.text);
+  if (proof.length){
+    const line = make("p", "proof");
+    proof.forEach(x => {
+      const item = make("span", "proof__item");      // the small square in front of each part is drawn by the CSS
+      const part = make(x.url ? "a" : "span", null, withCount(x.text));
+      if (x.url) part.href = x.url;
+      item.appendChild(part);
+      line.appendChild(item);
+    });
+    s.appendChild(line);
+  }
+
+  if (picks){
+    const ul = make("ul", "picks stagger");
+    picks.forEach(item => {
+      const a = make("a", "pick");
+      a.href = caseHref(item);
+      const pic = make("span", "pick__media");
+      const thumb = item.thumbnail || item.photo;
+      /* no picture -> the same small drawn flow the case's own card shows */
+      pic.appendChild(thumb ? photoNode(thumb, item.thumbnailAlt || "", "pick__shot") : caseArt(CONTENT.cases.items.indexOf(item)));
+      a.appendChild(pic);
+      const body = make("span", "pick__body");
+      body.appendChild(make("span", "pick__type", FILTER_LABELS[item.type || "flow"] || item.type));
+      body.appendChild(make("h3", null, item.title));
+      const summary = item.blurb || item.summary;
+      if (summary) body.appendChild(make("span", "pick__blurb", summary));
+      const open = make("span", "pick__open");
+      open.appendChild(make("span", null, CONTENT.cases.openLabel || "Open case"));
+      open.insertAdjacentHTML("beforeend", UI.arrow);
+      body.appendChild(open);
+      a.appendChild(body);
+      const li = document.createElement("li");
+      li.appendChild(a);
+      ul.appendChild(li);
+    });
+    s.appendChild(ul);
+
+    if (b.more){
+      const p = make("p", "picks__more");
+      const a = make("a", null, withCount(b.more));
+      a.href = b.moreUrl || "case-studies.html";
+      a.insertAdjacentHTML("beforeend", UI.arrow);
+      p.appendChild(a);
+      s.appendChild(p);
+    }
+  }
 
   if (b.type === "tools" && b.tools){
     const ul = make("ul", "stack stagger");
@@ -796,31 +997,7 @@ function homeBlock(b, isFirst){
   }
 
   if (b.type === "contacts" && b.lines){
-    const ul = make("ul", "contact-lines stagger");
-    b.lines.forEach(l => {
-      const li = document.createElement("li");
-      li.appendChild(make("span", "k", l.label));
-      const v = make("span", "v");
-      if (l.email){
-        const a = document.createElement("a");
-        a.setAttribute("data-site", "email");   // filled by fillSiteText()
-        a.href = "#";
-        v.appendChild(a);
-        /* a one-tap copy next to the address, IF this browser allows it */
-        if (canCopy()){
-          const chip = make("button", "chip");
-          chip.type = "button";
-          chip.setAttribute("data-copy-email", "");
-          chip.innerHTML = UI.copy + "<span>" + esc(LABELS.copyEmail) + "</span>";
-          v.appendChild(chip);
-        }
-      } else {
-        v.appendChild(make("span", null, l.value));
-      }
-      li.appendChild(v);
-      ul.appendChild(li);
-    });
-    s.appendChild(ul);
+    s.appendChild(contactLines(b.lines, "contact-lines stagger"));
   }
 
   if (b.bullets){
@@ -837,6 +1014,25 @@ function homeBlock(b, isFirst){
   return s;
 }
 
+/* --- the case studies, as other pages need them --- */
+
+/* a case on show, found by its slug. A hidden case, a draft OR a misspelled slug gives nothing. */
+function caseBySlug(s){
+  const all = (CONTENT.cases && CONTENT.cases.items) || [];
+  return all.find(c => c.slug === s) || null;
+}
+
+/* the link that opens a case: its own page IF it has one, ELSE the case studies page with the case open */
+function caseHref(item){
+  return item.url || "case-studies.html#case-" + (item.slug || item._n);
+}
+
+/* "{count}" in a line of text -> the number of case studies on show right now */
+function withCount(text){
+  const n = ((CONTENT.cases && CONTENT.cases.items) || []).length;
+  return String(text).replace(/\{count\}/g, n);
+}
+
 /* a name from the list, OR a whole <svg> pasted in by hand */
 function toolIcon(icon){
   const raw = String(icon || "").trim();
@@ -845,13 +1041,16 @@ function toolIcon(icon){
 }
 
 /* ------------------------------------------------------------
-   CASE STUDIES — cards, four filter tabs, a sort control.
+   CASE STUDIES — cards, filter tabs, a sort control.
    Each case in content.js has a type (flow | campaign | email-design)
    AND a date. The tabs AND the sort are built from those.
+   A tab with no case in it is not shown. It comes back by itself
+   the day a case of that type is published.
    ------------------------------------------------------------ */
 const TAB_KEYS  = ["all", "flows", "campaigns", "email-designs"];
 const TAB_TYPE  = { "all": null, "flows": "flow", "campaigns": "campaign", "email-designs": "email-design" };
-const SORT_KEYS = ["az", "za", "latest"];
+const SORT_KEYS = ["featured", "az", "za", "latest", "oldest"];
+const SORT_FIRST = "featured";                // how the page opens, AND what a missing OR broken link falls back to
 const MONTHS    = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
 /* the small words of the controls. content.js -> cases.filters may change any of them. */
@@ -859,14 +1058,10 @@ const FILTER_LABELS = Object.assign({
   tabs: "Case study type",
   sort: "Sort",
   "all": "All", "flows": "Flows", "campaigns": "Campaigns", "email-designs": "Email designs",
-  az: "A–Z", za: "Z–A", latest: "Latest to oldest",
+  featured: "Featured", az: "A–Z", za: "Z–A", latest: "Latest to oldest", oldest: "Oldest to latest",
+  featuredStatus: "featured first",
   "flow": "Flow", "campaign": "Campaign", "email-design": "Email design",
-  backToAll: "Back to All",
-  empty: {
-    "flows": "Flow case studies coming soon.",
-    "campaigns": "Campaign case studies coming soon.",
-    "email-designs": "Email design case studies coming soon."
-  }
+  none: "No case studies yet."
 }, (CONTENT.cases && CONTENT.cases.filters) || {});
 
 /* "2026-09-15" -> "September 2026". Anything else -> "" (no date shown). */
@@ -878,10 +1073,23 @@ function fmtDate(iso){
 /* case-insensitive, and a leading "The" does not count */
 const sortName = t => String(t || "").toLowerCase().replace(/^the\s+/, "").trim();
 const byName = (a, b) => sortName(a.item.title).localeCompare(sortName(b.item.title), "en", { sensitivity: "base", numeric: true });
-const byDate = (a, b) => {
+/* by date. A case with no date goes last, whichever way the dates run. The same date -> A–Z. */
+const byDateDir = dir => (a, b) => {
   const da = a.item.date || "", db = b.item.date || "";
-  if (da !== db){ if (!da) return 1; if (!db) return -1; return da < db ? 1 : -1; }   // newest first, no date last
-  return byName(a, b);                                                                  // same date -> A–Z
+  if (da !== db){ if (!da) return 1; if (!db) return -1; return (da < db ? 1 : -1) * dir; }
+  return byName(a, b);
+};
+/* Featured: the slugs in content.js -> cases.featured come first, in that order. The rest follow, A–Z. */
+const FEATURED = ((CONTENT.cases && CONTENT.cases.featured) || []).map(String);
+const featuredAt = e => { const at = FEATURED.indexOf(String(e.item.slug)); return at < 0 ? FEATURED.length : at; };
+const byFeatured = (a, b) => (featuredAt(a) - featuredAt(b)) || byName(a, b);
+
+const SORTERS = {
+  featured: byFeatured,
+  az: byName,
+  za: (a, b) => byName(b, a),
+  latest: byDateDir(1),                       // newest first
+  oldest: byDateDir(-1)                       // oldest first
 };
 
 function renderCases(){
@@ -949,12 +1157,22 @@ function renderCases(){
 }
 
 /* ------------------------------------------------------------
-   The four tabs AND the sort. Everything is visible at once,
+   The tabs AND the sort. Everything is visible at once,
    nothing is hidden in a menu. The state lives in the address:
-     ?type=all|flows|campaigns|email-designs&sort=az|za|latest
+     ?type=all|flows|campaigns|email-designs&sort=featured|az|za|latest|oldest
+   A missing OR broken value falls back to All, Featured.
    ------------------------------------------------------------ */
 function initCaseFilter(entries, list, head){
   const L = FILTER_LABELS;
+
+  if (!entries.length){                                      // nothing published at all -> one plain line, no controls
+    head.appendChild(make("p", "cs-status", L.none));
+    return;
+  }
+
+  /* --- counts. A tab with nothing in it is not built: no empty tab, no "coming soon". --- */
+  const count = k => entries.filter(e => !TAB_TYPE[k] || e.type === TAB_TYPE[k]).length;
+  const tabKeys = TAB_KEYS.filter(k => k === "all" || count(k) > 0);
 
   /* --- build the controls --- */
   const box = make("div", "cs-controls");
@@ -962,7 +1180,7 @@ function initCaseFilter(entries, list, head){
   const tabs = make("div", "cs-tabs");
   tabs.setAttribute("role", "tablist");
   tabs.setAttribute("aria-label", L.tabs);
-  TAB_KEYS.forEach(k => {
+  tabKeys.forEach(k => {
     const b = make("button", "cs-tab");
     b.type = "button";
     b.id = "cs-tab-" + k;
@@ -970,7 +1188,7 @@ function initCaseFilter(entries, list, head){
     b.setAttribute("role", "tab");
     b.setAttribute("aria-controls", "case-list");
     b.appendChild(make("span", "cs-tab__label", L[k]));
-    b.appendChild(make("span", "cs-tab__count"));
+    b.appendChild(make("span", "cs-tab__count", "(" + count(k) + ")"));
     tabs.appendChild(b);
   });
   box.appendChild(tabs);
@@ -999,38 +1217,29 @@ function initCaseFilter(entries, list, head){
   box.appendChild(status);
   head.appendChild(box);
 
-  /* an empty tab says so, AND offers the way back */
-  const empty = make("div", "cs-empty");
-  empty.hidden = true;
-  const emptyText = make("p");
-  const emptyBtn = make("button", "btn btn--ghost", L.backToAll);
-  emptyBtn.type = "button";
-  empty.append(emptyText, emptyBtn);
-  list.after(empty);
-
   list.setAttribute("role", "tabpanel");
-
-  /* --- counts --- */
-  const count = k => entries.filter(e => !TAB_TYPE[k] || e.type === TAB_TYPE[k]).length;
-  TAB_KEYS.forEach(k => { tabs.querySelector('[data-tab="' + k + '"] .cs-tab__count').textContent = "(" + count(k) + ")"; });
 
   /* --- the state, read from the address --- */
   function readUrl(){
     const q = new URLSearchParams(location.search);
     let type = q.get("type"), sort = q.get("sort"), bad = false;
-    if (type !== null && !TAB_KEYS.includes(type)){ type = null; bad = true; }
+    if (type !== null && !tabKeys.includes(type)){ type = null; bad = true; }     // not a tab, OR a tab with nothing in it
     if (sort !== null && !SORT_KEYS.includes(sort)){ sort = null; bad = true; }
-    return { st: { type: type || "all", sort: sort || "az" }, bad };   // the sort works on every tab, A–Z to begin with
+    return { st: { type: type || "all", sort: sort || SORT_FIRST }, bad };       // the sort works on every tab, Featured to begin with
   }
   const urlFor = st => location.pathname + "?type=" + st.type + "&sort=" + st.sort;
 
   let state = readUrl().st;
-  if (readUrl().bad) history.replaceState(history.state, "", urlFor(state));   // a broken link falls back to All, A–Z
+  /* a broken link falls back to All, Featured. The #case-N part stays, SO a case named in the link still opens. */
+  if (readUrl().bad) history.replaceState(history.state, "", urlFor(state) + location.hash);
+
+  /* how the small status line names each order */
+  const sortWords = { featured: L.featuredStatus, az: L.az, za: L.za, latest: String(L.latest).toLowerCase(), oldest: String(L.oldest).toLowerCase() };
 
   /* --- draw --- */
   function render(animate){
     const type = TAB_TYPE[state.type];
-    const vis = entries.filter(e => !type || e.type === type).sort(state.sort === "latest" ? byDate : state.sort === "za" ? (a, b) => byName(b, a) : byName);
+    const vis = entries.filter(e => !type || e.type === type).sort(SORTERS[state.sort] || SORTERS[SORT_FIRST]);
 
     entries.forEach(e => { e.li.hidden = !vis.includes(e); });
     vis.forEach(e => list.appendChild(e.li));                // the order on the page
@@ -1046,16 +1255,9 @@ function initCaseFilter(entries, list, head){
 
     group.querySelectorAll("input").forEach(r => { r.checked = r.value === state.sort; });
 
-    const none = vis.length === 0;
-    list.hidden = none;
-    empty.hidden = !none;
-    if (none){ emptyText.textContent = L.empty[state.type] || ""; }
-
     const n = vis.length, noun = n === 1 ? "case study" : "case studies";
     const kind = type ? (L[type] || type).toLowerCase() + " " : "";
-    status.textContent = none
-      ? "No " + kind + "case studies yet."
-      : "Showing " + n + " " + kind + noun + ", " + (state.sort === "latest" ? L.latest.toLowerCase() : L[state.sort]) + ".";
+    status.textContent = "Showing " + n + " " + kind + noun + ", " + sortWords[state.sort] + ".";
 
     if (animate){
       list.classList.add("is-in");                           // a list that started empty has never been revealed
@@ -1081,21 +1283,16 @@ function initCaseFilter(entries, list, head){
     const keys = ["ArrowLeft", "ArrowRight", "Home", "End"];
     if (!keys.includes(e.key)) return;
     e.preventDefault();
-    const at = TAB_KEYS.indexOf(state.type);
-    const to = e.key === "Home" ? 0 : e.key === "End" ? TAB_KEYS.length - 1
-      : (at + (e.key === "ArrowRight" ? 1 : -1) + TAB_KEYS.length) % TAB_KEYS.length;
-    set({ type: TAB_KEYS[to], sort: state.sort }, true);
-    tabs.querySelector('[data-tab="' + TAB_KEYS[to] + '"]').focus();
+    const at = Math.max(0, tabKeys.indexOf(state.type));
+    const to = e.key === "Home" ? 0 : e.key === "End" ? tabKeys.length - 1
+      : (at + (e.key === "ArrowRight" ? 1 : -1) + tabKeys.length) % tabKeys.length;
+    set({ type: tabKeys[to], sort: state.sort }, true);
+    tabs.querySelector('[data-tab="' + tabKeys[to] + '"]').focus();
   });
 
   /* --- sort: native radio buttons, so the arrow keys work too --- */
   group.addEventListener("change", e => {
     if (e.target.name === "cs-sort") set({ type: state.type, sort: e.target.value }, true);
-  });
-
-  emptyBtn.addEventListener("click", () => {
-    set({ type: "all", sort: state.sort }, true);
-    tabs.querySelector('[data-tab="all"]').focus();
   });
 
   /* --- Back AND Forward restore the earlier tab and sort --- */
@@ -1442,10 +1639,10 @@ function renderSkills(stream){
 
   panel.appendChild(card);
 
-  /* After the first section. On a wide screen the panel is fixed,
+  /* Under the opening sections. On a wide screen the panel is fixed,
      SO where it sits in the page does not matter there. */
-  const first = stream.children[0];
-  if (first && first.nextSibling) stream.insertBefore(panel, first.nextSibling);
+  const spot = graphSpot(stream);
+  if (spot) spot.after(panel);
   else stream.appendChild(panel);
 
   const svg = card.querySelector(".radar");
@@ -1453,6 +1650,14 @@ function renderSkills(stream){
   /* the skill names use a web font. Measure again once it has loaded,
      ELSE the frame fits the fallback font's widths. */
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => fitRadar(svg, panel));
+}
+
+/* WHERE the stacked skill graph goes: under the first section. IF "Selected builds" comes
+   right after that section THEN the graph goes under the builds, SO proof is reached first. */
+function graphSpot(stream){
+  const blocks = stream.querySelectorAll(":scope > .block");
+  if (blocks[1] && blocks[1].classList.contains("block--builds")) return blocks[1];
+  return blocks[0] || null;
 }
 
 /* The frame hugs the web AND the skill names, with no empty margin.
@@ -1771,7 +1976,8 @@ function initNav(){
   const here = links.querySelector('[aria-current="page"]');
 
   function place(a, instant){
-    if (!a){ pill.classList.remove("is-on"); return; }
+    /* the "Contact me" link is drawn as a button, SO it needs no pill behind it */
+    if (!a || a.getAttribute("data-nav") === "contact"){ pill.classList.remove("is-on"); return; }
     if (instant) pill.classList.add("no-anim");
     pill.style.setProperty("--px", a.offsetLeft + "px");
     pill.style.setProperty("--pw", a.offsetWidth + "px");
@@ -1859,13 +2065,28 @@ function initTakeover(){
     if (STAGE_Q.matches){
       if (skills.parentNode !== stream.parentNode) stream.parentNode.appendChild(skills);
     } else {
-      const first = stream.querySelector(".block");
-      if (first && skills.parentNode !== stream) stream.insertBefore(skills, first.nextSibling);
+      const spot = graphSpot(stream);
+      if (spot && skills.parentNode !== stream) spot.after(skills);
     }
+  }
+
+  /* The photo. On the stage it is fixed to the screen, SO it must NOT sit inside the gliding
+     column either. Stacked (phones AND tablets), it goes INTO the first section, under the
+     headline, the lede AND the buttons, SO those are what a visitor sees first. */
+  function placePhoto(){
+    const first = stream.querySelector(":scope > .block");
+    if (STAGE_Q.matches || !first){
+      if (portrait.parentNode !== stream.parentNode) stream.parentNode.insertBefore(portrait, stream);
+      return;
+    }
+    const after = first.querySelector(":scope > .proof") || first.querySelector(":scope > .actions") ||
+                  first.querySelector(":scope > .lede")  || first.querySelector(":scope > h1");
+    if (after && portrait.previousElementSibling !== after) after.after(portrait);
   }
 
   function mode(){
     placeGraph();
+    placePhoto();
     if (STAGE_Q.matches){
       measure();
       shown = target = window.scrollY;
@@ -1911,6 +2132,9 @@ function initReveals(){
     items.forEach(show);                           // ELSE show it all
     return;
   }
+  /* A part shows as soon as its top edge is a little way up the screen. This does NOT wait for
+     a share of the part to be visible: a very tall part (eleven case cards on a phone) would
+     never reach that share on the first screen, AND would stay invisible until scrolled. */
   const io = new IntersectionObserver((entries) => {
     entries.forEach(e => {
       if (e.isIntersecting){
@@ -1918,7 +2142,7 @@ function initReveals(){
         io.unobserve(e.target);                    // reveal once, no flicker
       }
     });
-  }, { threshold: 0.12, rootMargin: "0px 0px -6% 0px" });
+  }, { threshold: 0, rootMargin: "0px 0px -10% 0px" });
 
   items.forEach(el => io.observe(el));
 }
@@ -2113,6 +2337,19 @@ function initCaseModal(){
 
   if (tocBtn) tocBtn.innerHTML = "<span>" + esc(CASE_LABELS.contents) + "</span>" + UI.chevron;
   if (closeB) closeB.setAttribute("aria-label", CASE_LABELS.close);
+
+  /* a short call to action at the end of EVERY case, above Previous / Next.
+     The words AND where the button goes: content.js -> cases.cta. No button text -> no box. */
+  const ask = CONTENT.cases.cta;
+  if (pager && ask && ask.button){
+    const box = make("aside", "reader__cta");
+    if (ask.heading) box.appendChild(make("h3", null, ask.heading));
+    if (ask.text)    box.appendChild(make("p", "muted", ask.text));
+    const a = make("a", "btn", ask.button);
+    a.href = ask.url || "contact.html";
+    box.appendChild(a);
+    pager.before(box);
+  }
 
   let current = -1, pushed = false, busy = false, closing = false;
   let marks = [], lit = null, titleY = 0;
@@ -2648,34 +2885,14 @@ function initCompose(){
       <button class="modal__close" data-close aria-label="Close">&#10005;</button>
       <h2>${esc(t.heading)}</h2>
       <p class="muted" style="font-size:14px">${esc(t.note)}</p>
-      <div class="compose">
-        <div>
-          <label>${esc(t.toLabel)}</label>
-          <div class="to" data-site="email"></div>
-        </div>
-        <div>
-          <label for="cs">${esc(t.subjectLabel)}</label>
-          <input id="cs" type="text" value="${esc(t.subject)}" autocomplete="off">
-        </div>
-        <div>
-          <label for="cm">${esc(t.messageLabel)}</label>
-          <textarea id="cm" placeholder="${esc(t.placeholder)}"></textarea>
-        </div>
-        <div class="compose__actions">
-          <button class="btn" id="cSend" type="button">${esc(t.send)}</button>
-          <button class="btn btn--ghost" data-close type="button">${esc(t.cancel)}</button>
-        </div>
-      </div>
     </div>`;
+  /* the same form as the contact page: two dropdowns, two boxes, one button */
+  modal.querySelector(".modal__panel").appendChild(composeForm({ subject: "cs", message: "cm", send: "cSend" }, { to: true, cancel: true }));
   document.body.appendChild(modal);
   modal.querySelector('[data-site="email"]').textContent = SITE.email;
   wireModal(modal);
 
   buttons.forEach(b => b.addEventListener("click", () => openModal(modal)));
-
-  modal.querySelector("#cSend").addEventListener("click", () => {
-    mailTo(modal.querySelector("#cs").value, modal.querySelector("#cm").value);
-  });
 }
 
 /* ============================================================

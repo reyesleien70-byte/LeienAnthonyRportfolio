@@ -197,6 +197,22 @@ html.lenis{scroll-behavior:auto}
   border-radius:2px;background:var(--accent);
 }
 
+/* "Contact me" is the one link drawn as a button, on every page: it is the way to the free audit.
+   The link keeps its full height for a finger. The fill is drawn a little shorter, inside it. */
+.nav__link[data-nav="contact"]{
+  margin-left:10px;padding:0 18px;
+  color:var(--on-accent);font-weight:600;
+}
+.nav__link[data-nav="contact"]::before{
+  content:"";position:absolute;z-index:-1;left:0;right:0;top:3px;bottom:3px;
+  border-radius:3px;background:var(--accent);
+  transition:background-color var(--dur-1) var(--ease-out), box-shadow var(--dur-2) var(--ease-out);
+}
+/* on the contact page itself: no underline. The button wears an Ink frame instead, SO "you are here" is NOT colour alone. */
+.nav__link[data-nav="contact"][aria-current="page"]{color:var(--on-accent)}
+.nav__link[data-nav="contact"][aria-current="page"]::after{display:none}
+.nav__link[data-nav="contact"][aria-current="page"]::before{box-shadow:inset 0 0 0 2px var(--ink)}
+
 /* the soft pill behind the link under the pointer. It rests on the current page. */
 .nav__pill{
   position:absolute;left:0;top:50%;
@@ -290,6 +306,9 @@ h1 + .lede,h2 + .lede{margin-top:clamp(12px,1.6vw,18px)}
   }
   .btn--ghost:hover{background:var(--tint-2);color:var(--ink);border-color:var(--ink);box-shadow:none}
   .nav__link:hover{color:var(--ink)}
+  .nav__link[data-nav="contact"]:hover{color:var(--on-accent)}
+  .nav__link[data-nav="contact"]:hover::before{background:var(--accent-hover);box-shadow:0 0 0 3px rgba(59,130,246,.18)}
+  .nav__link[data-nav="contact"][aria-current="page"]:hover::before{box-shadow:inset 0 0 0 2px var(--ink)}
 }
 
 /* --- the cursor light: a glow AND a brighter rim follow the pointer --- */
@@ -369,6 +388,64 @@ h1 + .lede,h2 + .lede{margin-top:clamp(12px,1.6vw,18px)}
 
 .block{padding:clamp(40px,8vh,86px) 0}
 .block ~ .block{border-top:1px solid var(--line)}   /* ~ NOT +: the skill graph sits between blocks */
+/* stacked, nothing sits above the first section any more (the photo moved under its buttons),
+   SO it starts close to the header. The wide-screen stage keeps its own spacing (section 8). */
+.stream > .block:first-child{padding-top:clamp(4px,2vh,20px)}
+
+/* --- the buttons under a lede, AND the one line of proof under them --- */
+.actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:clamp(20px,3vh,28px)}
+.proof{
+  display:flex;flex-wrap:wrap;align-items:center;gap:2px 18px;
+  margin:14px 0 0;max-width:none;
+  font-size:13.5px;color:var(--muted);
+}
+.proof__item{display:inline-flex;align-items:center;gap:9px;min-height:32px}
+.proof__item::before{content:"";flex:none;width:5px;height:5px;background:var(--ink);opacity:.55}   /* the same small square the lists use. It wraps WITH its words. */
+.proof a{
+  display:inline-flex;align-items:center;min-height:32px;        /* room for a finger */
+  color:var(--accent-text);font-weight:500;
+  text-decoration:underline;text-decoration-color:var(--accent);text-decoration-thickness:1px;text-underline-offset:4px;
+}
+@media (hover:hover) and (pointer:fine){ .proof a:hover{text-decoration-thickness:2px} }
+@media (max-width:560px){
+  .actions .btn{flex:1 1 auto}                                   /* two buttons share the row. IF they do not fit THEN each takes a row. */
+}
+
+/* --- selected builds: a few case studies, each card opens its case --- */
+.picks{list-style:none;margin:26px 0 0;padding:0;display:grid;gap:12px}
+.pick{
+  display:grid;grid-template-columns:clamp(104px,31%,196px) minmax(0,1fr);
+  min-height:132px;
+  border:1px solid var(--line);border-radius:var(--radius);
+  background:var(--surface);color:inherit;text-decoration:none;overflow:hidden;
+  transition:transform .7s var(--ease-out), border-color .4s var(--ease-out), box-shadow .7s var(--ease-out);
+}
+.pick:active{transform:scale(.985);transition-duration:.2s}
+.pick__media{position:relative;overflow:hidden;border-right:1px solid var(--line);background:var(--surface-2)}
+.pick__media > img,
+.pick__media > svg{position:absolute;inset:0;width:100%;height:100%;display:block;object-fit:cover;object-position:top center;transition:transform 1.4s var(--ease-out)}
+.pick__body{display:flex;flex-direction:column;gap:5px;min-width:0;padding:16px 18px}
+.pick__type{font-size:11.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--ink)}
+.pick h3{font-size:clamp(16px,.95rem + .2vw,18px);line-height:1.3}
+.pick__blurb{font-size:14px;line-height:1.5;color:var(--muted)}
+.pick__open{
+  margin-top:auto;padding-top:8px;
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:13.5px;font-weight:600;color:var(--accent-text);
+}
+.picks__more{margin:18px 0 0;max-width:none}
+.picks__more a{
+  display:inline-flex;align-items:center;gap:8px;min-height:44px;
+  font-size:14.5px;font-weight:600;color:var(--accent-text);text-decoration:none;
+}
+@media (hover:hover) and (pointer:fine){
+  .pick:hover{transform:translate3d(0,-2px,0);border-color:var(--ink);box-shadow:0 12px 24px -14px rgba(30,41,59,.35)}
+  .pick:hover .pick__media > *{transform:scale(1.03)}
+  .pick:hover .case-card__arrow,
+  .picks__more a:hover .case-card__arrow{transform:translateX(5px)}
+  .pick:hover .case-art__flow{animation-play-state:running}
+}
+.pick:focus-visible .case-art__flow{animation-play-state:running}
 
 /* --- lists --- */
 .rows{list-style:none;margin:22px 0 0;padding:0;display:grid;gap:2px}
@@ -435,15 +512,18 @@ h1 + .lede,h2 + .lede{margin-top:clamp(12px,1.6vw,18px)}
 .cta h2{margin-bottom:14px}
 .cta .btn{margin-top:12px}
 
-/* --- portrait: on phones AND tablets it sits above the first section --- */
+/* --- portrait: on phones AND tablets it sits INSIDE the first section, under the headline,
+       the lede AND the buttons. The script puts it there (initTakeover in app.js).
+       Until it has, the photo is not drawn, SO it never flashes at the top of the page. --- */
 .portrait{
   position:relative;                          /* the ring AND the image are absolute, SO they need this box */
   width:min(52vw,280px);
   aspect-ratio:1/1;
-  margin:0 auto clamp(26px,5vh,50px);
+  margin:clamp(30px,5vh,46px) auto clamp(14px,3vh,26px);
   z-index:3;
   pointer-events:none;
 }
+.landing > .portrait{display:none}
 .portrait > *{animation:portrait-in 1.4s var(--ease-out) both}
 .portrait__ring{animation-delay:.12s !important}
 @keyframes portrait-in{
@@ -855,6 +935,17 @@ h1 + .lede,h2 + .lede{margin-top:clamp(12px,1.6vw,18px)}
   .pager__btn--next{text-align:left;align-items:flex-start}
 }
 
+/* --- a short call to action at the end of every case, above Previous / Next --- */
+.reader__cta{
+  margin-top:clamp(40px,6vh,64px);
+  padding:clamp(22px,3vw,36px);
+  border:1px solid var(--line);
+  background:var(--tint);
+}
+.reader__cta h3{margin:0 0 8px}
+.reader__cta p{margin:0 0 18px;max-width:62ch}
+.reader__cta + .reader__pager{margin-top:22px;padding-top:22px}
+
 .case-full h2{margin-bottom:6px;outline:none}
 .case-full .meta{color:var(--muted);font-size:13.5px;margin:0 0 24px}
 .case-full video,
@@ -1021,8 +1112,17 @@ h1 + .lede,h2 + .lede{margin-top:clamp(12px,1.6vw,18px)}
 
 /* --- contact composer: the only editable thing on the site --- */
 .modal__panel--compose{
+  --pad:clamp(22px,3.4vw,46px);              /* the box's own padding, named SO the button bar below can reach its edges */
   width:min(560px, 100% - 2 * var(--gutter));
   height:auto;max-height:86vh;max-height:86dvh;
+}
+/* the buttons stay in view at the bottom of the box, however long the message above them is.
+   A sticky part stops at the box's padding, SO it is pushed down by that padding to sit on the very edge. */
+.modal__panel--compose .compose__actions{
+  position:sticky;bottom:calc(-1 * var(--pad));z-index:1;
+  margin:2px calc(-1 * var(--pad)) calc(-1 * var(--pad));
+  padding:14px var(--pad);
+  background:var(--surface);border-top:1px solid var(--line);
 }
 .modal__panel--compose .modal__close{position:absolute;top:16px;right:16px}
 .modal__panel--compose h2{padding-right:52px}
@@ -1035,8 +1135,27 @@ h1 + .lede,h2 + .lede{margin-top:clamp(12px,1.6vw,18px)}
   padding:12px 14px;resize:vertical;
   transition:border-color var(--dur-1) var(--ease-out), box-shadow var(--dur-2) var(--ease-out);
 }
-.compose input:focus,.compose textarea:focus{border-color:var(--accent);outline:none;box-shadow:0 0 0 3px rgba(59,130,246,.28)}
-.compose textarea{min-height:150px}
+.compose input:focus,.compose textarea:focus,.compose select:focus{border-color:var(--accent);outline:none;box-shadow:0 0 0 3px rgba(59,130,246,.28)}
+.compose textarea{
+  min-height:150px;max-height:62vh;line-height:1.5;
+  field-sizing:content;                                       /* the box grows to show the whole message, WHERE the browser can */
+}
+
+/* a field: its label, a dropdown of ready-made lines, THEN the box the visitor may edit */
+.compose__field{display:grid;gap:6px}
+.compose select{
+  width:100%;min-height:44px;
+  font:inherit;font-size:16px;color:var(--ink);
+  padding:0 42px 0 14px;
+  border:1px solid var(--line-strong);border-radius:3px;
+  background:var(--tint-2) url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231E293B' stroke-width='1.8'><path d='M6 9l6 6 6-6'/></svg>") no-repeat right 13px center / 16px 16px;
+  -webkit-appearance:none;appearance:none;
+  text-overflow:ellipsis;cursor:pointer;
+  transition:border-color var(--dur-1) var(--ease-out), box-shadow var(--dur-2) var(--ease-out);
+}
+.compose select option{background:var(--surface);color:var(--ink)}
+@media (hover:hover) and (pointer:fine){ .compose select:hover{border-color:var(--ink)} }
+.compose__hint{margin:0;max-width:none;font-size:13px;line-height:1.45;color:var(--muted)}
 .compose .to{color:var(--accent-text);font-size:15px;overflow-wrap:anywhere}
 .compose__actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:4px}
 
@@ -1112,6 +1231,11 @@ h1 + .lede,h2 + .lede{margin-top:clamp(12px,1.6vw,18px)}
   }
   .modal--case .modal__panel{padding-bottom:0}
   .modal__panel--compose{height:auto;max-height:94vh;max-height:94dvh}
+  .modal__panel--compose .compose__actions{                 /* the sheet has extra room at the bottom for a phone's home bar */
+    bottom:calc(-1 * (var(--pad) + env(safe-area-inset-bottom)));
+    margin-bottom:calc(-1 * (var(--pad) + env(safe-area-inset-bottom)));
+    padding-bottom:calc(14px + env(safe-area-inset-bottom));
+  }
   .reader__bar{padding-top:6px;touch-action:none}           /* the bar is the handle: drag it down to close */
   .sheet__grip{display:block}
   .reader{padding-bottom:calc(40px + env(safe-area-inset-bottom))}
@@ -1128,8 +1252,10 @@ h1 + .lede,h2 + .lede{margin-top:clamp(12px,1.6vw,18px)}
     transform:translate3d(calc(var(--glide) * var(--w)),0,0);
     will-change:transform;
   }
+  .stream > .block:first-child{padding-top:clamp(40px,8vh,86px)}   /* the stage keeps its own opening space */
 
   /* the photo sits in the middle of the free space, right of the column */
+  .landing > .portrait{display:block}
   .portrait{
     position:fixed;
     top:50%;
@@ -1334,6 +1460,13 @@ h1 + .lede,h2 + .lede{margin-top:clamp(12px,1.6vw,18px)}
   .nav__link{padding:0 6px;font-size:12.5px}
   .nav__link[aria-current="page"]::after{left:6px;right:6px}
 }
+/* the "Contact me" button on a phone: a little tighter, AND its fill stops at the page margin */
+@media (max-width:719px){
+  .nav__link[data-nav="contact"]{margin:0 6px 0 4px;padding:0 12px}
+}
+@media (max-width:400px){
+  .nav__link[data-nav="contact"]{margin-left:2px;padding:0 10px}
+}
 
 /* --- pictures inside a case: a screenshot may be tall or very wide --- */
 .shot{margin:0}
@@ -1354,13 +1487,14 @@ h1 + .lede,h2 + .lede{margin-top:clamp(12px,1.6vw,18px)}
 
 
 /* ============================================================
-   12. CASE STUDIES: the four tabs AND the sort
+   12. CASE STUDIES: the tabs AND the sort
    ============================================================ */
 .cs-controls{display:grid;gap:14px;margin-top:clamp(22px,3.5vw,34px);justify-items:start}
 
-/* the tabs: one connected row. On a phone they sit two by two, never a scrolling strip. */
+/* the tabs: one connected row, however many there are (a tab with no case in it is not built).
+   On a phone they sit two by two, never a scrolling strip. */
 .cs-tabs{
-  display:grid;grid-template-columns:repeat(4,auto);gap:1px;
+  display:grid;grid-auto-flow:column;grid-auto-columns:auto;gap:1px;
   background:var(--line-strong);border:1px solid var(--line-strong);border-radius:var(--radius);overflow:hidden;
 }
 .cs-tab{
@@ -1376,7 +1510,7 @@ h1 + .lede,h2 + .lede{margin-top:clamp(12px,1.6vw,18px)}
 @media (hover:hover) and (pointer:fine){ .cs-tab:not(.is-on):hover{background:var(--tint-2)} }
 .cs-tab:focus-visible{outline:2px solid var(--accent);outline-offset:-4px}
 
-/* the sort: three buttons in a row, labelled "Sort" */
+/* the sort: five buttons in a row, labelled "Sort". On a phone they sit in two rows (3 + 2). */
 .cs-sort{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px}
 .cs-sort__label{font-size:13.5px;font-weight:600;color:var(--ink)}
 .cs-seg-group{
@@ -1397,17 +1531,17 @@ h1 + .lede,h2 + .lede{margin-top:clamp(12px,1.6vw,18px)}
 
 .cs-status{margin:0;font-size:13.5px;color:var(--muted);max-width:none}
 
-.cs-empty{
-  margin:clamp(24px,4vh,40px) 0 12vh;padding:clamp(22px,3vw,34px);
-  border:1px dashed var(--line-strong);border-radius:var(--radius);background:var(--tint);
-}
-.cs-empty p{margin:0 0 16px;color:var(--ink)}
-
 @media (max-width:560px){
-  .cs-tabs{grid-template-columns:repeat(2,minmax(0,1fr));width:100%}
+  .cs-tabs{grid-auto-flow:row;grid-template-columns:repeat(2,minmax(0,1fr));width:100%}
   .cs-tab{padding:0 12px}
-  .cs-seg-group{max-width:100%}
-  .cs-seg span{padding:0 12px}
+  .cs-tab:last-child:nth-child(odd){grid-column:1 / -1}       /* an odd number of tabs: the last one takes a whole row */
+
+  /* five sort buttons do not fit one row of a phone: three above, two below, every one 44px high */
+  .cs-sort{display:grid;gap:8px;width:100%;justify-self:stretch}
+  .cs-seg-group{display:grid;grid-auto-flow:row;grid-template-columns:repeat(6,minmax(0,1fr));width:100%}
+  .cs-seg{grid-column:span 2}
+  .cs-seg:nth-child(n+4){grid-column:span 3}
+  .cs-seg span{display:flex;width:100%;padding:0 6px}
 }
 @media (prefers-reduced-motion: reduce){
   .cases.is-swapping{animation:none}

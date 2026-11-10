@@ -82,6 +82,12 @@ site: {
   name: "Leien Anthony R.",
   email: "leienanthony1@gmail.com",
 
+  /* your profiles. Paste the whole address, e.g. "https://www.linkedin.com/in/your-name".
+     They show as a line on the home page AND the contact page.
+     Leave "" AND that line is simply not shown (rule 4). */
+  linkedin: "",
+  upwork: "",
+
   /* the small words the site says on its own */
   labels: {
     backToTop: "Back to top",          // the button in the footer
@@ -156,13 +162,19 @@ home: {
 
      "type" picks the shape:
        "text"      eyebrow, heading, lede, bullets
+       "builds"    eyebrow, heading, a few case study cards
        "tools"     eyebrow, heading, a grid of tools
        "contacts"  eyebrow, heading, a list of label + value
-       "cta"       the boxed heading, text and button at the end
+       "cta"       a boxed heading, text and button. Its button opens the contact box.
 
      The FIRST section's heading IS the page's main title.
 
-     ANY section may also carry:  photo, photoAlt, video, poster */
+     ANY section may also carry:  photo, photoAlt, video, poster
+
+     A "text" section may also carry:
+       buttons   links drawn as buttons under the lede. primary: true IS the filled one.
+       proof     one small line under the buttons. A part with a url IS a link.
+                 {count} becomes the number of case studies on show. The site counts them. */
 
   blocks: [
 
@@ -170,21 +182,54 @@ home: {
       type: "text",
       id: "who",
       eyebrow: "Who I help",
-      heading: "Shopify brands only: small, medium large enterprises.",
-      lede: "I build email automation lifecycle that keeps a first-time buyer moving, from the welcome to the repeat purchase to winback, so your traffic stops being a one-time thing.",
+      heading: "Shopify brands only: small, medium, and large enterprises.",
+      lede: "I build lifecycle email automation that keeps a first-time buyer moving, from the welcome to the repeat purchase to the win-back, so your traffic stops being a one-time thing.",
+
+      /* the two buttons on the first screen. Change a label OR where it goes. */
+      buttons: [
+        { label: "Get a free audit", url: "contact.html", primary: true },
+        { label: "See my builds", url: "case-studies.html" }
+      ],
+
+      /* the line of proof under the buttons */
+      proof: [
+        { text: "Klaviyo Practitioner certified", url: "certifications.html" },
+        { text: "{count} documented builds" }
+      ],
+
       bullets: [
-        "Teams or Solo founder losing sales to abandoned carts, one-time buyers, and dead lists.",
-        "Brands whose flows exist but isn't optimized for revenue",
+        "Teams or solo founders losing sales to abandoned carts, one-time buyers, and dead lists.",
+        "Brands whose flows exist but aren't optimized for revenue.",
         "Available for long-term retainers, short-term sprints, or fixed-scope projects.",
-        "Brands who want to automate their email marketing to save time and money and for better results."
+        "Brands that want to automate their email marketing to save time and money and get better results."
       ]
+    },
+
+    {
+      type: "builds",
+      id: "builds",
+      eyebrow: "Selected builds",
+      heading: "Open a build and see how I work.",
+
+      /* WHICH case studies show here, in this order. Each line is the "slug" of a case
+         further down this file (cases -> items). Swap a slug to swap a card.
+         A slug that is misspelled, hidden OR a draft is skipped. */
+      cases: [
+        "item-specific-abandoned-cart-recovery",
+        "tlre-lifecycle-revenue-engine",
+        "welcome-email-off-bolt"
+      ],
+
+      /* the link under the cards. {count} = the number of case studies on show. "" hides the link. */
+      more: "See all {count} builds",
+      moreUrl: "case-studies.html"
     },
 
     {
       type: "text",
       id: "automate",
-      eyebrow: "What I automate and Specialize in",
-      heading: "Flows that run 24/7 and HTML codes to fit the situation",
+      eyebrow: "What I automate and specialize in",
+      heading: "Flows that run 24/7 and HTML code to fit the situation",
       bullets: [
         "Abandoned cart and abandoned checkout recovery",
         "Browse abandonment, catching intent before a cart exists",
@@ -193,9 +238,18 @@ home: {
         "Welcome series for new subscribers",
         "Sunset flows to protect deliverability and sender reputation",
         "Rule-based and AI-driven logic: segments, branching, timing, suppression",
-        "Custom HTML email builds or blocks in Klaviyo.",
-        "Custom JS or Python codes for better data control in n8n."
+        "Custom HTML email builds or blocks in Klaviyo",
+        "Custom JS or Python code for better data control in n8n"
       ]
+    },
+
+    /* the free audit offer. It sits BEFORE the tools and the contacts, so it is seen early. */
+    {
+      type: "cta",
+      id: "offer",
+      heading: "Want to know what opportunities your flows are leaving on the table?",
+      text: "Send me your store and I'll give you a free audit. I'll review your current workflows: what's missing, what could be improved, and where the money is leaking.",
+      button: "Get my free audit"
     },
 
     {
@@ -226,21 +280,25 @@ home: {
       eyebrow: "Contacts",
       heading: "Where to reach me.",
 
-      /* email: true  prints the address from site.email above
-         AND makes it clickable. */
+      /* email: true        prints the address from site.email above AND makes it clickable.
+         profile: "linkedin"  prints the address from site.linkedin as a link.
+                              WHILE that address is "" the whole line is not shown. */
       lines: [
         { label: "Email", email: true },
+        { label: "LinkedIn", profile: "linkedin" },
+        { label: "Upwork", profile: "upwork" },
         { label: "Based in", value: "Philippines · works across time zones" },
         { label: "Replies in", value: "Under 24 hours, on working days" }
       ]
     },
 
+    /* the closing call to action, the last thing on the page */
     {
       type: "cta",
       id: "cta",
-      heading: "Want to know what opportunities your flows are leaving on the table?",
-      text: "Send me your store and I'll give a free audit, I'll review your current workflows: what's missing, what could be improved, and where the money is leaking.",
-      button: "Contact me"
+      heading: "Send me your store and get a free audit.",
+      text: "I reply in under 24 hours, on working days.",
+      button: "Get my free audit"
     }
 
   ]
@@ -289,6 +347,34 @@ cases: {
   lede: "Each card holds the walkthrough: what was broken, what I built, what it does now.",
   openLabel: "Open case",
 
+  /* THE "FEATURED" ORDER, which is how the page opens.
+     The cases listed here come first, in this order. Each line is a case's "slug".
+     Every case NOT listed follows after them, A to Z. Add a slug to move a case up. */
+  featured: [
+    "item-specific-abandoned-cart-recovery",
+    "tlre-lifecycle-revenue-engine"
+  ],
+
+  /* the words on the sort buttons, AND how the small "Showing ..." line names each order */
+  filters: {
+    sort: "Sort",
+    featured: "Featured",
+    az: "A–Z",
+    za: "Z–A",
+    latest: "Latest to oldest",
+    oldest: "Oldest to latest",
+    featuredStatus: "featured first"   // e.g. "Showing 11 case studies, featured first."
+  },
+
+  /* the short call to action at the end of every open case, above Previous / Next.
+     "url" is where the button goes. Leave "button" as "" AND the whole box is not shown. */
+  cta: {
+    heading: "Want this kind of build on your store?",
+    text: "Send me your store and I'll give you a free audit of your current flows: what's missing, what could be improved, and where the money is leaking.",
+    button: "Get a free audit",
+    url: "contact.html"
+  },
+
   /* the words inside an open case */
   labels: {
     contents: "Contents",              // the button that lists the parts of a case
@@ -308,7 +394,8 @@ cases: {
       type: "flow",                       // flow | campaign | email-design
       date: "2026-09-18",
       blurb: "Stops only when they buy the item they left",
-      photo: "",
+      photo: "assets/case1-klaviyo-flow-1.png",          // the card picture. "" = a small drawn flow stands in
+      thumbnailAlt: "The top of the Klaviyo flow: the Checkout Started trigger, a 4 hour wait, the Reminder email",
       meta: "Klaviyo + n8n + Shopify · Started Checkout · 3 emails · 12-node n8n workflow · practice store",
       video: "",
       poster: "",
@@ -333,11 +420,17 @@ cases: {
         },
         {
           heading: "Result",
-          text: "Working as expected. Tested end to end on a practice store on Sept 18, 2026. but not live yet."
+          text: "Working as expected. Tested end to end on a practice store on Sept 18, 2026, but not live yet."
         },
         {
           heading: "Skills I demonstrated in this build",
-          text: "Strategical thinking, logic mastery, klaviyo understanding, shopify fluency and n8n understanding. Most importantly it shows I know the craft."
+          bullets: [
+            "Klaviyo flow logic: I replaced the default exit filter (Placed Order zero times since starting this flow) with a custom Recovered Abandoned Item event, so the flow ends only when the item they left is bought.",
+            "Shopify webhooks: an order creation webhook, checked with an HMAC-SHA256 signature before any data is read.",
+            "Klaviyo API: the workflow finds the profile by email, reads the latest Started Checkout event, and creates a custom event.",
+            "JavaScript in n8n: three Code nodes that read the raw webhook body, pull out the order, and compare the SKUs, with a 7-day limit on old checkouts.",
+            "Testing and documentation: three test cases (a different item, the same item, a fake request), a log of three errors with their fixes, and build steps for every node and setting."
+          ]
         },
         {
           heading: "Documentation",
@@ -813,8 +906,9 @@ Reminder: Add more to this the more updates/changes/error encounter happens.`
       slug: "abandoned-cart-recovery-grouped",
       type: "flow",                       // flow | campaign | email-design
       date: "2026-09-15",
-      blurb: "1 of the 3 flows in ESO",
-      photo: "",
+      blurb: "Answers one doubt per message and saves the discount for last",
+      photo: "assets/case2-acr-flow-1.png",
+      thumbnailAlt: "The top of the abandoned checkout flow: the Checkout Started trigger, a 1 hour 30 minute wait, the E1 Reminder email",
       meta: "Klaviyo · Checkout Started · email + SMS · 5 messages per opener, 3 per non-opener · one discount",
       video: "",
       poster: "",
@@ -1238,8 +1332,9 @@ Goodluck building!`
       slug: "browse-abandonment-flow-grouped",
       type: "flow",                       // flow | campaign | email-design
       date: "2026-09-15",
-      blurb: "2 of the 3 flows in ESO",
-      photo: "",
+      blurb: "One quiet reminder, then a second message only for shoppers who clicked",
+      photo: "assets/case3-ba-flow-1.png",
+      thumbnailAlt: "The top of the browse abandonment flow: the Viewed Product trigger, a 4 hour wait, the E1 email",
       meta: "Klaviyo · Viewed Product · 2 emails, 1 SMS · at most 2 per shopper · no discounts",
       video: "",
       poster: "",
@@ -1492,8 +1587,9 @@ AND goodluck building!`
       slug: "post-purchase-flow-grouped",
       type: "flow",                       // flow | campaign | email-design
       date: "2026-09-15",
-      blurb: "3 of the 3 flows in ESO",
-      photo: "",
+      blurb: "Tells buyers when the order arrives, how to enjoy it, and when to reorder",
+      photo: "assets/case4-pp-flow-1.png",
+      thumbnailAlt: "The top of the post-purchase flow: the Placed Order trigger, the first time buyer split, the two first emails",
       meta: "Klaviyo · Placed Order · email + SMS · 3 messages over 21 days · no discounts",
       video: "",
       poster: "",
@@ -2392,7 +2488,8 @@ That's all of it, goodluck building!`
       type: "flow",                       // flow | campaign | email-design
       date: "2026-11-04",
       blurb: "Buyers and non-buyers get a different second email",
-      photo: "",
+      photo: "assets/case6-welcome-flow-1.png",
+      thumbnailAlt: "The top of the welcome flow: the trigger, the E1 email, a 3 day wait, the Did they buy split",
       meta: "Klaviyo · Welcome flow · 3 emails, at most 2 per shopper · one split on Day 3 · test data",
       video: "",
       poster: "",
@@ -3446,7 +3543,7 @@ The final wording is NOT recorded in this version. Paste it here so a new owner 
       title: "Welcome Email for Off-Bolt",
       slug: "welcome-email-off-bolt",
       type: "email-design",
-      date: "",                         // YYYY-MM-DD. Add the date to show it and to sort by it
+      date: "2026-11-08",                 // YYYY-MM-DD. The day this case was first added (from the git history). Correct it IF the email was made on another day.
       blurb: "A welcome email that builds trust first, then drives the click",
       photo: "assets/email-welcome-1.png",
       thumbnailAlt: "The top of the Off-Bolt welcome email",
@@ -3476,7 +3573,7 @@ The final wording is NOT recorded in this version. Paste it here so a new owner 
       title: "Browse Abandonment Email for Off-Bolt",
       slug: "browse-abandonment-email-off-bolt",
       type: "email-design",
-      date: "",                         // YYYY-MM-DD. Add the date to show it and to sort by it
+      date: "2026-11-08",                 // YYYY-MM-DD. The day this case was first added (from the git history). Correct it IF the email was made on another day.
       blurb: "A browse abandonment email that helps the shopper remember the product",
       photo: "assets/email-browse-1.png",
       thumbnailAlt: "The top of the Off-Bolt browse abandonment email",
@@ -3515,7 +3612,7 @@ The final wording is NOT recorded in this version. Paste it here so a new owner 
       title: "Cart Abandonment Email for Off-Bolt",
       slug: "cart-abandonment-email-off-bolt",
       type: "email-design",
-      date: "",                         // YYYY-MM-DD. Add the date to show it and to sort by it
+      date: "2026-11-09",                 // YYYY-MM-DD. The day this case was first added (from the git history). Correct it IF the email was made on another day.
       blurb: "A cart abandonment email that brings the shopper back to the cart",
       photo: "assets/email-cart-1.png",
       thumbnailAlt: "The top of the Off-Bolt cart abandonment email",
@@ -3597,7 +3694,7 @@ The final wording is NOT recorded in this version. Paste it here so a new owner 
       title: "Checkout Abandonment Email for Off-Bolt",
       slug: "checkout-abandonment-email-off-bolt",
       type: "email-design",
-      date: "",                         // YYYY-MM-DD. Add the date to show it and to sort by it
+      date: "2026-11-10",                 // YYYY-MM-DD. The day this case was first added (from the git history). Correct it IF the email was made on another day.
       blurb: "A checkout abandonment email that brings the shopper back to checkout",
       photo: "assets/email-checkout-1.png",
       thumbnailAlt: "The top of the Off-Bolt checkout abandonment email",
@@ -3636,7 +3733,7 @@ The final wording is NOT recorded in this version. Paste it here so a new owner 
       title: "SMS Subscription Campaign Email for Off-Bolt",
       slug: "sms-subscription-campaign-email-off-bolt",
       type: "email-design",
-      date: "",                         // YYYY-MM-DD. Add the date to show it and to sort by it
+      date: "2026-11-10",                 // YYYY-MM-DD. The day this case was first added (from the git history). Correct it IF the email was made on another day.
       blurb: "A campaign email that improves SMS subscription rate",
       photo: "assets/email-sms-1.webp",
       thumbnailAlt: "The top of the Off-Bolt SMS subscription campaign email",
@@ -3733,21 +3830,24 @@ certs: {
 
 /* ================================================================
    3c. CONTACT PAGE — the "Contact me" tab.
-       The "Contact me" button at the end of the home page stays.
+       The "Get my free audit" buttons on the home page open the contact box (part 4).
        "email: true" prints the address from site.email.
+       profile: "linkedin" prints site.linkedin. WHILE it is "" the line is not shown.
    ================================================================ */
 
 contactPage: {
 
   tabTitle: "Contact · Leien",
-  tabNote: "Get in touch about your Klaviyo and Shopify flows.",
+  tabNote: "Send me your store and get a free audit of your Klaviyo flows.",
 
   eyebrow: "Contact",
-  heading: "Where to reach me.",
-  lede: "Send me your store and I'll give a free audit, I'll review your current workflows: what's missing, what could be improved, and where the money is leaking.",
+  heading: "Get a free audit of your flows.",
+  lede: "Send me your store and I'll review your current workflows: what's missing, what could be improved, and where the money is leaking.",
 
   lines: [
     { label: "Email", email: true },
+    { label: "LinkedIn", profile: "linkedin" },
+    { label: "Upwork", profile: "upwork" },
     { label: "Based in", value: "Philippines · works across time zones" },
     { label: "Replies in", value: "Under 24 hours, on working days" }
   ]
@@ -3755,18 +3855,113 @@ contactPage: {
 
 
 /* ================================================================
-   4. THE CONTACT BOX — opens WHEN the button is clicked
+   4. THE CONTACT BOX — opens WHEN a "Get my free audit" button is clicked
       (the form on the Contact page uses the same words)
+
+      It never sends anything by itself. It opens the visitor's own
+      mail app with the subject AND the message already filled in.
+
+      THE TWO DROPDOWNS
+        subjects   five ready-made subjects. Picking one fills the Subject box.
+        starters   five ready-made messages. Picking one fills the Message box.
+                   "label" is the short name in the dropdown, "text" is the message.
+                   Write "text" between backticks, starting each line at the left edge.
+        The visitor can still change every word, OR type their own.
+
+      THE BLANK
+        "blank" is the gap a visitor must fill in with their store address.
+        Type it inside a starter exactly as it is written here.
    ================================================================ */
 
 contactBox: {
   heading: "Write to me",
-  note: "Type your message, then send it from your own mail app.",
+  note: "Pick a subject and a message, add your store, then send it from your own mail app.",
   toLabel: "To",
+
   subjectLabel: "Subject",
-  subject: "Project enquiry",
+  subjectPick: "Pick a common subject",      // the first line of the subject dropdown
+  subject: "Free audit request",             // what the Subject box starts with. "" starts it empty.
+  subjects: [
+    "Free audit request",
+    "New Klaviyo flows for my Shopify store",
+    "Fix or improve my current flows",
+    "Custom email design or HTML build",
+    "Price and timing for a project"
+  ],
+
   messageLabel: "Message",
+  messagePick: "Pick a message starter",     // the first line of the message dropdown
   placeholder: "What are you selling, and where does the revenue leak?",
+
+  /* WHICH starter the Message box starts with. 1 = the first one below. 0 = start empty. */
+  startWith: 1,
+
+  blank: "[your store URL]",
+  blankHint: "Replace {blank} with your store's address before you send.",   // shown under the message WHILE the blank is still there
+
+  starters: [
+    {
+      label: "Ask for the free audit",
+      text: `Hi Leien,
+
+I would like the free audit of my email flows.
+
+Store URL: [your store URL]
+Flows live now:
+Biggest problem right now:
+
+Thanks,`
+    },
+    {
+      label: "Ask for new flows",
+      text: `Hi Leien,
+
+I need new Klaviyo flows built for my Shopify store.
+
+Store URL: [your store URL]
+Flows I need (welcome, abandoned cart, post-purchase, win-back):
+When I want to start:
+
+Thanks,`
+    },
+    {
+      label: "Ask for a fix",
+      text: `Hi Leien,
+
+My flows are live, but I think they could do more.
+
+Store URL: [your store URL]
+Flows live now:
+What looks wrong or weak:
+
+Thanks,`
+    },
+    {
+      label: "Ask for an email design",
+      text: `Hi Leien,
+
+I need a custom email design or HTML build in Klaviyo.
+
+Store URL: [your store URL]
+Which email (welcome, cart, campaign, other):
+A brand guide or an example I like:
+
+Thanks,`
+    },
+    {
+      label: "Ask about price and timing",
+      text: `Hi Leien,
+
+I would like to know your price and timing for this work.
+
+Store URL: [your store URL]
+What I need:
+Retainer, short sprint, or fixed project:
+
+Thanks,`
+    }
+  ],
+
   send: "Open in my email app",
   cancel: "Cancel"
 }
