@@ -182,8 +182,8 @@ home: {
       type: "text",
       id: "who",
       eyebrow: "Who I help",
-      heading: "Shopify brands only: small, medium, and large enterprises.",
-      lede: "I build lifecycle email automation that keeps a first-time buyer moving, from the welcome to the repeat purchase to the win-back, so your traffic stops being a one-time thing.",
+      heading: "All Shopify brands that are looking to optimize revenue.",
+      lede: "I build lifecycle email automation/marketing strategy that turns one-time buyers into repeat customers.",
 
       /* the two buttons on the first screen. Change a label OR where it goes. */
       buttons: [
@@ -198,10 +198,10 @@ home: {
       ],
 
       bullets: [
-        "Teams or solo founders losing sales to abandoned carts, one-time buyers, and dead lists.",
-        "Brands whose flows exist but aren't optimized for revenue.",
-        "Available for long-term retainers, short-term sprints, or fixed-scope projects.",
-        "Brands that want to automate their email marketing to save time and money and get better results."
+        "Teams and solo founders losing sales to abandoned carts, one-time buyers, and dead lists.",
+        "Brands whose flows exist but aren't optimized for maximal revenue.",
+        "Brands that want automation that saves time and money and delivers better results.",
+        "Available for long-term retainers, short-term sprints, or fixed-scope projects."
       ]
     },
 
