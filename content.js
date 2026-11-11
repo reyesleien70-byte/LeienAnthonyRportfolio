@@ -898,11 +898,11 @@ Reminder: Add more to this the more updates/changes/error encounter happens.`
 
     {
       tag: "Klaviyo grouped flows",
-      title: "Abandoned Cart Recovery(Grouped)",
+      title: "3 Email abandoned cart recovery for maximal revenue and ROI (Connected with 2 flow)",
       slug: "abandoned-cart-recovery-grouped",
       type: "flow",                       // flow | campaign | email-design
       date: "2026-11-10",
-      blurb: "Answers one doubt per message and saves the discount for last",
+      blurb: "Removes one doubt and Gives reasons to buy at every message, discounts are spent last and least.",
       photo: "assets/case2-acr-v11-flow-1.png",
       thumbnailAlt: "The top of the abandoned checkout flow: the Checkout Started trigger with profile filters, a 1 hour 30 minute wait, the E1 First nudge email, a 22 hour 30 minute wait, the Subscribed to email list split",
       meta: "Klaviyo · Checkout Started · email · 3 emails per shopper · two discount levels",
@@ -910,8 +910,8 @@ Reminder: Add more to this the more updates/changes/error encounter happens.`
       poster: "",
       photos: [
         { src: "assets/case2-acr-v11-flow-1.png", alt: "The abandoned checkout flow, part 1: trigger with profile filters, 1 hour 30 minute wait, E1 First nudge, 22 hour 30 minute wait, Subscribed to email list split" },
-        { src: "assets/case2-acr-v11-flow-2.png", alt: "The abandoned checkout flow, part 2: Subscribed to email list split, the Yes path to E2 Second nudge plus a little push, a 1 day wait, the Fulfilled order in the last 7 days split, and the Everyone else path that ends the flow", wide: true },
-        { src: "assets/case2-acr-v11-flow-3.png", alt: "The abandoned checkout flow, part 3: Fulfilled order in the last 7 days split, the Yes path to E3A What roast, a 12 hour wait and the end, the Everyone else path to E3B What size and the end", wide: true },
+        { src: "assets/case2-acr-v11b-flow-2.png", alt: "The abandoned checkout flow, part 2: Subscribed to email list split, the Yes path (in the OB email subscriber list) to E2 Second nudge plus a little push, a 1 day wait, the Fulfilled order in the last 7 days or VIP split, and the Everyone else path that ends the flow", wide: true },
+        { src: "assets/case2-acr-v11c-flow-3.png", alt: "The abandoned checkout flow, part 3: Fulfilled order in the last 7 days or VIP split, the Yes path to E3A What roast with a 20% off message and the end, the Everyone else path to E3B What size with a 10% off message and the end", wide: true },
       ],
       story: [
         {
@@ -1157,7 +1157,7 @@ Goodluck building!`
 
     {
       tag: "Klaviyo grouped flows",
-      title: "Browse Abandonment Flow(Grouped)",
+      title: "Browse Abandonment Flow (Connected with 2 other flow)",
       slug: "browse-abandonment-flow-grouped",
       type: "flow",                       // flow | campaign | email-design
       date: "2026-09-15",
@@ -1412,7 +1412,7 @@ AND goodluck building!`
 
     {
       tag: "Klaviyo grouped flows",
-      title: "Post-Purchase Flow(Grouped)",
+      title: "Post-Purchase Flow(Connected with 2 other flow)",
       slug: "post-purchase-flow-grouped",
       type: "flow",                       // flow | campaign | email-design
       date: "2026-09-15",
