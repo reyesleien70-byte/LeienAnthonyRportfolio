@@ -1542,6 +1542,8 @@ h1 + .lede,h2 + .lede{margin-top:clamp(12px,1.6vw,18px)}
 .shot img{width:100%;height:auto;max-height:640px;object-fit:contain;background:var(--surface-2);transition:opacity var(--dur-2) var(--ease-out)}
 .shot--wide{grid-column:1 / -1}
 .shot--wide img{max-height:none}
+.shot--tall{grid-column:1 / -1}   /* a very long picture (an email): shown at its real width, the reader scrolls */
+.shot--tall img{width:min(100%,420px);max-height:none;margin:0 auto}
 .shot figcaption{margin-top:8px;font-size:13px;color:var(--muted)}
 @media (hover:hover) and (pointer:fine){ .shot a:hover img{opacity:.92} }
 

@@ -215,9 +215,9 @@ home: {
          further down this file (cases -> items). Swap a slug to swap a card.
          A slug that is misspelled, hidden OR a draft is skipped. */
       cases: [
-        "item-specific-abandoned-cart-recovery",
+        "cart-abandonment-email-2-off-bolt",
         "tlre-lifecycle-revenue-engine",
-        "welcome-email-off-bolt"
+        "abandoned-cart-recovery-grouped"
       ],
 
       /* the link under the cards. {count} = the number of case studies on show. "" hides the link. */
@@ -3590,6 +3590,42 @@ The final wording is NOT recorded in this version. Paste it here so a new owner 
         },
         {
           text: "So this SMS subscription campaign increases SMS subscription further improving CRM and therefore improving order rates so you have more revenue."
+        }
+      ]
+    },
+
+    {
+      tag: "Klaviyo · Email design",
+      title: "Cart Abandonment Email 2 for Off-Bolt",
+      slug: "cart-abandonment-email-2-off-bolt",
+      type: "email-design",
+      date: "2026-11-11",                 // YYYY-MM-DD. The day this case was first added (from the git history). Correct it IF the email was made on another day.
+      blurb: "A cart abandonment email that leads the shopper from the product to the offer, the proof and back to checkout",
+      photo: "assets/email-cart2-full.webp",
+      thumbnailAlt: "The top of the second Off-Bolt cart abandonment email",
+      meta: "Klaviyo · Cart abandonment email · Off-Bolt",
+      video: "",
+      poster: "",
+      photos: [
+        { src: "assets/email-cart2-full.webp", alt: "The full second Off-Bolt cart abandonment email: the Off-Bolt logo, You left this on your cart with a Go to cart button, the product picture with its price and a Check price button, Free return with a code and a Use it button, What customers say with a customer review and a Visit website button, Continue to checkout with a Continue button, and the footer links Visit website, About us, Similar products and Email us", tall: true }
+      ],
+      story: [
+        {
+          heading: "About this email",
+          text: "This email solves the problem of customers leaving a cart and never coming back."
+        },
+        {
+          text: "How this emails solves that?",
+          bullets: [
+            "**First** once the email is opened it guarantees that the CTA and large picture of the product will be shown which is very crucial since not anyone scroll until the end.",
+            "However if they are still deciding visual hierarchy will lead them to the second section which is the **OFFER** section and what does this section do? It removes the risk for customers since if they don't like the product they can just return it.",
+            "And once they scroll again if they are still not convince we will now use the **SOCIAL PROOF** section, what this section do? It removes their doubt either about the product or the store and with the combination of the CTA right below it, customers that are convinced can easily click the button and proceed to the website to order or to check more product.",
+            "And last SECTION the **RETURN TO CHECKOUT BUTTON** at the end again giving them second chance to click the button before they exit which will increase the chances of click again.",
+            "Lastly the **footer** with different links that points to our brand or our product."
+          ]
+        },
+        {
+          text: "SO basically it maximizes the intent and filters thought and maximizes it's potential as much as possible to cause conversion."
         }
       ]
     }

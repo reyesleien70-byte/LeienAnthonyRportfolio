@@ -449,7 +449,7 @@ function photoNode(src, alt, cls){
 /* a picture inside a case: it opens full size in a new tab, so small text stays readable.
    An optional caption sits under it. wide: true gives it the whole row. */
 function shotFigure(p){
-  const fig = make("figure", "shot" + (p.wide ? " shot--wide" : ""));
+  const fig = make("figure", "shot" + (p.wide ? " shot--wide" : "") + (p.tall ? " shot--tall" : ""));
   const a = document.createElement("a");
   a.href = p.src;
   a.target = "_blank";
