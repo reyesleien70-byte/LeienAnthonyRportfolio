@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <!-- the site's three colours: an Ink square, an "L" in Surface, one Action-blue dot -->
-  <rect width="64" height="64" rx="9" fill="#1E293B"/>
-  <path d="M19 14h8v29h19v8H19z" fill="#F8F9FA"/>
-  <rect x="36" y="14" width="10" height="10" fill="#3B82F6"/>
+  <!-- the site's three colours: a Midnight Burgundy square, an "L" in Powder White, one Amber Yellow dot -->
+  <rect width="64" height="64" rx="9" fill="#430107"/>
+  <path d="M19 14h8v29h19v8H19z" fill="#FFEFEF"/>
+  <rect x="36" y="14" width="10" height="10" fill="#FECD00"/>
 </svg>

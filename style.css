@@ -1,38 +1,82 @@
 /* ============================================================
    PORTFOLIO - SHARED STYLES
-   THEME: "The Executive Tech"
+   THEME: "Midnight Burgundy"
    EDIT ZONE = the :root block below. Change values here only.
 
    Three colours carry the whole site:
-     Surface  #F8F9FA   the page and every container
-     Ink      #1E293B   headings, body, nav, borders (as tints)
-     Action   #3B82F6   buttons, links, the active tab. Nothing else.
+     Midnight Burgundy  #430107   the page and every surface, in shades
+     Powder White       #FFEFEF   headlines, body text and copy, in shades
+     Amber Yellow       #FECD00   the audit buttons, "See my builds", links,
+                                  the current tab. Nothing else.
+
+   Brightness is the ranking. Solid Amber is first, an Amber outline is
+   second, Amber text is third, Powder White is fourth, Burgundy is the rest.
    ============================================================ */
 
 :root{
-  /* --- colours: Surface / Ink / Action --- */
-  --surface:#F8F9FA;                 /* Surface: page, panels, tables */
-  --ink:#1E293B;                     /* Ink: headings, body, nav */
-  --accent:#3B82F6;                  /* Action: button fills, focus rings, underlines */
-  --accent-text:#2563EB;             /* the same blue, deepened so link-size text passes WCAG AA (4.9:1) */
-  --accent-hover:#60A5FA;            /* the button fill while hovered */
-  --on-accent:#0F172A;               /* the label on an accent fill (4.9:1) */
+  /* --- Midnight Burgundy: the surfaces, darkest to lightest --- */
+  --surface:#430107;                 /* Midnight Burgundy: the page, the header, the edges of the glow */
+  --surface-rgb:67,1,7;              /* the same colour as numbers, for see-through fades */
+  --glow:#5A0A11;                    /* the lightest point of the soft glow behind each first screen */
+  --glow-rgb:90,10,17;               /* the same colour as numbers, so the glow can fade out */
+  --raised:#4E0F15;                  /* one shade lighter than the page: panels, pop-ups, tabs, menus */
+  --raised-rgb:78,15,21;             /* the same colour as numbers, for the reader's top bar and table edges */
+  --card:rgba(255,239,239,.06);      /* a card on the page: one shade lighter than whatever is behind it */
+  --surface-2:#56191E;               /* image wells, code blocks, form fields: the next shade up, SO they show inside a panel */
+  --panel:var(--raised);             /* the case reader, the documentation window AND their tables */
+  --shade-rgb:25,0,3;                /* burgundy taken almost to black, as numbers: shadows and the dim layer behind a pop-up */
+  --scrim:rgba(var(--shade-rgb),.72);        /* the dim layer behind an open case or pop-up */
+  --scrim-2:rgba(var(--shade-rgb),.55);      /* the lighter dim layer behind the documentation window */
+  --shadow:0 1px 0 rgba(var(--shade-rgb),.35);
+  --shadow-lift:rgba(var(--shade-rgb),.75);  /* the shadow under a hovered card, a menu, the toast */
+  --shadow-panel:rgba(var(--shade-rgb),.85); /* the shadow under an open panel */
 
-  /* tints of Ink, for everything quiet */
-  --muted:#475569;                   /* quiet text, 7.2:1 on Surface (AAA) */
-  --line:rgba(30,41,59,.14);         /* hairlines and borders */
-  --line-strong:rgba(30,41,59,.30);
-  --tint:rgba(30,41,59,.04);         /* a barely-there fill */
-  --tint-2:rgba(30,41,59,.07);
-  --surface-2:#EEF1F4;               /* image wells, code blocks */
-  --panel:var(--surface);            /* the case panel AND its tables */
-  --shadow:0 1px 0 rgba(30,41,59,.05);
+  /* --- Powder White: text in three levels, then faint tints for lines --- */
+  --ink:#FFEFEF;                     /* Powder White, full: headlines, names, bold words (15.1:1 on the page) */
+  --ink-rgb:255,239,239;             /* the same colour as numbers, for tints */
+  --text:#E5CECF;                    /* body text, slightly dimmer (11.3:1 on the page, 7.7:1 at worst) */
+  --muted:#C7A8A9;                   /* small labels and quiet text, dimmer again (7.7:1 on the page, 5.3:1 at worst) */
+  --line:rgba(var(--ink-rgb),.14);   /* hairlines and borders */
+  --line-strong:rgba(var(--ink-rgb),.30);    /* a border that must be noticed: buttons, tabs, panels */
+  --line-field:rgba(var(--ink-rgb),.55);     /* the edge of a form field AND of a checkbox */
+  --tint:rgba(var(--ink-rgb),.05);   /* a barely-there fill */
+  --tint-2:rgba(var(--ink-rgb),.09); /* a slightly stronger fill: hover, the selected tab */
+  --focus:var(--ink);                /* the keyboard focus ring. Powder White, SO it adds no yellow */
+  --focus-halo:rgba(var(--ink-rgb),.25);     /* the soft ring around a form field being typed in */
+  --select:rgba(var(--ink-rgb),.24); /* text highlighted with the mouse */
+  --scroll-thumb:rgba(var(--ink-rgb),.38);   /* the handle of a scrollbar */
+  --scroll-thumb-hover:rgba(var(--ink-rgb),.6);
+  --scroll-track:rgba(var(--ink-rgb),.06);   /* the groove a scrollbar handle runs in */
+  --graph-line:rgba(var(--ink-rgb),.15);     /* the rings AND spokes of the skill graph */
+  --graph-line-on:rgba(var(--ink-rgb),.6);   /* the spoke of the skill being pointed at */
+  --art-line:rgba(var(--ink-rgb),.26);       /* the drawn card picture: the wires between its boxes */
+  --art-node:rgba(var(--ink-rgb),.5);        /* the drawn card picture: the edge of each box */
+  --select-arrow:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23FFEFEF' stroke-width='1.8'><path d='M6 9l6 6 6-6'/></svg>");   /* the small arrow on a dropdown, drawn in Powder White */
+
+  /* --- Amber Yellow: the only bright colour. Buttons, links, the current tab. --- */
+  --accent:#FECD00;                  /* Amber Yellow: the fill of an audit button, an outline, an underline */
+  --accent-rgb:254,205,0;            /* the same colour as numbers, for the soft ring around a hovered yellow button */
+  --accent-text:#FECD00;             /* Amber as text: links, the current page, the selected tab (11.2:1 on the page) */
+  --accent-hover:#FEDA5B;            /* a yellow button or link while hovered: slightly lighter */
+  --accent-press:#E0AC01;            /* a yellow button while pressed: slightly darker */
+  --on-accent:#430107;               /* the label on a yellow fill: Midnight Burgundy (11.2:1, 8.1:1 while pressed) */
+  --accent-wash:rgba(var(--accent-rgb),.10); /* the faint fill inside "See my builds" while hovered */
+  --accent-ring:rgba(var(--accent-rgb),.22); /* the soft ring around a hovered yellow button */
+
+  /* --- pictures: screenshots, the certificate AND the photo have white backgrounds --- */
+  --img-line:#743F43;                /* a thin burgundy edge around a picture */
+  --img-shadow:0 14px 30px -14px rgba(var(--shade-rgb),.9);   /* the soft shadow that sits a picture on the dark page */
 
   /* radar series. Same three names content.js already uses,
-     now three tints of Ink, so Action blue stays for clicks. */
-  --teal:#1E293B;
-  --violet:#475569;
-  --rose:#64748B;
+     now three levels of Powder White, so Amber stays for clicks. */
+  --teal:#FFEFEF;
+  --violet:#D2B6B7;
+  --rose:#B49092;                    /* the dimmest series: still 4.9:1 on the lightest glow */
+
+  /* the star canvas (switched off by this theme, see section 1). Burgundy shades only, as numbers. */
+  --star-1:116,63,67;
+  --star-2:140,90,93;
+  --star-3:98,28,35;
 
   /* --- motion: one feel for the whole site --- */
   --ease-out:cubic-bezier(.16,1,.3,1);      /* fast start, long soft landing */
@@ -83,6 +127,7 @@
 *,*::before,*::after{box-sizing:border-box}
 
 html{
+  scrollbar-color:var(--scroll-thumb) var(--surface);   /* the page's own scrollbar wears the theme */
   scroll-behavior:smooth;
   scrollbar-gutter:stable;           /* the page does NOT jump WHEN a panel locks the scroll */
   -webkit-text-size-adjust:100%;
@@ -91,8 +136,13 @@ html{
 
 body{
   margin:0;
-  background:var(--surface);
-  color:var(--ink);
+  /* the soft glow: it sits behind the first screen only, AND fades to Midnight Burgundy at every edge */
+  background:
+    radial-gradient(ellipse 50% 48% at 50% 50%,
+      rgba(var(--glow-rgb),1) 0%, rgba(var(--glow-rgb),.84) 25%, rgba(var(--glow-rgb),.52) 50%,
+      rgba(var(--glow-rgb),.18) 75%, rgba(var(--glow-rgb),0) 100%) top center / 100% 100vh no-repeat,
+    var(--surface);
+  color:var(--text);
   font-family:var(--sans);
   font-weight:400;
   font-size:var(--step-0);
@@ -109,10 +159,11 @@ body.is-locked{overflow:hidden}          /* IF a panel is open THEN the page doe
 img{max-width:100%;display:block}
 a{color:inherit}
 button{-webkit-tap-highlight-color:transparent}
-::selection{background:rgba(59,130,246,.22);color:var(--ink)}
+::selection{background:var(--select);color:var(--ink)}
+::placeholder{color:var(--muted);opacity:1}
 
 :focus-visible{
-  outline:2px solid var(--accent);
+  outline:2px solid var(--focus);
   outline-offset:3px;
   border-radius:4px;
 }
@@ -132,6 +183,9 @@ html.lenis{scroll-behavior:auto}
    1. THE SKY  (retired by this theme)
    The starfield and aurora were decoration. They are hidden, not
    deleted, so the page structure and scripts stay exactly as they were.
+   The glow of this theme is the still one drawn on the body, above.
+   IF the stars are ever switched back on THEN they read their three
+   Burgundy shades from --star-1, --star-2 AND --star-3.
    ============================================================ */
 
 .sky{display:none}
@@ -192,7 +246,7 @@ html.lenis{scroll-behavior:auto}
   transition:color var(--dur-1) var(--ease-out);
 }
 .nav__link[aria-current="page"]{color:var(--accent-text)}
-.nav__link[aria-current="page"]::after{                 /* the active tab: a short Action underline */
+.nav__link[aria-current="page"]::after{                 /* the current page: a short Amber underline */
   content:"";position:absolute;left:14px;right:14px;bottom:4px;height:2px;
   border-radius:2px;background:var(--accent);
 }
@@ -208,10 +262,11 @@ html.lenis{scroll-behavior:auto}
   border-radius:3px;background:var(--accent);
   transition:background-color var(--dur-1) var(--ease-out), box-shadow var(--dur-2) var(--ease-out);
 }
-/* on the contact page itself: no underline. The button wears an Ink frame instead, SO "you are here" is NOT colour alone. */
+/* on the contact page itself: no underline. The button wears a thin Burgundy line just inside its edge instead, SO "you are here" is NOT colour alone. */
 .nav__link[data-nav="contact"][aria-current="page"]{color:var(--on-accent)}
 .nav__link[data-nav="contact"][aria-current="page"]::after{display:none}
-.nav__link[data-nav="contact"][aria-current="page"]::before{box-shadow:inset 0 0 0 2px var(--ink)}
+.nav__link[data-nav="contact"][aria-current="page"]::before{box-shadow:inset 0 0 0 2px var(--accent), inset 0 0 0 4px var(--on-accent)}
+.nav__link[data-nav="contact"]:active::before{background:var(--accent-press)}
 
 /* the soft pill behind the link under the pointer. It rests on the current page. */
 .nav__pill{
@@ -252,10 +307,10 @@ html.lenis{scroll-behavior:auto}
   height:2px;border-radius:0;
   will-change:left;
   background:linear-gradient(90deg,
-    rgba(30,41,59,0) 0%,
-    rgba(30,41,59,.14) 55%,
-    rgba(30,41,59,.55) 88%,
-    rgba(30,41,59,1) 100%);
+    rgba(var(--ink-rgb),0) 0%,
+    rgba(var(--ink-rgb),.1) 55%,
+    rgba(var(--ink-rgb),.4) 88%,
+    rgba(var(--ink-rgb),.7) 100%);
 }
 .nav__comet::after{display:none}
 
@@ -273,14 +328,14 @@ body.is-leaving .foot{opacity:0;transform:translate3d(0,-6px,0);transition:opaci
   font-size:12px;letter-spacing:.1em;color:var(--muted);text-transform:uppercase;
   margin:0 0 10px;font-weight:600;
 }
-h1,h2,h3{font-family:var(--sans);font-weight:600;letter-spacing:-.02em;margin:0;text-wrap:balance}
+h1,h2,h3{font-family:var(--sans);font-weight:600;letter-spacing:-.02em;margin:0;text-wrap:balance;color:var(--ink)}
 h1{font-size:var(--step-5);line-height:1.06}
 h2{font-size:var(--step-3);line-height:1.15}
 h3{font-size:var(--step-2);line-height:1.25}
 p{margin:0 0 1em;max-width:66ch;text-wrap:pretty}
-.lede{font-size:var(--step-1);color:var(--muted)}
+.lede{font-size:var(--step-1);color:var(--text)}
 h1 + .lede,h2 + .lede{margin-top:clamp(12px,1.6vw,18px)}
-.muted{color:var(--muted)}
+.muted{color:var(--text)}
 
 .btn{
   display:inline-flex;align-items:center;justify-content:center;gap:9px;
@@ -295,20 +350,31 @@ h1 + .lede,h2 + .lede{margin-top:clamp(12px,1.6vw,18px)}
   transition:background-color var(--dur-1) var(--ease-out), border-color var(--dur-1) var(--ease-out),
              box-shadow var(--dur-2) var(--ease-out), transform var(--dur-2) var(--ease-out);
 }
-.btn:active{transform:scale(.97)}
-.btn--ghost{background:transparent;border-color:var(--line-strong);color:var(--ink)}
+.btn:active{transform:scale(.97);background:var(--accent-press);border-color:var(--accent-press)}
+/* a yellow button under the keyboard: a Burgundy gap, THEN a Powder White ring. It shows against the button AND the page. */
+.btn:focus-visible{outline:2px solid var(--focus);outline-offset:3px;box-shadow:0 0 0 3px var(--surface)}
+.btn--ghost,
+.btn--ghost:active{background:transparent;border-color:var(--line-strong);color:var(--ink)}
+/* "See my builds": second to the audit button. A yellow outline AND a yellow label, no fill. */
+.actions .btn--ghost,
+.actions .btn--ghost:active{border-color:var(--accent);color:var(--accent-text)}
+/* a certificate's first link is a button too, BUT it is not a call to act, SO it gets no yellow */
+.cert__links .btn:not(.btn--ghost),
+.cert__links .btn:not(.btn--ghost):active{background:var(--tint-2);border-color:var(--ink);color:var(--ink)}
 
 /* hover ONLY WHERE a real pointer exists. A tap never leaves a stuck hover. */
 @media (hover:hover) and (pointer:fine){
   .btn:hover{
     background:var(--accent-hover);border-color:var(--accent-hover);
-    box-shadow:0 0 0 4px rgba(59,130,246,.18);
+    box-shadow:0 0 0 4px var(--accent-ring);
   }
   .btn--ghost:hover{background:var(--tint-2);color:var(--ink);border-color:var(--ink);box-shadow:none}
+  .actions .btn--ghost:hover{background:var(--accent-wash);color:var(--accent-hover);border-color:var(--accent-hover)}
+  .cert__links .btn:not(.btn--ghost):hover{background:var(--line);border-color:var(--ink);box-shadow:none}
   .nav__link:hover{color:var(--ink)}
   .nav__link[data-nav="contact"]:hover{color:var(--on-accent)}
-  .nav__link[data-nav="contact"]:hover::before{background:var(--accent-hover);box-shadow:0 0 0 3px rgba(59,130,246,.18)}
-  .nav__link[data-nav="contact"][aria-current="page"]:hover::before{box-shadow:inset 0 0 0 2px var(--ink)}
+  .nav__link[data-nav="contact"]:hover::before{background:var(--accent-hover);box-shadow:0 0 0 3px var(--accent-ring)}
+  .nav__link[data-nav="contact"][aria-current="page"]:hover::before{box-shadow:inset 0 0 0 2px var(--accent-hover), inset 0 0 0 4px var(--on-accent)}
 }
 
 /* --- the cursor light: a glow AND a brighter rim follow the pointer --- */
@@ -320,12 +386,12 @@ h1 + .lede,h2 + .lede{margin-top:clamp(12px,1.6vw,18px)}
 }
 .spot::before{
   z-index:-1;
-  background:radial-gradient(440px circle at var(--mx) var(--my),rgba(30,41,59,.05),transparent 46%);
+  background:radial-gradient(440px circle at var(--mx) var(--my),var(--tint),transparent 46%);
 }
 .spot::after{
   z-index:2;
   padding:1px;
-  background:radial-gradient(300px circle at var(--mx) var(--my),rgba(30,41,59,.42),transparent 62%);
+  background:radial-gradient(300px circle at var(--mx) var(--my),var(--line-strong),transparent 62%);
   -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
   -webkit-mask-composite:xor;
   mask:linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
@@ -397,16 +463,16 @@ h1 + .lede,h2 + .lede{margin-top:clamp(12px,1.6vw,18px)}
 .proof{
   display:flex;flex-wrap:wrap;align-items:center;gap:2px 18px;
   margin:14px 0 0;max-width:none;
-  font-size:13.5px;color:var(--muted);
+  font-size:13.5px;color:var(--accent-text);          /* the proof line is one of the few things in Amber */
 }
 .proof__item{display:inline-flex;align-items:center;gap:9px;min-height:32px}
-.proof__item::before{content:"";flex:none;width:5px;height:5px;background:var(--ink);opacity:.55}   /* the same small square the lists use. It wraps WITH its words. */
+.proof__item::before{content:"";flex:none;width:5px;height:5px;background:var(--accent);opacity:.55}   /* the same small square the lists use. It wraps WITH its words. */
 .proof a{
   display:inline-flex;align-items:center;min-height:32px;        /* room for a finger */
   color:var(--accent-text);font-weight:500;
   text-decoration:underline;text-decoration-color:var(--accent);text-decoration-thickness:1px;text-underline-offset:4px;
 }
-@media (hover:hover) and (pointer:fine){ .proof a:hover{text-decoration-thickness:2px} }
+@media (hover:hover) and (pointer:fine){ .proof a:hover{text-decoration-thickness:2px;color:var(--accent-hover)} }
 @media (max-width:560px){
   .actions .btn{flex:1 1 auto}                                   /* two buttons share the row. IF they do not fit THEN each takes a row. */
 }
@@ -417,7 +483,7 @@ h1 + .lede,h2 + .lede{margin-top:clamp(12px,1.6vw,18px)}
   display:grid;grid-template-columns:clamp(104px,31%,196px) minmax(0,1fr);
   min-height:132px;
   border:1px solid var(--line);border-radius:var(--radius);
-  background:var(--surface);color:inherit;text-decoration:none;overflow:hidden;
+  background:var(--card);color:inherit;text-decoration:none;overflow:hidden;
   transition:transform .7s var(--ease-out), border-color .4s var(--ease-out), box-shadow .7s var(--ease-out);
 }
 .pick:active{transform:scale(.985);transition-duration:.2s}
@@ -427,7 +493,7 @@ h1 + .lede,h2 + .lede{margin-top:clamp(12px,1.6vw,18px)}
 .pick__body{display:flex;flex-direction:column;gap:5px;min-width:0;padding:16px 18px}
 .pick__type{font-size:11.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--ink)}
 .pick h3{font-size:clamp(16px,.95rem + .2vw,18px);line-height:1.3}
-.pick__blurb{font-size:14px;line-height:1.5;color:var(--muted)}
+.pick__blurb{font-size:14px;line-height:1.5;color:var(--text)}
 .pick__open{
   margin-top:auto;padding-top:8px;
   display:inline-flex;align-items:center;gap:8px;
@@ -439,10 +505,11 @@ h1 + .lede,h2 + .lede{margin-top:clamp(12px,1.6vw,18px)}
   font-size:14.5px;font-weight:600;color:var(--accent-text);text-decoration:none;
 }
 @media (hover:hover) and (pointer:fine){
-  .pick:hover{transform:translate3d(0,-2px,0);border-color:var(--ink);box-shadow:0 12px 24px -14px rgba(30,41,59,.35)}
+  .pick:hover{transform:translate3d(0,-2px,0);border-color:var(--ink);box-shadow:0 12px 24px -14px var(--shadow-lift)}
   .pick:hover .pick__media > *{transform:scale(1.03)}
   .pick:hover .case-card__arrow,
   .picks__more a:hover .case-card__arrow{transform:translateX(5px)}
+  .picks__more a:hover{color:var(--accent-hover)}
   .pick:hover .case-art__flow{animation-play-state:running}
 }
 .pick:focus-visible .case-art__flow{animation-play-state:running}
@@ -454,9 +521,9 @@ h1 + .lede,h2 + .lede{margin-top:clamp(12px,1.6vw,18px)}
   padding:16px 0;border-bottom:1px solid var(--line);
 }
 .rows li:last-child{border-bottom:0}
-.rows .dot{width:6px;height:6px;border-radius:0;background:var(--ink);transform:translateY(-2px)}
+.rows .dot{width:6px;height:6px;border-radius:0;background:var(--muted);transform:translateY(-2px)}
 .rows strong{font-weight:600;color:var(--ink)}
-.rows span{color:var(--muted)}
+.rows span{color:var(--text)}
 
 /* --- stack: symbol above, name below, shown lightly --- */
 .stack{
@@ -490,7 +557,7 @@ h1 + .lede,h2 + .lede{margin-top:clamp(12px,1.6vw,18px)}
 .contact-lines a{color:var(--accent-text);text-decoration:none;overflow-wrap:anywhere;
   background:linear-gradient(var(--accent),var(--accent)) 0 100% / 100% 1px no-repeat;padding-bottom:2px;
   transition:background-size .5s var(--ease-out), color var(--dur-1) var(--ease-out)}
-@media (hover:hover) and (pointer:fine){ .contact-lines a:hover{background-size:100% 2px} }
+@media (hover:hover) and (pointer:fine){ .contact-lines a:hover{background-size:100% 2px;color:var(--accent-hover)} }
 
 .chip{
   display:inline-flex;align-items:center;gap:6px;
@@ -501,7 +568,7 @@ h1 + .lede,h2 + .lede{margin-top:clamp(12px,1.6vw,18px)}
 }
 .chip svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:1.6}
 .chip:active{transform:scale(.96)}
-@media (hover:hover) and (pointer:fine){ .chip:hover{color:var(--ink);border-color:var(--accent)} }
+@media (hover:hover) and (pointer:fine){ .chip:hover{color:var(--ink);border-color:var(--ink)} }
 
 /* --- CTA --- */
 .cta{
@@ -540,7 +607,8 @@ h1 + .lede,h2 + .lede{margin-top:clamp(12px,1.6vw,18px)}
   width:100%;height:100%;object-fit:cover;
   border-radius:0;
   background:var(--surface-2);
-  border:1px solid var(--line);
+  border:1px solid var(--img-line);
+  box-shadow:var(--img-shadow);
 }
 
 /* --- the little "scroll" hint under the first screen. Wide screens only. --- */
@@ -595,11 +663,11 @@ h1 + .lede,h2 + .lede{margin-top:clamp(12px,1.6vw,18px)}
 /* --- it draws itself in: rings from the middle out, the outline traces,
        the fill arrives, the dots pop --- */
 .radar__ring{
-  fill:none;stroke:rgba(30,41,59,.13);stroke-width:1;
+  fill:none;stroke:var(--graph-line);stroke-width:1;
   opacity:0;transition:opacity .8s ease;transition-delay:calc(var(--k,0) * 70ms);
 }
 .radar__spoke{
-  stroke:rgba(30,41,59,.10);stroke-width:1;
+  stroke:var(--graph-line);stroke-width:1;
   opacity:0;transition:opacity .8s var(--ease-out) .2s, stroke .3s var(--ease-out);
 }
 .radar__shape{
@@ -640,13 +708,13 @@ h1 + .lede,h2 + .lede{margin-top:clamp(12px,1.6vw,18px)}
 /* --- one skill picked: it lights up, the rest step back --- */
 .radar.has-active .radar__label{opacity:.32}
 .radar.has-active .radar__label.is-active{opacity:1;fill:var(--ink)}
-.radar__spoke.is-active{stroke:rgba(30,41,59,.55)}
+.radar__spoke.is-active{stroke:var(--graph-line-on)}
 .radar__dot.is-active{transform:scale(1.9);fill:var(--c)}
 
 .radar__tip{
   position:absolute;left:0;top:0;z-index:2;
   padding:6px 12px;border-radius:3px;
-  background:var(--surface);border:1px solid var(--line-strong);box-shadow:var(--shadow);
+  background:var(--raised);border:1px solid var(--line-strong);box-shadow:var(--shadow);
   font-size:12.5px;line-height:1.3;white-space:nowrap;color:var(--ink);
   transform:translate3d(var(--x,0px),var(--y,0px),0) translate(-50%,calc(-100% - 14px));
   opacity:0;pointer-events:none;
@@ -697,7 +765,7 @@ h1 + .lede,h2 + .lede{margin-top:clamp(12px,1.6vw,18px)}
   width:100%;height:100%;display:flex;flex-direction:column;
   text-align:left;font:inherit;color:inherit;cursor:pointer;text-decoration:none;
   border:1px solid var(--line);border-radius:var(--radius);
-  background:var(--surface);
+  background:var(--card);
   padding:0;overflow:hidden;
   transition:transform .7s var(--ease-out), border-color .4s var(--ease-out), box-shadow .7s var(--ease-out);
 }
@@ -711,7 +779,7 @@ h1 + .lede,h2 + .lede{margin-top:clamp(12px,1.6vw,18px)}
 .case-card__body{padding:20px 22px 22px;flex:1;display:flex;flex-direction:column}
 .case-card__body .case-card__meta{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:4px 12px;margin:0 0 8px;font-size:12.5px;color:var(--muted)}
 .case-card__type{font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--ink)}
-.case-card__body p{font-size:14.5px;color:var(--muted);margin:10px 0 0}
+.case-card__body p{font-size:14.5px;color:var(--text);margin:10px 0 0}
 .case-card__body .case-card__open{                     /* pinned to the bottom */
   margin-top:auto;padding-top:18px;
   display:inline-flex;align-items:center;gap:8px;
@@ -724,7 +792,7 @@ h1 + .lede,h2 + .lede{margin-top:clamp(12px,1.6vw,18px)}
   .case-card:hover{
     transform:translate3d(0,-2px,0);
     border-color:var(--ink);
-    box-shadow:0 12px 24px -14px rgba(30,41,59,.35);
+    box-shadow:0 12px 24px -14px var(--shadow-lift);
   }
   .case-card:hover .case-card__media > *{transform:scale(1.02)}
   .case-card:hover .case-card__arrow{transform:translateX(5px)}
@@ -733,17 +801,17 @@ h1 + .lede,h2 + .lede{margin-top:clamp(12px,1.6vw,18px)}
 .case-card:focus-visible .case-art__flow{animation-play-state:running}
 
 /* --- the drawn stand-in WHEN a card has no photo: a small flow of nodes --- */
-.case-art__link{fill:none;stroke:rgba(30,41,59,.22);stroke-width:1.2}
+.case-art__link{fill:none;stroke:var(--art-line);stroke-width:1.2}
 .case-art__flow{
   fill:none;stroke-width:1.8;stroke-linecap:round;
   stroke-dasharray:4 12;opacity:.85;
   animation:case-flow 2.4s linear infinite;animation-play-state:paused;
 }
 @keyframes case-flow{to{stroke-dashoffset:-32}}
-.case-art__node{fill:var(--surface);stroke:rgba(30,41,59,.45);stroke-width:1}
+.case-art__node{fill:var(--surface);stroke:var(--art-node);stroke-width:1}
 .case-art__node.is-start{stroke:var(--ink)}
 .case-art__node.is-split{stroke:var(--rose)}
-.case-art__pip{fill:rgba(30,41,59,.6)}
+.case-art__pip{fill:var(--graph-line-on)}
 
 /* ============================================================
    6. PANELS — a case reader AND the contact box.
@@ -755,7 +823,7 @@ h1 + .lede,h2 + .lede{margin-top:clamp(12px,1.6vw,18px)}
 .modal{position:fixed;inset:0;z-index:60;display:grid;place-items:center}
 .modal__scrim{
   position:absolute;inset:0;
-  background:rgba(30,41,59,.48);
+  background:var(--scrim);
   opacity:0;transition:opacity .7s var(--ease-out);
 }
 .modal__panel{
@@ -765,8 +833,8 @@ h1 + .lede,h2 + .lede{margin-top:clamp(12px,1.6vw,18px)}
   height:min(88dvh, 1040px);
   overflow:auto;overscroll-behavior:contain;
   border:1px solid var(--line-strong);border-radius:0;
-  background:var(--surface);
-  box-shadow:0 36px 64px -28px rgba(30,41,59,.45);
+  background:var(--panel);
+  box-shadow:0 36px 64px -28px var(--shadow-panel);
   padding:clamp(22px,3.4vw,46px);
   opacity:0;transform:translate3d(0,22px,0) scale(.975);
   transition:opacity .45s var(--ease-out), transform .6s var(--ease-out);
@@ -784,21 +852,21 @@ h1 + .lede,h2 + .lede{margin-top:clamp(12px,1.6vw,18px)}
 /* the case scrollbar wears the theme */
 .modal__panel{
   scrollbar-width:thin;
-  scrollbar-color:rgba(30,41,59,.45) rgba(30,41,59,.06);
+  scrollbar-color:var(--scroll-thumb) var(--scroll-track);
 }
 .modal__panel::-webkit-scrollbar{width:10px}
 .modal__panel::-webkit-scrollbar-track{
-  background:rgba(30,41,59,.05);
+  background:var(--scroll-track);
   border-radius:0;
   margin:16px 0;
 }
 .modal__panel::-webkit-scrollbar-thumb{
   border-radius:0;
-  border:2px solid var(--surface);
-  background:rgba(30,41,59,.45);
+  border:2px solid var(--panel);
+  background:var(--scroll-thumb);
 }
 .modal__panel::-webkit-scrollbar-thumb:hover{
-  background:rgba(30,41,59,.65);
+  background:var(--scroll-thumb-hover);
 }
 
 .modal__close{
@@ -818,7 +886,7 @@ h1 + .lede,h2 + .lede{margin-top:clamp(12px,1.6vw,18px)}
   display:flex;align-items:center;gap:10px;
   height:var(--bar-h);
   padding:0 clamp(10px,2vw,20px) 0 clamp(18px,3.4vw,46px);
-  background:rgba(248,249,250,.97);
+  background:rgba(var(--raised-rgb),.97);
   border-bottom:1px solid var(--line);
 }
 .reader__title{
@@ -844,7 +912,7 @@ h1 + .lede,h2 + .lede{margin-top:clamp(12px,1.6vw,18px)}
   transition:background-color var(--dur-1) var(--ease-out), border-color var(--dur-1) var(--ease-out);
 }
 .reader__toc-btn svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.7;transition:transform .45s var(--ease-out)}
-.reader__toc-btn[aria-expanded="true"]{border-color:var(--accent);background:rgba(59,130,246,.08)}
+.reader__toc-btn[aria-expanded="true"]{border-color:var(--ink);background:var(--tint-2)}
 .reader__toc-btn[aria-expanded="true"] svg{transform:rotate(180deg)}
 @media (hover:hover) and (pointer:fine){ .reader__toc-btn:hover{border-color:var(--ink)} }
 
@@ -852,7 +920,7 @@ h1 + .lede,h2 + .lede{margin-top:clamp(12px,1.6vw,18px)}
   display:none;
   position:absolute;top:7px;left:50%;
   width:40px;height:4px;margin-left:-20px;border-radius:99px;
-  background:rgba(30,41,59,.28);
+  background:var(--line-strong);
 }
 
 /* --- the reader body: contents on the left (wide), the case on the right --- */
@@ -870,8 +938,8 @@ h1 + .lede,h2 + .lede{margin-top:clamp(12px,1.6vw,18px)}
   overflow:auto;overscroll-behavior:contain;
   margin:0;padding:8px;list-style:none;
   border:1px solid var(--line-strong);border-radius:var(--radius);
-  background:var(--surface);
-  box-shadow:0 14px 28px -10px rgba(30,41,59,.28);
+  background:var(--surface-2);
+  box-shadow:0 14px 28px -10px var(--shadow-lift);
   opacity:0;visibility:hidden;
   transform:translate3d(0,-8px,0) scale(.98);transform-origin:top right;
   transition:opacity .25s var(--ease-out), transform .45s var(--ease-out), visibility 0s linear .45s;
@@ -886,7 +954,7 @@ h1 + .lede,h2 + .lede{margin-top:clamp(12px,1.6vw,18px)}
   transition:color var(--dur-1) var(--ease-out), background-color var(--dur-1) var(--ease-out);
 }
 .toc__link--sub{padding-left:24px;font-size:13px;min-height:34px}
-.toc__link.is-active{color:var(--ink);font-weight:600;background:rgba(59,130,246,.08)}
+.toc__link.is-active{color:var(--ink);font-weight:600;background:var(--tint-2)}
 @media (hover:hover) and (pointer:fine){ .toc__link:hover{color:var(--ink)} }
 
 /* wide panel: contents become a rail that follows the reading */
@@ -906,7 +974,7 @@ h1 + .lede,h2 + .lede{margin-top:clamp(12px,1.6vw,18px)}
   .toc__link.is-active{background:none;color:var(--ink)}
   .toc__link.is-active::before{
     content:"";position:absolute;left:-3px;top:8px;bottom:8px;width:2px;border-radius:2px;
-    background:var(--accent);
+    background:var(--ink);
   }
   .reader__toc-btn{display:none}
 }
@@ -924,11 +992,11 @@ h1 + .lede,h2 + .lede{margin-top:clamp(12px,1.6vw,18px)}
   transition:border-color .4s var(--ease-out), transform .6s var(--ease-out);
 }
 .pager__btn--next{text-align:right;align-items:flex-end}
-.pager__dir{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--accent-text)}
+.pager__dir{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
 .pager__title{font-family:var(--sans);font-weight:600;font-size:19px;line-height:1.25}
 .pager__btn:active{transform:scale(.98)}
 @media (hover:hover) and (pointer:fine){
-  .pager__btn:hover{border-color:var(--accent);transform:translate3d(0,-1px,0)}
+  .pager__btn:hover{border-color:var(--ink);transform:translate3d(0,-1px,0)}
 }
 @container (max-width:560px){
   .reader__pager{grid-template-columns:1fr}
@@ -949,11 +1017,11 @@ h1 + .lede,h2 + .lede{margin-top:clamp(12px,1.6vw,18px)}
 .case-full h2{margin-bottom:6px;outline:none}
 .case-full .meta{color:var(--muted);font-size:13.5px;margin:0 0 24px}
 .case-full video,
-.case-full img{width:100%;border-radius:var(--radius);border:1px solid var(--line);background:var(--surface-2)}
+.case-full img{width:100%;border-radius:var(--radius);border:1px solid var(--img-line);background:var(--surface-2);box-shadow:var(--img-shadow)}
 .case-full video{aspect-ratio:16/9;object-fit:cover}
 .shots{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));margin:20px 0 26px}
 .case-full h3{margin:34px 0 10px;scroll-margin-top:calc(var(--bar-h) + 18px)}
-.case-full ul{color:var(--muted);padding-left:20px;margin:0 0 1em}
+.case-full ul{color:var(--text);padding-left:20px;margin:0 0 1em}
 
 /* a picture that is not there yet: a slim, labelled tile */
 .shot--empty{
@@ -987,7 +1055,7 @@ h1 + .lede,h2 + .lede{margin-top:clamp(12px,1.6vw,18px)}
   scroll-margin-top:calc(var(--bar-h) + 18px);
 }
 .doc h4:first-child{margin-top:0}
-.doc p{color:var(--muted);margin:0 0 14px}
+.doc p{color:var(--text);margin:0 0 14px}
 .doc__lead{color:var(--ink);font-weight:500;margin:20px 0 8px}
 .doc ul{margin:0 0 16px}
 .doc li{margin:0 0 7px}
@@ -1003,12 +1071,12 @@ h1 + .lede,h2 + .lede{margin-top:clamp(12px,1.6vw,18px)}
 .doc__table{
   overflow-x:auto;margin:0 0 20px;border:1px solid var(--line);border-radius:0;
   background:
-    linear-gradient(90deg,var(--panel) 30%,rgba(248,249,250,0)) left center / 40px 100% no-repeat local,
-    linear-gradient(270deg,var(--panel) 30%,rgba(248,249,250,0)) right center / 40px 100% no-repeat local,
-    radial-gradient(farthest-side at 0 50%,rgba(30,41,59,.18),transparent) left center / 12px 100% no-repeat scroll,
-    radial-gradient(farthest-side at 100% 50%,rgba(30,41,59,.18),transparent) right center / 12px 100% no-repeat scroll,
+    linear-gradient(90deg,var(--panel) 30%,rgba(var(--raised-rgb),0)) left center / 40px 100% no-repeat local,
+    linear-gradient(270deg,var(--panel) 30%,rgba(var(--raised-rgb),0)) right center / 40px 100% no-repeat local,
+    radial-gradient(farthest-side at 0 50%,var(--shadow-lift),transparent) left center / 12px 100% no-repeat scroll,
+    radial-gradient(farthest-side at 100% 50%,var(--shadow-lift),transparent) right center / 12px 100% no-repeat scroll,
     var(--panel);
-  scrollbar-width:thin;scrollbar-color:rgba(30,41,59,.35) transparent;
+  scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) transparent;
 }
 .doc table{border-collapse:collapse;width:100%;min-width:460px;font-size:13.5px}
 .doc th,.doc td{text-align:left;padding:11px 14px;vertical-align:top;border-bottom:1px solid var(--line)}
@@ -1017,7 +1085,7 @@ h1 + .lede,h2 + .lede{margin-top:clamp(12px,1.6vw,18px)}
   font-weight:600;color:var(--ink);white-space:nowrap;
   background:var(--tint);
 }
-.doc td{color:var(--muted);line-height:1.55}
+.doc td{color:var(--text);line-height:1.55}
 .doc td:first-child{color:var(--ink);min-width:64px}   /* short labels like 3–4 stay on one line */
 .doc tbody tr:last-child td{border-bottom:0}
 @media (hover:hover) and (pointer:fine){ .doc tbody tr:hover td{background:var(--tint)} }
@@ -1034,7 +1102,7 @@ h1 + .lede,h2 + .lede{margin-top:clamp(12px,1.6vw,18px)}
 .doc em{color:var(--ink);font-style:italic}
 
 /* nested AND numbered lists */
-.doc ol{color:var(--muted);padding-left:22px;margin:0 0 16px}
+.doc ol{color:var(--text);padding-left:22px;margin:0 0 16px}
 .doc ol > li{padding-left:4px;margin-bottom:12px}
 .doc ol > li::marker{color:var(--ink);font-weight:600}
 .doc li > ul,.doc li > ol{margin:7px 0 2px}
@@ -1044,7 +1112,7 @@ h1 + .lede,h2 + .lede{margin-top:clamp(12px,1.6vw,18px)}
 .doc li.doc__task{list-style:none;margin-left:-20px;display:flex;gap:10px;align-items:baseline}
 .doc__check{
   flex:none;width:13px;height:13px;border-radius:4px;
-  border:1.5px solid rgba(30,41,59,.5);transform:translateY(2px);
+  border:1.5px solid var(--line-field);transform:translateY(2px);
 }
 .doc__task.is-done .doc__check{background:var(--ink);border-color:var(--ink)}
 
@@ -1061,7 +1129,7 @@ h1 + .lede,h2 + .lede{margin-top:clamp(12px,1.6vw,18px)}
   margin:0;padding:18px 20px;overflow-x:auto;
   background:var(--surface-2);border:1px solid var(--line);border-radius:0;
   font-size:13px;line-height:1.6;
-  scrollbar-width:thin;scrollbar-color:rgba(30,41,59,.35) transparent;
+  scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) transparent;
 }
 .doc__code code{
   background:none;border:0;padding:0;font-size:inherit;
@@ -1071,11 +1139,11 @@ h1 + .lede,h2 + .lede{margin-top:clamp(12px,1.6vw,18px)}
 .doc__copy{
   position:absolute;top:8px;right:8px;
   min-height:30px;padding:0 11px;border-radius:2px;
-  border:1px solid var(--line-strong);background:var(--surface);
+  border:1px solid var(--line-strong);background:var(--raised);
   color:var(--ink);font:inherit;font-size:12px;cursor:pointer;
   transition:opacity var(--dur-1) var(--ease-out), color var(--dur-1) var(--ease-out), border-color var(--dur-1) var(--ease-out);
 }
-.doc__copy.is-done{color:var(--accent-text);border-color:var(--accent)}
+.doc__copy.is-done{color:var(--ink);border-color:var(--ink)}
 @media (hover:hover) and (pointer:fine){
   .doc__copy{opacity:0}
   .doc__codewrap:hover .doc__copy,
@@ -1091,7 +1159,8 @@ h1 + .lede,h2 + .lede{margin-top:clamp(12px,1.6vw,18px)}
 .media img,
 .media video{
   width:100%;display:block;
-  border-radius:var(--radius);border:1px solid var(--line);background:var(--surface-2);
+  border-radius:var(--radius);border:1px solid var(--img-line);background:var(--surface-2);
+  box-shadow:var(--img-shadow);
 }
 .media video{aspect-ratio:16/9;object-fit:cover}
 
@@ -1107,7 +1176,7 @@ h1 + .lede,h2 + .lede{margin-top:clamp(12px,1.6vw,18px)}
 .noscript{
   margin:40px 0;padding:20px 22px;
   border:1px solid var(--line);border-radius:var(--radius);
-  background:var(--tint);color:var(--muted);
+  background:var(--tint);color:var(--text);
 }
 
 /* --- contact composer: the only editable thing on the site --- */
@@ -1122,7 +1191,7 @@ h1 + .lede,h2 + .lede{margin-top:clamp(12px,1.6vw,18px)}
   position:sticky;bottom:calc(-1 * var(--pad));z-index:1;
   margin:2px calc(-1 * var(--pad)) calc(-1 * var(--pad));
   padding:14px var(--pad);
-  background:var(--surface);border-top:1px solid var(--line);
+  background:var(--panel);border-top:1px solid var(--line);
 }
 .modal__panel--compose .modal__close{position:absolute;top:16px;right:16px}
 .modal__panel--compose h2{padding-right:52px}
@@ -1130,12 +1199,12 @@ h1 + .lede,h2 + .lede{margin-top:clamp(12px,1.6vw,18px)}
 .compose label{font-size:12.5px;color:var(--muted)}
 .compose input,.compose textarea{
   width:100%;font:inherit;font-size:16px;color:var(--ink);   /* 16px: phones do NOT zoom in on focus */
-  background:var(--surface);
-  border:1px solid rgba(30,41,59,.55);border-radius:3px;
+  background:var(--surface-2);
+  border:1px solid var(--line-field);border-radius:3px;
   padding:12px 14px;resize:vertical;
   transition:border-color var(--dur-1) var(--ease-out), box-shadow var(--dur-2) var(--ease-out);
 }
-.compose input:focus,.compose textarea:focus,.compose select:focus{border-color:var(--accent);outline:none;box-shadow:0 0 0 3px rgba(59,130,246,.28)}
+.compose input:focus,.compose textarea:focus,.compose select:focus{border-color:var(--focus);outline:none;box-shadow:0 0 0 3px var(--focus-halo)}
 .compose textarea{
   min-height:150px;max-height:62vh;line-height:1.5;
   field-sizing:content;                                       /* the box grows to show the whole message, WHERE the browser can */
@@ -1148,24 +1217,24 @@ h1 + .lede,h2 + .lede{margin-top:clamp(12px,1.6vw,18px)}
   font:inherit;font-size:16px;color:var(--ink);
   padding:0 42px 0 14px;
   border:1px solid var(--line-strong);border-radius:3px;
-  background:var(--tint-2) url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231E293B' stroke-width='1.8'><path d='M6 9l6 6 6-6'/></svg>") no-repeat right 13px center / 16px 16px;
+  background:var(--surface-2) var(--select-arrow) no-repeat right 13px center / 16px 16px;
   -webkit-appearance:none;appearance:none;
   text-overflow:ellipsis;cursor:pointer;
   transition:border-color var(--dur-1) var(--ease-out), box-shadow var(--dur-2) var(--ease-out);
 }
-.compose select option{background:var(--surface);color:var(--ink)}
+.compose select option{background:var(--raised);color:var(--ink)}
 @media (hover:hover) and (pointer:fine){ .compose select:hover{border-color:var(--ink)} }
 .compose__hint{margin:0;max-width:none;font-size:13px;line-height:1.45;color:var(--muted)}
-.compose .to{color:var(--accent-text);font-size:15px;overflow-wrap:anywhere}
+.compose .to{color:var(--ink);font-size:15px;overflow-wrap:anywhere}
 .compose__actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:4px}
 
 /* --- a short note at the bottom of the screen, e.g. "Email copied" --- */
 .toast{
   position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom));z-index:90;
   padding:10px 18px;border-radius:3px;
-  background:var(--ink);border:1px solid var(--ink);
-  box-shadow:0 12px 32px rgba(30,41,59,.28);
-  color:var(--surface);font-size:14px;
+  background:var(--surface-2);border:1px solid var(--line-strong);
+  box-shadow:0 12px 32px var(--shadow-lift);
+  color:var(--ink);font-size:14px;
   transform:translate3d(-50%,18px,0);opacity:0;pointer-events:none;
   transition:opacity .3s var(--ease-out), transform .55s var(--ease-out);
 }
@@ -1185,7 +1254,7 @@ h1 + .lede,h2 + .lede{margin-top:clamp(12px,1.6vw,18px)}
   width:min(1180px, 100% - 2 * var(--gutter));margin-inline:auto;
   display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;
 }
-.foot__name{font-family:var(--sans);font-weight:600;font-size:clamp(20px,1.7vw,28px)}
+.foot__name{font-family:var(--sans);font-weight:600;font-size:clamp(20px,1.7vw,28px);color:var(--ink)}
 .foot__links{display:flex;align-items:center;gap:10px 20px;flex-wrap:wrap}
 .foot a{color:var(--accent-text);text-decoration:none;font-size:14.5px;font-weight:500;overflow-wrap:anywhere;transition:color var(--dur-1) var(--ease-out)}
 .foot__top{
@@ -1197,8 +1266,8 @@ h1 + .lede,h2 + .lede{margin-top:clamp(12px,1.6vw,18px)}
 }
 .foot__top svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.7;transition:transform .5s var(--ease-out)}
 @media (hover:hover) and (pointer:fine){
-  .foot a:hover{color:var(--on-accent)}
-  .foot__top:hover{color:var(--ink);border-color:var(--accent)}
+  .foot a:hover{color:var(--accent-hover)}
+  .foot__top:hover{color:var(--ink);border-color:var(--ink)}
   .foot__top:hover svg{transform:translateY(-3px)}
 }
 
@@ -1325,7 +1394,7 @@ h1 + .lede,h2 + .lede{margin-top:clamp(12px,1.6vw,18px)}
 .folder{
   margin:8px 0 0;
   border:1px solid var(--line-strong);
-  background:var(--surface);
+  background:var(--panel);
 }
 .folder__head{
   display:flex;align-items:center;gap:10px;
@@ -1364,7 +1433,7 @@ h1 + .lede,h2 + .lede{margin-top:clamp(12px,1.6vw,18px)}
 
 /* the window itself: it sits on top of the case, a little narrower, SO the case stays in view behind it */
 .modal--doc{z-index:70}
-.modal--doc .modal__scrim{background:rgba(30,41,59,.34)}
+.modal--doc .modal__scrim{background:var(--scrim-2)}
 .modal--doc .modal__panel{
   width:min(1040px, 100% - 2 * var(--gutter));
   height:min(84vh, 980px);
@@ -1391,7 +1460,7 @@ h1 + .lede,h2 + .lede{margin-top:clamp(12px,1.6vw,18px)}
 .cert{
   display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);
   border:1px solid var(--line);border-radius:var(--radius);
-  background:var(--surface);overflow:hidden;
+  background:var(--card);overflow:hidden;
 }
 .cert__media{
   display:grid;place-items:center;
@@ -1402,7 +1471,8 @@ h1 + .lede,h2 + .lede{margin-top:clamp(12px,1.6vw,18px)}
 .cert__media a{display:block;width:100%}
 .cert__media img{
   width:100%;max-height:380px;object-fit:contain;
-  border:1px solid var(--line);
+  border:1px solid var(--img-line);
+  box-shadow:var(--img-shadow);
   transition:transform 1.2s var(--ease-out);
 }
 @media (hover:hover) and (pointer:fine){ .cert__media a:hover img{transform:scale(1.015)} }
@@ -1500,15 +1570,15 @@ h1 + .lede,h2 + .lede{margin-top:clamp(12px,1.6vw,18px)}
 .cs-tab{
   min-height:44px;min-width:44px;padding:0 20px;
   display:inline-flex;align-items:center;justify-content:center;gap:6px;
-  border:0;border-radius:0;background:var(--surface);color:var(--ink);
+  border:0;border-radius:0;background:var(--raised);color:var(--text);
   font:inherit;font-size:14.5px;font-weight:500;white-space:nowrap;cursor:pointer;
   transition:background-color .15s ease, color .15s ease;
 }
 .cs-tab__count{font-weight:400;opacity:.85}
-.cs-tab.is-on{background:var(--ink);color:var(--surface);font-weight:700}      /* fill AND weight, never colour alone */
+.cs-tab.is-on{background:var(--surface-2);color:var(--accent-text);font-weight:700;box-shadow:inset 0 -2px 0 var(--accent)}      /* Amber words, a thin Amber underline AND weight, never colour alone */
 .cs-tab.is-on .cs-tab__count{font-weight:600;opacity:1}
-@media (hover:hover) and (pointer:fine){ .cs-tab:not(.is-on):hover{background:var(--tint-2)} }
-.cs-tab:focus-visible{outline:2px solid var(--accent);outline-offset:-4px}
+@media (hover:hover) and (pointer:fine){ .cs-tab:not(.is-on):hover{background:var(--surface-2);color:var(--ink)} }
+.cs-tab:focus-visible{outline:2px solid var(--focus);outline-offset:-4px}
 
 /* the sort: five buttons in a row, labelled "Sort". On a phone they sit in two rows (3 + 2). */
 .cs-sort{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px}
@@ -1522,12 +1592,12 @@ h1 + .lede,h2 + .lede{margin-top:clamp(12px,1.6vw,18px)}
 .cs-seg span{
   min-height:44px;min-width:44px;padding:0 16px;
   display:inline-flex;align-items:center;justify-content:center;
-  background:var(--surface);color:var(--ink);font-size:14px;font-weight:500;white-space:nowrap;
+  background:var(--raised);color:var(--text);font-size:14px;font-weight:500;white-space:nowrap;
   transition:background-color .15s ease, color .15s ease;
 }
-.cs-seg input:checked + span{background:var(--ink);color:var(--surface);font-weight:700}
-.cs-seg input:focus-visible + span{outline:2px solid var(--accent);outline-offset:-4px}
-@media (hover:hover) and (pointer:fine){ .cs-seg input:not(:checked):hover + span{background:var(--tint-2)} }
+.cs-seg input:checked + span{background:var(--surface-2);color:var(--accent-text);font-weight:700;box-shadow:inset 0 -2px 0 var(--accent)}
+.cs-seg input:focus-visible + span{outline:2px solid var(--focus);outline-offset:-4px}
+@media (hover:hover) and (pointer:fine){ .cs-seg input:not(:checked):hover + span{background:var(--surface-2);color:var(--ink)} }
 
 .cs-status{margin:0;font-size:13.5px;color:var(--muted);max-width:none}
 

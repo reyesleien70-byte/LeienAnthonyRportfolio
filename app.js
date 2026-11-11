@@ -47,11 +47,13 @@ const EASE    = "cubic-bezier(.16,1,.3,1)";
 let LENIS = null;                                   // smooth scrolling, IF it loaded
 const SKY = { pause(){}, resume(){} };              // the stars fill these in
 
-/* grey stand-ins, used WHEN content.js leaves a picture empty */
+/* burgundy stand-ins, used WHEN content.js leaves a picture empty.
+   A picture address can NOT read a colour from style.css, SO these two are typed here:
+   56191E = --surface-2 (the well), 743F43 = --img-line (the drawing). Change them together with style.css. */
 const PLACEHOLDER = {
-  photo:  "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'><rect width='400' height='400' fill='%23090C14'/><circle cx='200' cy='158' r='64' fill='%231B2439'/><path d='M64 400c0-75 61-136 136-136s136 61 136 136z' fill='%231B2439'/></svg>",
-  shot:   "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 10'><rect width='16' height='10' fill='%230A0E17'/><circle cx='8' cy='5' r='2' fill='none' stroke='%23243250' stroke-width='.12'/></svg>",
-  poster: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 9'><rect width='16' height='9' fill='%230A0E17'/><circle cx='8' cy='4.5' r='1.4' fill='none' stroke='%23243250' stroke-width='.12'/></svg>"
+  photo:  "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'><rect width='400' height='400' fill='%2356191E'/><circle cx='200' cy='158' r='64' fill='%23743F43'/><path d='M64 400c0-75 61-136 136-136s136 61 136 136z' fill='%23743F43'/></svg>",
+  shot:   "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 10'><rect width='16' height='10' fill='%2356191E'/><circle cx='8' cy='5' r='2' fill='none' stroke='%23743F43' stroke-width='.12'/></svg>",
+  poster: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 9'><rect width='16' height='9' fill='%2356191E'/><circle cx='8' cy='4.5' r='1.4' fill='none' stroke='%23743F43' stroke-width='.12'/></svg>"
 };
 
 /* the drawings content.js picks by name. Stroke only: the colour
@@ -1424,12 +1426,12 @@ function caseArt(i){
   holder.innerHTML =
     `<svg class="case-art" viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
       <defs>
-        <radialGradient id="${id}a" cx="${gx}%" cy="${gy}%" r="75%"><stop offset="0" stop-color="#1E293B" stop-opacity=".08"/><stop offset="1" stop-color="#1E293B" stop-opacity="0"/></radialGradient>
-        <radialGradient id="${id}b" cx="${100 - gx}%" cy="${100 - gy}%" r="80%"><stop offset="0" stop-color="#64748B" stop-opacity=".08"/><stop offset="1" stop-color="#64748B" stop-opacity="0"/></radialGradient>
-        <linearGradient id="${id}f" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#1E293B"/><stop offset="1" stop-color="#64748B"/></linearGradient>
-        <pattern id="${id}d" width="16" height="16" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r=".8" fill="rgba(30,41,59,.14)"/></pattern>
+        <radialGradient id="${id}a" cx="${gx}%" cy="${gy}%" r="75%"><stop offset="0" style="stop-color:var(--ink)" stop-opacity=".08"/><stop offset="1" style="stop-color:var(--ink)" stop-opacity="0"/></radialGradient>
+        <radialGradient id="${id}b" cx="${100 - gx}%" cy="${100 - gy}%" r="80%"><stop offset="0" style="stop-color:var(--rose)" stop-opacity=".08"/><stop offset="1" style="stop-color:var(--rose)" stop-opacity="0"/></radialGradient>
+        <linearGradient id="${id}f" x1="0" x2="1" y1="0" y2="0"><stop offset="0" style="stop-color:var(--ink)"/><stop offset="1" style="stop-color:var(--rose)"/></linearGradient>
+        <pattern id="${id}d" width="16" height="16" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r=".8" style="fill:var(--line)"/></pattern>
       </defs>
-      <rect width="${W}" height="${H}" fill="#EEF1F4"/>
+      <rect width="${W}" height="${H}" style="fill:var(--surface-2)"/>
       <rect width="${W}" height="${H}" fill="url(#${id}d)"/>
       <path class="case-art__link" d="${main} ${branch}"/>
       <path class="case-art__flow" d="${main}" stroke="url(#${id}f)"/>
@@ -1738,7 +1740,9 @@ function initStars(){
   if (getComputedStyle(canvas.parentElement).display === "none") return;   // the theme hides the sky -> do not draw it
   const ctx = canvas.getContext("2d");
 
-  const TINTS = ["255,255,255", "196,216,255", "255,224,200"];   // white, blue-white, warm
+  /* three Burgundy shades, read from style.css (--star-1, --star-2, --star-3), each as "r,g,b" */
+  const rootStyle = getComputedStyle(document.documentElement);
+  const TINTS = ["--star-1", "--star-2", "--star-3"].map(n => rootStyle.getPropertyValue(n).trim());
   const HEADROOM = 140;                      // extra height, SO a phone's address bar never forces a redraw
   let w = 0, h = 0, builtW = 0, builtH = 0, dpr = 1, stars = [], shot = null;
   let time = 0, last = 0, nextShot = 3.5, running = false;
@@ -1860,8 +1864,8 @@ function initStars(){
         shot.x += shot.vx * dt; shot.y += shot.vy * dt; shot.life -= 0.84 * dt;
         const tailX = shot.x - shot.vx * 0.23, tailY = shot.y - shot.vy * 0.23;
         const g = ctx.createLinearGradient(tailX, tailY, shot.x, shot.y);
-        g.addColorStop(0, "rgba(255,255,255,0)");
-        g.addColorStop(1, `rgba(255,255,255,${Math.max(shot.life, 0) * 0.75})`);
+        g.addColorStop(0, `rgba(${TINTS[1]},0)`);
+        g.addColorStop(1, `rgba(${TINTS[1]},${Math.max(shot.life, 0) * 0.75})`);
         ctx.strokeStyle = g; ctx.lineWidth = 1.4;
         ctx.beginPath(); ctx.moveTo(tailX, tailY); ctx.lineTo(shot.x, shot.y); ctx.stroke();
         tint = -1;
