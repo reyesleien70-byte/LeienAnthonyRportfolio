@@ -149,11 +149,11 @@ home: {
       { label: "Email marketing",  values: [95] },
       { label: "Klaviyo",              values: [95] },
       { label: "n8n",          values: [88] },
-      { label: "Coding",           values: [85] },
-      { label: "Data & APIs",      values: [88] },
+      { label: "HTML and CSS",           values: [93] },
+      { label: "Data flow & APIs",      values: [88] },
       { label: "Logical thinking", values: [95] },
-      { label: "Sales",          values: [91] },
-      { label: "Marketing Strategy",          values: [90] }
+      { label: "Marketing strategy",          values: [91] },
+      { label: "Figma design",          values: [95] }
     ]
   },
 
@@ -901,90 +901,85 @@ Reminder: Add more to this the more updates/changes/error encounter happens.`
       title: "Abandoned Cart Recovery(Grouped)",
       slug: "abandoned-cart-recovery-grouped",
       type: "flow",                       // flow | campaign | email-design
-      date: "2026-09-15",
+      date: "2026-11-10",
       blurb: "Answers one doubt per message and saves the discount for last",
-      photo: "assets/case2-acr-flow-1.png",
-      thumbnailAlt: "The top of the abandoned checkout flow: the Checkout Started trigger, a 1 hour 30 minute wait, the E1 Reminder email",
-      meta: "Klaviyo · Checkout Started · email + SMS · 5 messages per opener, 3 per non-opener · one discount",
+      photo: "assets/case2-acr-v11-flow-1.png",
+      thumbnailAlt: "The top of the abandoned checkout flow: the Checkout Started trigger with profile filters, a 1 hour 30 minute wait, the E1 First nudge email, a 22 hour 30 minute wait, the Subscribed to email list split",
+      meta: "Klaviyo · Checkout Started · email · 3 emails per shopper · two discount levels",
       video: "",
       poster: "",
       photos: [
-        { src: "assets/case2-acr-flow-1.png", alt: "The abandoned checkout flow, part 1: trigger, 1 hour 30 minute wait, E1 Reminder, 11 hour 30 minute wait, first split" },
-        { src: "assets/case2-acr-flow-2.png", alt: "The abandoned checkout flow, part 2: first split between can receive email or SMS and everyone else, E2 or SMS1, 12 hour wait, second split", wide: true },
-        { src: "assets/case2-acr-flow-3.png", alt: "The abandoned checkout flow, part 3: second split between opened email and everyone else, E3A What roast, E3B What size, 13 hour wait, third split", wide: true },
+        { src: "assets/case2-acr-v11-flow-1.png", alt: "The abandoned checkout flow, part 1: trigger with profile filters, 1 hour 30 minute wait, E1 First nudge, 22 hour 30 minute wait, Subscribed to email list split" },
+        { src: "assets/case2-acr-v11-flow-2.png", alt: "The abandoned checkout flow, part 2: Subscribed to email list split, the Yes path to E2 Second nudge plus a little push, a 1 day wait, the Fulfilled order in the last 7 days split, and the Everyone else path that ends the flow", wide: true },
+        { src: "assets/case2-acr-v11-flow-3.png", alt: "The abandoned checkout flow, part 3: Fulfilled order in the last 7 days split, the Yes path to E3A What roast, a 12 hour wait and the end, the Everyone else path to E3B What size and the end", wide: true },
       ],
       story: [
         {
           heading: "The problem",
-          text: "A shopper starts checkout and leaves before the purchase this is the strongest buying signal a store can have. The usual fix is a little push and a discount in email, which helps shoppers decide. but the problem is they will find a pattern in the discount drops. We do not want that, so I prevented it with this ACR(abandoned cart recovery) build."
+          text: "A shopper starts checkout and leaves before the purchase this is the strongest buying signal a store can have. The usual fix is a little push and a discount in email, which helps shoppers decide. but the problem is we will lose revenue too much if we will not control who gets less discount."
         },
         {
           heading: "What I built",
           bullets: [
-            "A reason ladder: each message removes one reason not to buy, cheapest first. It starts with a reminder, then trust, then guidance, and money comes last.",
-            "Splits on email opens, buying history and SMS consent, so non-openers stop after 25 hours and no one is messaged on a channel they cannot receive. Therfore we receive the least complaints possible.",
-            "One discount email, designed for first-time buyers only, testing 10% off against free delivery at about the same cost. A/B tests to further increase revenue after deploying.",
-            "8 A/B tests, each changing one thing, judged on placed order rate rather than clicks.",
-            "This flow can be optimized using n8n if needed."
+            "A reason ladder in 3 emails: each message removes one reason not to buy, cheapest first. It starts with a reminder, then one free reason (trust or guidance), and money comes last.",
+            "Filters on email engagement, consent and buying history: shoppers who ignored every email for 90 days are skipped, first-time shoppers are still reached, and the second and third emails go only to people in the email list. Therefore we receive the least complaints possible.",
+            "One discount email at the end: 20% off for shoppers with a fulfilled order in the last 7 days or VIPs, and 10% off for everyone else, so the bigger discount only goes where it cannot hurt ROI.",
+            "4 A/B tests, each changing one thing, judged on placed order rate rather than clicks.",
+            "This specific flow can be optimized using n8n if needed."
           ]
         },
         {
           heading: "Result",
-          text: "Built on a practice store with sample brand data, and documented well enough to rebuild from scratch. No live results yet. Known gaps are listed openly in the documentation, not hidden because this gaps can be removed or reduced by using n8n."
-        },
-        {
-          text: "Built with synthetic data and is documented enough to be rebuilt from scratch or to be maintained by someone who doesn't know anything about it."
+          text: "Built and tested with synthetic data and is documented enough to be rebuilt from scratch or to be maintained by someone who doesn't know anything about it."
         },
         {
           heading: "What skills it shows for me",
           bullets: [
-            "Shows that I understand Klaviyo and Email marketing fully.",
+            "Shows that I strongly understand Klaviyo and Email marketing fully.",
             "Shows my strategical thinking. (Which is beneficial for real marketing)",
             "Shows I understand customer behavior.",
-            "Shows my data based decision making."
+            "Shows my data based decision making.",
+            "Shows my logical thinking is highly fitted to the role."
           ]
         },
         {
           heading: "Documentation",
           text: `# Abandoned Checkout Recovery Flow for Lai's Coffee (Lai's Coffee is a synthetic data only)
 
-**Tools:** Shopify · Klaviyo · Email + SMS
-**Version:** 1.0 · 15 Sep 2026
-**Status:** Drafted since it uses synthetic data only.
+**Tools:** Shopify · Klaviyo · Email
+**Version:** 1.1 · 10 Nov 2026 (first build 1.0 · 15 Sep 2026)
 
 ---
 
 ## At a glance
 
-|   |   |
-|---|---|
-|**Goal**|Turn a started checkout into an order|
-|**Trigger**|Checkout Started|
-|**Messages per person**|5 IF the shopper opens an email, 3 IF not|
-|**Channels**|Email AND SMS|
-|**Discounts**|One message only, for one group of buyers|
-|**Success metric**|Placed order rate for this flow|
+|                         |                                                                                                                            |
+| ----------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| **Goal**                | Have the highest chance of recovering a checkout using optimal email timing and while protecting ROI when using discounts. |
+| **Trigger**             | Checkout Started                                                                                                           |
+| **Messages per person** | 3 emails                                                                                                                   |
+| **Channels**            | Email                                                                                                                      |
+| **Discounts**           | Last email only: 20% for recent buyers and VIPs, 10% for everyone else                                                     |
+| **Success metric**      | Placed order rate for this flow                                                                                            |
 
 ---
 
 ## 1. Purpose
 
 - **Why it exists:** a shopper started checkout AND left before paying. This is the strongest buying signal a store has.
-- **How it works:** each message removes one reason not to buy, cheapest reason first. Money (a discount) is spent last.
+- **How it works:** each message removes one reason not to buy, cheapest reason first. Money (a discount) is spent last and least.
 - **Where it sits:** one part of a larger email and SMS system.
     - **Browse Abandonment (BA)** handles shoppers who only viewed a product. BA goes silent once checkout starts.
     - **Post-Purchase** handles replenishment of products using predictive product life data, IF product is predicted to be almost gone THEN emails will be sent, THEREFORE encouraging them to buy again.
-- **How it is judged:** placed order rate. Clicks are NOT the goal.
+- **How it is judged:** placed order rate.
 
 ### The reason ladder
 
 |Stage|Doubts/Reasons it removes from customer|Cost to the store|
 |---|---|---|
 |E1: First reminder|"Something broke" OR "I got distracted"|None|
-|E2: Trust|"Why this brand?"|None|
-|E3: Guidance|"Will I pick the wrong thing?"|None|
-|E4: Offer|"Is it worth the money?"|Margin|
-|E5: Last message|"I'll decide later"|Goodwill|
+|E2: Trust OR guidance (template to confirm, see 5.2)|"Why this brand?" OR "Will I pick the wrong thing?"|None|
+|E3: Offer|"Is it worth the money?"|Margin|
 
 ---
 
@@ -993,152 +988,85 @@ Reminder: Add more to this the more updates/changes/error encounter happens.`
 ### 2.1 Trigger
 
 - **Metric:** Checkout Started (Shopify integration).
-- NOT Added to Cart. A started checkout is a stronger signal.
 
 ### 2.2 Who enters, who is blocked, when they leave
 
-|Rule|Setting|Why|
-|---|---|---|
-|**Enter**|Started checkout|Strongest buying signal|
-|**Profile Filters**|Placed Order AND (Opened Email OR Opened Text)|Stops messages after an order. Exact settings to confirm (see 5.2)|
-|**Leave at 13h**|Cannot receive email AND cannot receive SMS|No channel left to reach them|
-|**Leave at 25h**|No email opened since entering|Non-openers get one last email, THEN stop|
-|**Consent**|Klaviyo checks channel consent on every message|Marketing message, never transactional|
+| Rule                      | Setting                                                                                               | Why                                                                              |
+| ------------------------- | ----------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| **Enter**                 | Started checkout                                                                                      | Strongest buying signal                                                          |
+| **Flow/profile filter 1** | Placed Order zero times since starting this flow AND Person can receive email marketing               | Stops messages after an order AND skips anyone who cannot be emailed             |
+| **Flow/profile filter 2** | Opened OR Clicked Email at least once in the last 90 days, OR Received Email zero times over all time | Skips people who ignore email, but still reaches first-time shoppers (see below) |
+| **Before Email 2**        | Is in the \`Email list\`                                                                                | Explicit consent is needed for Emails 2 and 3. Everyone else leaves here.        |
+| **Leave after Email 3**   | Both branches end                                                                                     | The flow is done after the discount email                                        |
+| **Consent**               | Klaviyo checks channel consent on every message                                                       | we send Marketing message not transactional                                      |
 
-**Note:** filters are checked before each message, NOT all the time. IF a shopper buys during a wait, THEN they leave quietly at the next check.
+**Note:** filters are checked before each message. IF a shopper buys during a wait, THEN they leave quietly at the next check.
+
+#### Why "Received Email zero times over all time" is in filter 2
+
+- It means this is their first time checking out. We cannot tell if they are inactive or not, because they probably haven't opened an email yet.
+- Without it, a first-time checkout shopper would never get a message, because they have no opens or clicks yet.
+- Most importantly, customers who received emails but did nothing with them for 90 days are NOT messaged. They are probably not interested anymore, and sending to them hurts deliverability.
+- An engaged segment can do the same job, but it must also include "received zero emails over all time" for maximum potential.
+
+#### Why the "Email list" check is different from "can receive email marketing"
+
+- "Can receive email marketing" only accepts people who have NOT unsubscribed. The list check is stricter: it means they explicitly subscribed to the email list.
+- The list check sits before Email 2, so it covers Emails 2 AND 3, which need their explicit consent for deliverability.
+- **Important:** IF the client sells to the EU, the UK, or anywhere else that requires opt-in (an active yes to marketing), THEN this list check MUST be moved into the flow/profile filter, so even Email 1 needs it.
+- This build only targets countries with an opt-out system. About 90% of countries use an opt-in system, so be careful with this filter. It protects deliverability.
 
 ### 2.3 Flow map
 
 \`\`\`
 Checkout Started
-   |   Filter: Placed Order AND (Opened Email OR Opened Text)
+   |   Flow filter 1: Placed Order zero times since starting this flow
+   |                  AND Person can receive email marketing
+   |   Flow filter 2: Opened OR Clicked Email at least once in the last 90 days
+   |                  OR Received Email zero times over all time
    v
 Wait 1h 30m
    v
-MESSAGE 1: Email                                    (1h 30m)
+EMAIL 1: First nudge                                   (1h 30m)
    v
-Wait 11h 30m
+Wait 22h 30m
    v
-Can receive email OR SMS?
+In the OB | email list?
    |-- NO  --> leave flow
    |-- YES
          v
-MESSAGE 2: Email OR SMS                             (13h)
+EMAIL 2: Trust OR guidance OR any little push            (24h)
    v
-Wait 12h
+Wait 24h
    v
-Opened an email since starting this flow?
-   |-- NO  --> MESSAGE 4: Email 2 --> leave flow    (25h)
-   |-- YES --> MESSAGE 3: Email 1                   (25h)
-                 v
-Wait 13h
-   v
-Placed Order = 1 time over all time?
-   |-- YES --> MESSAGE 5: Discount email            (38h)
-   |-- NO  --> MESSAGE 6: Reminder email            (38h)
-                 v
-              (merge)
-                 v
-Wait 12h
-   v
-Can receive SMS?
-   |-- YES --> MESSAGE 7: SMS                       (50h)
-   |-- NO  --> MESSAGE 8: Last email                (50h)
+Fulfilled order in the last 7 days OR VIP?
+   |-- YES --> EMAIL 3A: Discount email, 20% off    (48h) --> leave flow
+   |-- NO  --> EMAIL 3B: Discount email, 10% off    (48h) --> leave flow
 \`\`\`
+
+**Timing:** Email 2 must land 24 hours after the checkout, because that is more likely their free time of the day. The wait after Email 1 is now 22h 30m (it was 11h 30m). Email 3 lands 24 hours after that, at 48h, for the same reason.
 
 ### 2.4 Messages
 
-|#|Sent at|Channel|Job|Offer|
-|---|---|---|---|---|
-|1|1h 30m|Email|Remind. Fix anything that broke.|None|
-|2|13h|Email OR SMS|To confirm (see 5.2)|None|
-|3|25h|Email|For openers (content to confirm)|None|
-|4|25h|Email|For non-openers (content to confirm)|None|
-|5|38h|Email|Close on price|Discount OR free delivery|
-|6|38h|Email|Close on convenience|None|
-|7|50h|SMS|One text at the decision point|None|
-|8|50h|Email|Last reminder AND ask why|None|
+| #   | Sent at | Channel | Job                                                             | Offer   |
+| --- | ------- | ------- | --------------------------------------------------------------- | ------- |
+| 1   | 1h 30m  | Email   | Remind. Fix anything that broke.                                | None    |
+| 2   | 24h     | Email   | Trust OR guidance OR ANY push                                   | None    |
+| 3A  | 48h     | Email   | Close on price, for a fulfilled order in the last 7 days OR VIP | 20% off |
+| 3B  | 48h     | Email   | Close on price, for everyone else                               | 10% off |
 
-**Templates are custom built**.
-
-#### Reminder: Message 1
-
-- **Design:** plain founder note.
-- **Subject A:** *You left something at the counter*
-- **Subject B:** *Still warm, {{ first_name }}*
-- **Preview:** *Your cart is saved. One tap brings it back.*
-- **Contains:** greeting, one-line message, cart, button "Finish checkout", "reply if something broke" line, signature, trust bar.
-- **A/B:** with vs without a review + rating after the button.
-
-#### Trust email (template built, step to confirm)
-
-- **Subject A:** *Roasted the day it ships* · **Subject B:** *Why our bag has a date on it*
-- **Preview:** *The supermarket bag will not tell you. Ours does.*
-- **Contains:** headline "Every bag has a date on it", roast-date stamp, roast and ship facts, cart, button, review, rating.
-- **A/B:** review below the argument vs under the headline.
-
-#### Coffee guide email (template built, step to confirm)
-
-- **Subject A:** *Not sure which grind? 20-second answer* · **Subject B:** *Drip, French press, or moka pot?*
-- **Contains:** grind-by-gear table, four roast notes, First Bag Promise box, cart, button.
-- **Grind table:** drip/pour-over → Medium · French press → Coarse · moka/espresso → Fine · no gear → Fine
-- **A/B:** grind table leads vs First Bag Promise leads.
-
-#### Apparel fit email (template built, step to confirm)
-
-- **Subject A:** *Between sizes? Take the bigger one* · **Subject B:** *Fits like the shirt you already reach for*
-- **Contains:** fabric facts, size chart S–3XL, free exchange box, review, cart, button.
-- **A/B:** full size chart vs one sizing rule + link.
-
-#### Discount: Message 5
-
-- **Offer A:** FIRSTPOUR10, 10% off the first order, ends in 24h.
-- **Offer B:** SHIPFREE, free delivery on this order, ends in 24h.
-- **Subject A:** *10% on your first bag, ends tomorrow 9PM* · **Subject B:** *A reason to stop thinking about it*
-- **Contains:** code box, button, why-we-rarely-discount note, cash-on-delivery box, cart, second button.
-- **Version A only:** shipping nudge IF cart is under $27. Removed in B, BECAUSE B already gives free delivery.
-- **A/B:** offer type. Both cost about the same ($1.75 vs $1.70–$2.85), SO the test measures the framing, NOT the size of the offer.
-
-#### Reminder for buyers: Message 6
-
-- **Subject A:** *Same blend as last time?* · **Subject B:** *Your usual is still in the cart*
-- **Version A:** cart, button, points balance box, reorder line, signature.
-- **Version B:** cart, button, reorder timing leads, no points box.
-- **A/B:** points balance vs reorder timing.
-
-#### SMS: Message 7
-
-- **Version A:**
-    \`Lai's Coffee: last reminder, your cart is still saved. Finish here: {{ event.extra.checkout_url }} Reply STOP to opt out.\`
-- **Version B:**
-    \`Lai's Coffee: still thinking about the {{ event.extra.line_items.0.title }}? Your cart is saved: {{ event.extra.checkout_url }} Reply STOP to opt out.\`
-- **No offer,** BECAUSE the text reaches every buyer type AND FIRSTPOUR10 is for first orders only.
-- **A/B:** general reminder vs product name.
-
-#### Last email: Message 8
-
-- **Subject A:** *Last email about this* · **Subject B:** *What stopped you?*
-- **Contains:** "last email" line, cart, button, four reply buttons (Too expensive / Shipping cost / Wrong item / Just browsing), closing line.
-- **Reply buttons:** \`mailto:hello@laiscoffee.ph?subject=<reason>\`
-- **A/B:** deadline first vs question first. Same blocks, new order.
 
 ### 2.5 Smart Sending
 
 Smart Sending skips a message IF the shopper got another message on the same channel inside the window (default 16 hours). Email and SMS have separate windows. A skip is logged as a skip, NOT an error.
 
-**Rule:** ON is allowed ONLY IF the gap since the last same-channel message is more than 16h, So it doesn't unintentionally skips messages which hurts revenue.
-
 |#|Message|Gap on the same channel|Setting|Why|
 |---|---|---|---|---|
 |1|First email|First message|**OFF**|Highest intent. Must land even after a campaign.|
-|2|Email version|11h 30m|**OFF**|Under 16h. ON would skip it.|
-|2|SMS version|First text|**ON**|A text costs money. Never use two in one flow.|
-|3–4|Email 1 / Email 2|12h|**OFF**|Under 16h.|
-|5–6|Discount / Reminder|13h|**OFF**|Under 16h.|
-|7|SMS|37h OR first text|**ON**|Safe. Blocks a same-day SMS campaign.|
-|8|Last email|12h|**OFF**|Under 16h.|
+|2|Second email|22h 30m|**ON**|Over 16h, so ON is safe.|
+|3A–3B|Both third emails|24h|**ON**|Over 16h, so ON is safe.|
 
-**Result:** after Message 1, NO email is protected from campaign overlap. See planned changes (8).
+**Result:** Emails 2 AND 3 are protected from campaign overlap. Only Email 1 is not, ON PURPOSE.
 
 ---
 
@@ -1147,167 +1075,72 @@ Smart Sending skips a message IF the shopper got another message on the same cha
 ### 3.1 Data the flow needs
 
 - Checkout Started event: checkout link, items, cart total, product category
-- Placed Order count, over all time AND since entering the flow
-- Email opens AND text opens
-- First name
-- Email consent, SMS consent, phone number
-- Points balance (profile property)
+- Placed Order count since entering the flow
+- Email opens AND clicks in the last 90 days, AND the number of emails received over all time
+- Membership of the Email list
+- Fulfilled Order in the last 7 days, AND VIP status
+- Email consent (can receive email marketing)
 
-### 3.2 Merge tags
-
-Tag paths can change with the integration version. Each one MUST be checked on a real profile before launch. A blank tag is never sent.
-
-|Purpose|Tag|
-|---|---|
-|Checkout link|\`{{ event.extra.checkout_url }}\`|
-|Cart items|\`{{ event.extra.line_items }}\`|
-|First item name|\`{{ event.extra.line_items.0.title }}\`|
-|Cart total|\`{{ event.$value }}\`|
-|First name|\`{{ first_name\\|default:"there" }}\`|
-|Points balance|\`{{ person.beans_balance\\|default:"0" }}\`|
-
-Klaviyo's built-in cart block is preferred over hand-coded loops where it works.
-
-### 3.3 Placeholders and setup
-
-|Item|Count|Where|
-|---|---|---|
-|Size guide link \`https://laiscoffee.ph/pages/size-guide\`|1|Apparel fit emails|
-|Discount codes FIRSTPOUR10 AND SHIPFREE|2|Must be created in Shopify, with expiry matching the email|
 
 ---
 
 ## 4. Decisions
 
-|Choice|Because|Not chosen|
-|---|---|---|
-|Trigger on Checkout Started|Stronger signal than a cart add|Added to Cart|
-|No discount in the first message|The cause is usually a small problem. A code pays shoppers who were coming back anyway AND teaches them that leaving earns codes.|Code at hour one|
-|Trust before guidance before money|Free reasons are tried first. Margin is spent only after they fail.|Discount early|
-|Coffee guide and apparel fit are separate emails|Coffee doubt is taste. Apparel doubt is size. One email cannot answer both clearly.|One general email|
-|Offer split on buying history, NOT cart value|A past buyer already trusts the store. A discount only lowers the price of a sale already won.|Split on cart value|
-|Past buyers get points, NOT codes|Keeps margin AND rewards loyalty|Codes for everyone|
-|No offer in the SMS|It reaches every buyer type, AND the code is first-order only|Code by text|
-|SMS near the end|A text interrupts AND costs money. Spend it once, at the decision point.|SMS early|
-|Last email for non-SMS shoppers|Most profiles have no SMS consent AND would get no closing message|SMS only|
-|Non-openers stop after 25h|Stops mailing people who ignore the flow|Full sequence for everyone|
-|Exit if no channel can reach the shopper|Ends the flow early for people who cannot receive anything|Let them run through|
-|SMS text uses straight quotes|One curly quote cuts a segment from 160 to 70 characters|Curly quotes|
+| Choice                                                          | Because                                                                                                                                                                              |
+| --------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| No discount in the first message                                | The cause is usually a small problem. A code pays shoppers who were coming back anyways.                                                                                             |
+| Trust before guidance before money                              | Free reasons are tried first. Margin is spent only after they fail.                                                                                                                  |
+| Offer split on a recent fulfilled order OR VIP, NOT cart value  | We already got revenue from these shoppers, SO 20% will not hurt revenue. Everyone else gets half (10%) because we have not benefited enough from them yet AND more, would hurt ROI. |
+| 3 emails instead of 4                                           | More emails raise the risk of spam and complaints, which hurts deliverability                                                                                                        |
+| Email 2 at 24h AND Email 3 at 48h                               | 24 hours after the checkout is more likely their free time of the day, SO each email lands at that same time                                                                         |
+| Filter 2 also accepts "Received Email zero times over all time" | First-time shoppers have not opened an email yet AND would never get a message otherwise                                                                                             |
+| Stop people with no opens or clicks in 90 days                  | They are probably not interested anymore, AND emailing them hurts deliverability                                                                                                     |
+| "In Email list" check before Email 2                            | Explicit consent is needed for Emails 2 AND 3 for deliverability                                                                                                                     |
+
 
 ### 4.1 A/B tests
 
 Each test changes ONE thing. Everything else stays the same.
 
-|Message|What changes|What stays the same|
-|---|---|---|
-|Reminder|Review block: yes vs no|Subject, send time, cart, button|
-|Trust|Review position|Subject, send time, blocks|
-|Coffee guide|What leads: table vs promise|Subject, send time, blocks|
-|Apparel fit|Full chart vs one rule + link|Subject, send time|
-|Discount|10% off vs free delivery|Subject, send time, expiry|
-|Buyer reminder|Points vs reorder timing|Subject, send time, cart|
-|SMS|General vs product name|Brand line, STOP line, link|
-|Last email|Deadline first vs question first|All blocks|
+| Message     | What changes           | What exactly?                           |
+| ----------- | ---------------------- | --------------------------------------- |
+| E1 Reminder | Subject line           | Reminder vs Urgency                     |
+| Trust       | Section block sequence | Social proof first vs Informative first |
 
-**Disclosed side changes:**
 
-- Discount B drops the shipping nudge, BECAUSE B already gives free delivery.
-- In the coffee guide AND buyer reminder, the headline changes with what leads, BECAUSE the headline announces it.
-
-### 4.2 Test rules
-
-- One live test at a time across the whole account. ACR and BA share one queue.
-- Queue order for ACR: Discount 1st · Reminder 2nd · Coffee guide 3rd · SMS 4th · Trust 7th · Last email 8th · Apparel fit 9th · Buyer reminder 10th.
-- Split 50/50. Never 80/20.
-- Subject lines stay the same inside a body test. Subject tests run separately.
-- Under ~200 shoppers per version → no call.
-- Clear click gap, both versions past ~400 → early call. Promote AND keep watching.
-- Small gap in order rate → no call at this volume.
-- Result flips week to week → no effect.
-- "No winner" is a result. It is logged.
 
 ---
 
-## 5. Unverified: fix before real use
+## 5. Versions
 
-### 5.1 Copy claims (sample data)
+| Version | Date        | Change                                                                                                                                    |
+| ------- | ----------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| 1.0     | 15 Sep 2026 | First build, fully established this day, as documented above                                                                              |
+| 1.1     | 10 Nov 2026 | New flow filters, 3 emails instead of 4+, new timing, consent check before Email 2, split discount in Email 3, new Smart Sending settings |
+| 1.2     | Planned     | n8n add-ons                                                                                                                               |
 
-Replace ALL of these with real brand facts before a real send:
+### What changed in 1.1
 
-- Roast-date stamp AND roast and ship claims
-- Reviews AND ratings
-- First Bag Promise AND free exchange promise
-- Fabric facts (180gsm combed cotton, pre-shrunk, unisex cut) AND model size
-- Cash-on-delivery note AND why-we-rarely-discount note
-- Points program ("Lai's Beans")
-- Prices AND costs: $27 threshold, $1.75, $17.50 average order, $1.70–$2.85 delivery
-- "About 75% of profiles have no SMS consent": check against the real list
+1. **New flow/profile filters**
+   Placed Order zero times since starting the flow AND Person can receive email marketing. Plus: opened OR clicked an email in the last 90 days, OR received zero emails over all time.
+   BENEFIT: first-time shoppers are reached, AND people who ignore email for 90 days are not mailed, which protects deliverability.
+2. **3 emails instead of 4**
+   The opener split, the SMS step and the last two emails are removed.
+   BENEFIT: less risk of spam and complaints.
+3. **Timing at 24h AND 48h**
+   The wait after Email 1 goes from 11h 30m to 22h 30m, so Email 2 lands 24 hours after the checkout. Email 3 lands at 48h.
+   BENEFIT: each email lands at a time of day when they are more likely free.
+4. **Explicit consent check before Email 2**
+   Only people in the OB | email list continue.
+   BENEFIT: Emails 2 AND 3 only go to shoppers who explicitly subscribed.
+5. **Split discount in Email 3**
+   A fulfilled order in the last 7 days OR VIP gets 20%. Everyone else gets 10%. Both branches then end.
+   BENEFIT: the bigger discount goes to people we already earned revenue from, so it does not hurt ROI.
+6. **Smart Sending**
+   Email 1 OFF. Email 2 ON. Both versions of Email 3 ON.
+   BENEFIT: Emails 2 AND 3 are protected from campaign overlap.
 
-### 5.2 Build settings to confirm
-
-- **Profile filter:** exact counts AND time frames for Placed Order, Opened Email, Opened Text
-- **Message 2:** is it one card OR two messages? Which template does each use?
-- **Messages 3 and 4:** which templates serve Email 1 AND Email 2?
-
-### 5.3 Checks
-
-- Every merge tag shows a real value in preview
-- Size guide link replaced
-- FIRSTPOUR10 AND SHIPFREE created in Shopify, with matching expiry
-- Discount subject says "ends tomorrow 9PM" while the offer says 24h. These match ONLY for some send times. Fix one.
-- "Can receive SMS" checks BOTH consent AND phone number
-- Quiet hours Klaviyo applies to PH numbers (target: 10:00–20:00 local)
-- Both SMS versions fit 1 segment with real product names AND links
-- Klaviyo short links used in SMS
-- Whether Klaviyo picks A/B winners in flows automatically for this account
-- Smart Sending window for this account is still 16h
-- Consent basis noted per market, AND signed off by the client's legal counsel
-
----
-
-## 6. Good to know
-
-- **Opens are unreliable.** Apple Mail Privacy Protection can record opens the shopper never made. The 25h split AND the entry filter both rely on opens.
-- IF the filter requires an open to enter, THEN new shoppers who never opened an email are blocked from the first reminder.
-- A shopper can get 5 messages in about 48-50 hours.
-- After Message 1, Smart Sending cannot protect any email from campaign overlap.
-- A small list may never reach a clear A/B result.
-- Practice store. No live numbers yet, AND no results are promised.
-- Consent rules follow the shopper's country. For legal guidance, refer to the client's legal counsel.
-
----
-
-## 7. Versions
-
-|Version|Date|Change|
-|---|---|---|
-|1.0|15 Sep 2026|First build, fully established this day, as documented above|
-|1.1|Planned|Sharper targeting, smarter timing, full spec alignment|
-|1.2|Planned|n8n add-ons|
-
-### Coming in 1.1
-
-1. **Sharper offer targeting**
-   The first-order discount goes to shoppers with **0 past orders**. Past buyers get points AND reorder timing instead.
-   BENEFIT: every dollar of discount goes to a true first-time buyer.
-2. **Refined entry filter**
-   Every new checkout starter gets the first reminder, AND anyone who orders leaves at once.
-   BENEFIT: the flow reaches more new shoppers.
-3. **Visible safeguards**
-   Adds "profile not suppressed" AND "email consent present" to the flow itself.
-   BENEFIT: anyone opening the flow sees the protections at a glance.
-4. **Stronger SMS routing**
-   Texts go only to profiles with SMS consent AND a phone number.
-   BENEFIT: every text has a real place to land.
-5. **Smarter timing**
-   Offer moves to 48h, last message to 72h.
-   BENEFIT: waits over 16h let Smart Sending shield these emails from campaign overlap.
-6. **Product-based guidance at 25h**
-   Coffee shoppers get the grind guide; apparel shoppers get the fit guide. Both templates are already built. Compared against the current open-based path, and the stronger one stays.
-   BENEFIT: each shopper gets answers for what's in their cart.
-7. **Fresher audience** (optional)
-   Shoppers enter once per 30 days.
-   BENEFIT: frequent visitors aren't over-messaged.
+**Not part of 1.1:** the SMS routing, the product-based guidance at 25h and the optional "once per 30 days" audience from the earlier plan.
 
 ### Coming in 1.2 (n8n)
 
