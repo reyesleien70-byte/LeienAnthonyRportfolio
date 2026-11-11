@@ -80,12 +80,12 @@ const CONTENT = {
 
 site: {
   name: "Leien Anthony R.",
-  email: "leienanthony1@gmail.com",
+  email: "lai.emailautomations.services",
 
   /* your profiles. Paste the whole address, e.g. "https://www.linkedin.com/in/your-name".
      They show as a line on the home page AND the contact page.
      Leave "" AND that line is simply not shown (rule 4). */
-  linkedin: "",
+  linkedin: "www.linkedin.com/in/leien-anthony-gatapia-reyes-073a05383",
   upwork: "",
 
   /* the small words the site says on its own */
