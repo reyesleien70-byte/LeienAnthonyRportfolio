@@ -16,9 +16,7 @@
 :root{
   /* --- Midnight Burgundy: the surfaces, darkest to lightest --- */
   --surface:#430107;                 /* Midnight Burgundy: the page, the header, the edges of the glow */
-  --surface-rgb:67,1,7;              /* the same colour as numbers, for see-through fades */
-  --glow:#5A0A11;                    /* the lightest point of the soft glow behind each first screen */
-  --glow-rgb:90,10,17;               /* the same colour as numbers, so the glow can fade out */
+  --glow-rgb:90,10,17;               /* the lightest point of the soft glow behind each first screen (#5A0A11), as numbers SO it can fade out */
   --raised:#4E0F15;                  /* one shade lighter than the page: panels, pop-ups, tabs, menus */
   --raised-rgb:78,15,21;             /* the same colour as numbers, for the reader's top bar and table edges */
   --card:rgba(255,239,239,.06);      /* a card on the page: one shade lighter than whatever is behind it */
