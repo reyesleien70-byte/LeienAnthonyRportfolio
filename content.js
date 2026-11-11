@@ -86,7 +86,7 @@ site: {
      They show as a line on the home page AND the contact page.
      Leave "" AND that line is simply not shown (rule 4). */
   linkedin: "www.linkedin.com/in/leien-anthony-gatapia-reyes-073a05383",
-  upwork: "",
+  upwork: "https://www.upwork.com/freelancers/~0184d8b7d5d11d0642?mp_source=share",
 
   /* the small words the site says on its own */
   labels: {
