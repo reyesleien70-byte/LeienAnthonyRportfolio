@@ -236,6 +236,7 @@ const TASK    = /^\[( |x|X)\]\s+/;
 const HEADING = /^(#{1,6})\s+(.*\S)\s*$/;
 const RULE    = /^(-{3,}|\*{3,}|_{3,})$/;
 const FENCE   = /^```/;
+const IMAGE   = /^!\[([^\]]*)\]\(((?:assets\/|https:\/\/)[^)\s]+)\)$/;   // a picture on a line of its own: ![what it shows](assets/x.png)
 const ROW     = /^\|.*\|$/;
 const DIVIDER = /^\|[\s:\-|]+\|$/;
 
@@ -343,7 +344,7 @@ function richText(str){
   /* a line that starts something of its own, SO a paragraph stops here */
   const breaks = k => {
     const l = line(k);
-    return !l || RULE.test(l) || HEADING.test(l) || isItem(l) || FENCE.test(l)
+    return !l || RULE.test(l) || HEADING.test(l) || isItem(l) || FENCE.test(l) || IMAGE.test(l)
         || (ROW.test(l) && DIVIDER.test(line(k + 1)));
   };
 
@@ -376,6 +377,12 @@ function richText(str){
 
     if (RULE.test(l)){
       doc.appendChild(document.createElement("hr"));
+      i++; continue;
+    }
+
+    const pic = l.match(IMAGE);
+    if (pic){
+      doc.appendChild(shotFigure({ src: pic[2], alt: pic[1], tall: true }));
       i++; continue;
     }
 

@@ -3443,49 +3443,81 @@ The final wording is NOT recorded in this version. Paste it here so a new owner 
       type: "email-design",
       date: "2026-11-09",                 // YYYY-MM-DD. The day this case was first added (from the git history). Correct it IF the email was made on another day.
       blurb: "A cart abandonment email that brings the shopper back to the cart",
-      photo: "assets/email-cart-1.png",
-      thumbnailAlt: "The top of the Off-Bolt cart abandonment email",
+      photo: "assets/email-cart-v2-full.webp",
+      thumbnailAlt: "The top of the updated Off-Bolt cart abandonment email",
       meta: "Klaviyo · Cart abandonment email · Off-Bolt",
       video: "",
       poster: "",
       photos: [
-        { src: "assets/email-cart-1.png", alt: "The Off-Bolt cart abandonment email, top half: You left this on your cart, the cart item, a Return To Cart button, a free returns code" },
-        { src: "assets/email-cart-2.png", alt: "The Off-Bolt cart abandonment email, bottom half: a customer review with stars, three similar products with Order Now buttons, Continue order here and a second Return To Cart button" }
+        { src: "assets/email-cart-v2-full.webp", alt: "The full updated Off-Bolt cart abandonment email: the Off-Bolt logo, You left this on your cart with a Go to cart button, the product picture with its price and a second Go to cart button, Free return code with a Use code button, What do customer says with a review and a Buy cart button, You might also like with three products and Order now buttons, Continue to cart with a Go to cart button, and the footer links Visit website, About us, Similar products and Email us", tall: true }
       ],
       story: [
         {
           heading: "About this email",
-          text: "This is a cart abandonment email, it solves the problem of brands where the customer leaves right almost at the checkout."
+          text: "**Problem:** Unclear emails, customers don't know where to click."
         },
         {
-          text: "This email's purpose is to:",
+          text: "**How this design solves that problem?** It uses multiple ways but first let's start with the guaranteed seen at open.",
           bullets: [
-            "**Firstly** make them remember the intent why they add the product to induce a feeling of wanting the product again so they order it.",
-            "**Secondly** it leverages visual hierarchy using dark background and light headers and body and font sizing to lead them to the return to cart button.",
-            "**Thirdly** it shows them a big picture of the product at the start to make them see the product and again induce the remembrance of the reason why they add it to cart."
+            "This email guarantees that the **CTA is seen at open** as well as the product in the cart and the price.",
+            "And this design is rich in button to the product, which is designed to be loud among other color by using **visual hierarchy**. Right after the big product picture, there's another CTA which we like."
           ]
         },
         {
-          text: "There are some very crucial blocks here:",
-          bullets: [
-            "**The free return block**, what this does is it removes the risk of buying the product and not liking it because they can return it.",
-            "**The review block**, in this part we will remove the doubt if the product is really good or not so once they see it they will think 'there's a good review on this product it must be really good\"."
-          ]
+          text: "**Removing the risk for them**, we know our product is good quality but they don't so this section gives them free return so they are more likely to think \"There's a free return, I can just return the product if I don't like it.\""
         },
         {
-          text: "One important thing it's better for this part to be dynamic so it changes based on cart and makes it more personalized but if not possible general store review is most recommended."
+          text: "THEN a CTA if that convinced them BUT IF that doesn't convince them there's a 3rd section."
         },
         {
-          text: "**Finally, last part**, we will show them similar products and another button directly to the cart."
+          text: "**The third's section purpose** is to provide social proof either a review about the store or the specific product using dynamic tags, Why? Because social proof removes their doubt because they are more likely to think \"There's a good review on it too, it must be a good quality.\""
         },
         {
-          text: "What this does is it gives them 2 choices, buy a similar product or buy the original cart product since they might just not realize they have already been convinced by the past block, here they can make the choice."
+          text: "Then right after it another CTA so they can click it once they are convinced."
         },
         {
-          text: "In case they really don't like it they are one click away from the product that is similar to it and might fit their actual taste since they might not like a certain part of the original product like it has blue buttons which they don't like and the similar product has red which they really like."
+          text: "**IF ALL those section doesn't convince them**, then we show them similar products so they are more likely to be curious about the product because it will be just a similar product to the one they just added to cart, you can just use the best sellers too but similar product is more recommended."
         },
         {
-          text: "So basically we will maximize the intent's potential to become an order by filtering their thoughts down the full email using the most important blocks first."
+          text: "Each product has its own button for ease of purchase."
+        },
+        {
+          text: "**Now 5th section**, this is just a big CTA of continuing the cart because at this stage if they scroll until the end they are just looking for reason to buy the product, they are probably already convinced so we show them another CTA so they can easily go to cart and proceed to checkout."
+        },
+        {
+          text: "**Last section**, this is also a very important section since if they didn't buy or order similar product we provide them information about us that will lead them to trust us more, reach out to us, Visit website so they can scroll more in our shop ALL increasing the chance of an order."
+        },
+        {
+          text: `# Previous Version of Cart Abandonment Email for Off-Bolt
+
+![The previous Off-Bolt cart abandonment email, top half: You left this on your cart, the cart item, a Return To Cart button, a free returns code](assets/email-cart-1.png)
+
+![The previous Off-Bolt cart abandonment email, bottom half: a customer review with stars, three similar products with Order Now buttons, Continue order here and a second Return To Cart button](assets/email-cart-2.png)
+
+## About this email
+
+This is a cart abandonment email, it solves the problem of brands where the customer leaves right almost at the checkout.
+
+This email's purpose is to:
+
+- **Firstly** make them remember the intent why they add the product to induce a feeling of wanting the product again so they order it.
+- **Secondly** it leverages visual hierarchy using dark background and light headers and body and font sizing to lead them to the return to cart button.
+- **Thirdly** it shows them a big picture of the product at the start to make them see the product and again induce the remembrance of the reason why they add it to cart.
+
+There are some very crucial blocks here:
+
+- **The free return block**, what this does is it removes the risk of buying the product and not liking it because they can return it.
+- **The review block**, in this part we will remove the doubt if the product is really good or not so once they see it they will think 'there's a good review on this product it must be really good".
+
+One important thing it's better for this part to be dynamic so it changes based on cart and makes it more personalized but if not possible general store review is most recommended.
+
+**Finally, last part**, we will show them similar products and another button directly to the cart.
+
+What this does is it gives them 2 choices, buy a similar product or buy the original cart product since they might just not realize they have already been convinced by the past block, here they can make the choice.
+
+In case they really don't like it they are one click away from the product that is similar to it and might fit their actual taste since they might not like a certain part of the original product like it has blue buttons which they don't like and the similar product has red which they really like.
+
+So basically we will maximize the intent's potential to become an order by filtering their thoughts down the full email using the most important blocks first.`
         }
       ]
     },
@@ -3686,6 +3718,18 @@ certs: {
       photoAlt: "Klaviyo Practitioner certificate of completion, valid October 8, 2026 to October 8, 2028",
       links: [
         { label: "Verify certificate", url: "https://credential.klaviyo.com/b39931ae-37f0-48fe-a9e6-e53084dcb53d#acc.FjeSAKXu" }
+      ]
+    },
+
+    {
+      title: "Klaviyo Strategist Certificate",
+      issuer: "Klaviyo",
+      date: "November 12, 2026",
+      id: "200208874",
+      photo: "assets/klaviyo-strategist-certificate.png",
+      photoAlt: "Klaviyo Strategist certificate of completion, valid November 12, 2026 to November 12, 2028",
+      links: [
+        { label: "Verify certificate", url: "https://credential.klaviyo.com/0970043f-b91a-4d19-8ef9-5f67c384e8dd" }
       ]
     }
 

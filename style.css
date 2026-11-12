@@ -1544,6 +1544,7 @@ h1 + .lede,h2 + .lede{margin-top:clamp(12px,1.6vw,18px)}
 .shot--wide img{max-height:none}
 .shot--tall{grid-column:1 / -1}   /* a very long picture (an email): shown at its real width, the reader scrolls */
 .shot--tall img{width:min(100%,420px);max-height:none;margin:0 auto}
+.doc .shot{margin:18px 0}   /* a picture inside a document */
 .shot figcaption{margin-top:8px;font-size:13px;color:var(--muted)}
 @media (hover:hover) and (pointer:fine){ .shot a:hover img{opacity:.92} }
 
