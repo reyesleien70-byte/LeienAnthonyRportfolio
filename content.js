@@ -348,7 +348,8 @@ cases: {
      Every case NOT listed follows after them, A to Z. Add a slug to move a case up. */
   featured: [
     "item-specific-abandoned-cart-recovery",
-    "tlre-lifecycle-revenue-engine"
+    "tlre-lifecycle-revenue-engine",
+    "new-product-launch-email-off-bolt"
   ],
 
   /* the words on the sort buttons, AND how the small "Showing ..." line names each order */
@@ -3658,6 +3659,101 @@ So basically we will maximize the intent's potential to become an order by filte
         },
         {
           text: "SO basically it maximizes the intent and filters thought and maximizes it's potential as much as possible to cause conversion."
+        }
+      ]
+    },
+
+    {
+      tag: "Klaviyo · Email design",
+      title: "New Product Launch Email for Off-Bolt",
+      slug: "new-product-launch-email-off-bolt",
+      type: "email-design",
+      date: "2026-11-13",                 // YYYY-MM-DD. The day this case was first added (from the git history). Correct it IF the email was made on another day.
+      blurb: "A product launch email that answers one doubt per section and gives a click in every one",
+      photo: "assets/email-launch-full.webp",
+      thumbnailAlt: "The top of the Off-Bolt new product launch email",
+      meta: "Klaviyo · Product launch email · Off-Bolt",
+      video: "",
+      poster: "",
+      photos: [
+        { src: "assets/email-launch-full.webp", alt: "The full Off-Bolt new product launch email: Be the first to see it, the Off-Bolt name, New Hem Dress is here with the product photo and a View Product button, Made to standout with Why Hem Dress and its three benefits and a See Product button, three colors each with a See Product button, a Size Guide button, Be the first to try with a See Product button, and the footer links Visit website, About us, Similar products and Email us", tall: true }
+      ],
+      story: [
+        {
+          heading: "The Problem",
+          text: "Customers have doubts, don't have any information about the product, don't know where to click and there's too many words to read."
+        },
+        {
+          heading: "The Solution",
+          text: "How does this email solve that? It handles their doubts one section at a time, and every section ends with a way to click and designs makes it very easy to understand without reading too much."
+        },
+        {
+          text: "**First: seen at open.**"
+        },
+        {
+          text: "The headline, the big product photo and the View Product button all show as soon as the email opens. This matters BECAUSE not everyone scrolls to the end. IF they’re already interested, they click right away."
+        },
+        {
+          text: "**Second: “Why Hem Dress?”**"
+        },
+        {
+          text: "What does this section do? It gives them a reason to buy. It shows 3 benefits: gentle on skin, less sticky and photogenic glow. SO they think better of the product, THEN See Product button sits right below it for the ones who are convinced."
+        },
+        {
+          text: "**Third: color variants.**"
+        },
+        {
+          text: "BUT what IF they like the dress and NOT the color? We show it in 3 colors, each with its own button. They pick the one that fits their taste, and it’s one click away."
+        },
+        {
+          text: "**Fourth: Size Guide.**"
+        },
+        {
+          text: "Size doubt stops a lot of clothing orders: “What IF it doesn’t fit me?” The Size Guide button removes that doubt. They know what size to buy and can go on to checkout."
+        },
+        {
+          text: "**Fifth: last CTA, “Be the first to try.”**"
+        },
+        {
+          text: "IF they scroll to the end, they’re just looking for a reason to buy. This button gives them a second chance to click before they leave."
+        },
+        {
+          text: "**Finally, the footer.**"
+        },
+        {
+          text: "Why does the footer matter? IF they didn’t click ANY product, the footer still gives them 4 more ways to reach us:",
+          bullets: [
+            "**Visit Website:** they keep browsing the shop.",
+            "**About Us:** they learn about the brand, SO they trust us more.",
+            "**Similar Products:** this dress may not fit their taste, BUT a similar one might.",
+            "**Email Us:** they can ask about fit or fabric before buying."
+          ]
+        },
+        {
+          text: "EVERY one of these is a click. AND clicks keep them in our engaged segment, which protects deliverability for the next send and shows us who is our most engaged customer so we can target them better."
+        },
+        {
+          heading: "Why It Works",
+          bullets: [
+            "**11 click points:** 7 buttons plus 4 footer links. A reader who’s ready to click always has one near them."
+          ]
+        },
+        {
+          text: "**One doubt per section:**",
+          bullets: [
+            "Don’t know the product → benefits",
+            "Wrong color → variants",
+            "Wrong size → size guide",
+            "Don’t trust the brand → footer"
+          ]
+        },
+        {
+          bullets: [
+            "**Visual hierarchy:** the red buttons stand out against the navy and cream, SO the eye goes straight to them."
+          ]
+        },
+        {
+          text: "So basically, this email turns curiosity and Unfamiliarity into clicks by answering each doubt in order: what it is, why to buy it, which color, which size and who we are. More clicks, THEREFORE more chances of a placed order."
         }
       ]
     }
