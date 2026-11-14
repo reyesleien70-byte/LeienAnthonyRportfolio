@@ -1419,6 +1419,26 @@ h1 + .lede,h2 + .lede{margin-top:clamp(12px,1.6vw,18px)}
   font-size:13.5px;font-weight:600;color:var(--accent-text);
 }
 .file__open svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.6;transition:transform .6s var(--ease-out)}
+.file + .file{border-top:1px solid var(--line)}
+/* older versions: a small note at the bottom of the folder, the files show on a click */
+.folder__older{border-top:1px solid var(--line)}
+.folder__older > summary{
+  display:flex;align-items:center;gap:6px;
+  padding:9px 16px;
+  font-size:12.5px;color:var(--muted);
+  cursor:pointer;list-style:none;
+  transition:color var(--dur-2) var(--ease-out);
+}
+.folder__older > summary::-webkit-details-marker{display:none}
+.folder__older > summary svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.6;transition:transform .3s var(--ease-out)}
+.folder__older[open] > summary svg{transform:rotate(180deg)}
+.folder__older > summary:focus-visible{outline:2px solid var(--accent-text);outline-offset:-2px}
+.folder__older .file{border-top:1px solid var(--line);background:var(--tint)}
+@media (hover:hover) and (pointer:fine){
+  .folder__older > summary:hover{color:var(--ink)}
+  .folder__older .file:hover{background:var(--tint-2)}
+}
+.case-full li > ul{margin-top:6px}
 .file:active{background:var(--tint-2)}
 @media (hover:hover) and (pointer:fine){
   .file:hover{background:var(--tint)}

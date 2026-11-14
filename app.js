@@ -34,6 +34,8 @@ const CASE_LABELS = Object.assign({
   folder: "Project files",             // the folder that holds the documentation file
   file: "Document",                    // what kind of file it is
   openFile: "Open",                    // the button on the file
+  olderOne: "previous version inside", // the note at the bottom of a folder with older versions
+  olderMany: "previous versions inside",
   sections: "sections",
   minRead: "min read"
 }, (CONTENT.cases && CONTENT.cases.labels) || {});
@@ -1345,17 +1347,26 @@ function casePanel(item, n){
     if (part.text){
       /* a long write-up is NOT laid out here. It sits in a folder as a file,
          AND opens in a window of its own (see initCaseModal). */
-      if (/\n/.test(String(part.text).trim())) art.appendChild(docFolder(part.text, n - 1, pi));
+      if (/\n/.test(String(part.text).trim())) art.appendChild(docFolder(part.text, n - 1, pi, part.previous));
       else art.appendChild(textNode(part.text));
     }
-    if (part.bullets){
-      const ul = document.createElement("ul");
-      part.bullets.forEach(x => ul.appendChild(make("li", null, x)));
-      art.appendChild(ul);
-    }
+    if (part.bullets) art.appendChild(bulletList(part.bullets));
   });
 
   return art;
+}
+
+/* a bullet is a line of text, OR { text, bullets: [...] } to nest a list under it */
+function bulletList(list){
+  const ul = document.createElement("ul");
+  list.forEach(x => {
+    if (x && typeof x === "object"){
+      const li = make("li", null, x.text);
+      if (x.bullets && x.bullets.length) li.appendChild(bulletList(x.bullets));
+      ul.appendChild(li);
+    } else ul.appendChild(make("li", null, x));
+  });
+  return ul;
 }
 
 /* the facts a file shows about its document: its name, parts and reading time */
@@ -1370,24 +1381,16 @@ function docInfo(text){
   };
 }
 
-/* a folder with one file in it. The file is a button: it opens the document window. */
-function docFolder(text, ci, pi){
+/* one file in a folder. It is a button: it opens the document window. */
+function fileButton(text, name, key){
   const info = docInfo(text);
-  const box = make("div", "folder");
-
-  const head = make("div", "folder__head");
-  head.insertAdjacentHTML("beforeend", UI.folder);
-  head.appendChild(make("span", null, CASE_LABELS.folder));
-  head.appendChild(make("span", "folder__count", "1"));
-  box.appendChild(head);
-
   const file = make("button", "file");
   file.type = "button";
-  file.dataset.doc = ci + ":" + pi;
+  file.dataset.doc = key;
   const icon = make("span", "file__icon");
   icon.innerHTML = UI.file;
   const words = make("span", "file__text");
-  words.appendChild(make("span", "file__name", info.title));
+  words.appendChild(make("span", "file__name", name || info.title));
   const bits = [CASE_LABELS.file];
   if (info.sections) bits.push(info.sections + " " + CASE_LABELS.sections);
   bits.push(info.minutes + " " + CASE_LABELS.minRead);
@@ -1396,7 +1399,34 @@ function docFolder(text, ci, pi){
   open.appendChild(make("span", null, CASE_LABELS.openFile));
   open.insertAdjacentHTML("beforeend", UI.arrow);
   file.append(icon, words, open);
-  box.appendChild(file);
+  return file;
+}
+
+/* the "Project files" folder. The latest write-up sits in front. Older versions
+   ({ previous: [{ name, text }] } on the same part) wait behind a small note
+   at the bottom of the folder, newest first, and show on a click. */
+function docFolder(text, ci, pi, previous){
+  const older = (previous || []).map((f, fi) => ({ f, fi })).filter(o => o.f && o.f.text).reverse();
+  const box = make("div", "folder");
+
+  const head = make("div", "folder__head");
+  head.insertAdjacentHTML("beforeend", UI.folder);
+  head.appendChild(make("span", null, CASE_LABELS.folder));
+  head.appendChild(make("span", "folder__count", String(1 + older.length)));
+  box.appendChild(head);
+
+  box.appendChild(fileButton(text, null, ci + ":" + pi));
+
+  if (older.length){
+    const more = make("details", "folder__older");
+    const sum = document.createElement("summary");
+    sum.appendChild(make("span", null, older.length + " " +
+      (older.length === 1 ? CASE_LABELS.olderOne : CASE_LABELS.olderMany)));
+    sum.insertAdjacentHTML("beforeend", UI.chevron);
+    more.appendChild(sum);
+    older.forEach(o => more.appendChild(fileButton(o.f.text, o.f.name, ci + ":" + pi + ":" + o.fi)));
+    box.appendChild(more);
+  }
   return box;
 }
 
@@ -2726,8 +2756,9 @@ function initCaseModal(){
     /* --- open: the window grows out of the file --- */
     function openDoc(file){
       if (docOpen) return;
-      const [ci, pi] = String(file.dataset.doc).split(":").map(Number);
-      const part = items[ci] && items[ci].story && items[ci].story[pi];
+      const [ci, pi, fi] = String(file.dataset.doc).split(":").map(Number);
+      const owner = items[ci] && items[ci].story && items[ci].story[pi];
+      const part = owner && owner.previous && !isNaN(fi) ? owner.previous[fi] : owner;   // an older version in the folder
       if (!part || !part.text) return;
 
       const doc = richText(part.text);
