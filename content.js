@@ -1971,41 +1971,440 @@ Goodluck building!` }
 
     {
       tag: "Klaviyo grouped flows",
-      title: "Browse Abandonment Flow (Connected with 2 other flow)",
-      slug: "browse-abandonment-flow-grouped",
+      title: "Browse Abandonment Routed by Buying History, Clicks and SMS Consent",
+      slug: "browse-abandonment-routed-history-clicks-sms",
       type: "flow",                       // flow | campaign | email-design
-      date: "2026-09-15",
-      blurb: "One quiet reminder, then a second message only for shoppers who clicked",
+      date: "2026-11-15",
+      blurb: "Every shopper gets a second chance, and only new shoppers get an offer",
       photo: "assets/case3-ba-flow-1.png",
-      thumbnailAlt: "The top of the browse abandonment flow: the Viewed Product trigger, a 4 hour wait, the E1 email",
-      meta: "Klaviyo · Viewed Product · 2 emails, 1 SMS · at most 2 per shopper · no discounts",
+      thumbnailAlt: "The top of the browse abandonment flow: the Viewed Product trigger, a 2 hour wait, and the split by buying history",
+      meta: "Klaviyo · Viewed Product · 6 emails, 2 SMS · exactly 2 per shopper · free US shipping for new shoppers only",
       video: "",
       poster: "",
       photos: [
-        { src: "assets/case3-ba-flow-1.png", alt: "The browse abandonment flow, part 1: trigger on Viewed Product, 4 hour wait, E1 Still thinking about it, 20 hour wait, click check" },
-        { src: "assets/case3-ba-flow-2.png", alt: "The browse abandonment flow, part 2: click check, SMS subscriber check, then SMS1 or the second email", wide: true },
+        { src: "assets/case3-ba-flow-1.png", alt: "The browse abandonment flow, part 1: trigger on Viewed Product, 2 hour wait, then the split that sends past buyers and new shoppers down separate paths." },
+        { src: "assets/case3-ba-flow-2.png", alt: "The browse abandonment flow, part 2: E1 for each group, a 1 day wait, then click and SMS checks that route each shopper to an SMS, a proof email or a new-angle email.", wide: true }
       ],
       story: [
         {
           heading: "The problem",
-          text: "A shopper looks at a product and leaves. Browsing is the weakest buying signal a store has, yet most browse flows treat it like a checkout: too many messages, a discount that teaches shoppers that looking earns a code, and paid texts sent to people who never showed real interest."
+          text: "A shopper looks at a product AND leaves. The old flow sent one email. BUT IF they didn’t click it, THEN the flow just ended. That’s most of the shoppers, SO most of them got only one chance to come back. A loyal buyer and a first-time visitor also got the same message, even though they need different things to buy."
         },
         {
           heading: "What I built",
           bullets: [
-            "A Viewed Product trigger for known shoppers, with a 4-hour wait so the reminder never feels like being watched.",
-            "At most 2 messages: a quiet Email 1, then an SMS for subscribers or Email 2 for everyone else.",
-            "A click check before the second message, so only interested shoppers get a second touch and fewer paid texts go out.",
-            "No discount anywhere, Smart Sending on for every message, and 3 A/B tests that each change one thing."
+            "A Viewed Product trigger with filters that hand the shopper to the cart flow or ESO ACR the moment they show higher intent.",
+            "A split by buying history. Past buyers get NO offer. New shoppers get free US shipping, BUT ONLY in the second message.",
+            "A click and SMS check before message 2. Clickers get proof OR a text, and non-clickers get a fresh angle instead of nothing.",
+            "Exactly 2 messages per shopper, with Smart Sending and SMS quiet hours on."
           ]
         },
         {
+          text: "So basically every shopper gets a second chance, AND the offer only goes where it helps the order happen."
+        },
+        {
           heading: "Result",
-          text: "Built on a practice store with sample brand data. The flow, every email version and the SMS copy are documented well enough to rebuild from scratch. No live results yet, and none are promised."
+          text: "Built on a practice store with sample brand data. The flow, every message and the SMS copy are documented well enough to rebuild from scratch. No live results yet, and none are promised."
         },
         {
           heading: "Documentation",
-          text: `# Browse Abandonment Flow for Lai's Coffee
+          text: `# Browse Abandonment Flow for Off-Bolt
+
+**Tools:** Shopify · Klaviyo · Email + SMS
+**Status:** Built on a practice store.
+
+---
+
+## At a glance
+
+| | |
+|---|---|
+|**Goal**|Product view to order|
+|**Trigger**|Viewed Product|
+|**Messages per person**|Exactly 2, unless they buy or move to cart or checkout first|
+|**Channels**|Email, then SMS OR email|
+|**Offer**|Free US shipping (OFFBOLT1) for new shoppers, message 2 only|
+|**Success metric**|Placed order rate for this flow|
+
+---
+
+## 1. Purpose
+
+- **Why it exists:** A shopper looked at a product AND left without buying. This flow sends one reminder, THEN one more reason to decide, built around who they are.
+- **Who it’s for:** Known shoppers only. Klaviyo must already know who the browser is.
+- **Where it sits:** It’s one part of a larger email and SMS system.
+    - **Cart flow** handles shoppers who added to cart.
+    - **ESO ACR** handles shoppers who started checkout.
+    - **Welcome flow** owns the OFFBOLT1 offer. This flow reuses it.
+- **How it’s judged:** Placed order rate. Clicks are NOT the goal. A click with no order is nothing.
+
+---
+
+## 2. Problem and solution
+
+**Problem in simple terms:**
+A shopper looks at a product AND leaves without adding it to cart. The old flow sent them one email. BUT IF they didn’t click it, THEN the flow just ended. That’s most of the shoppers, so most of them got only one chance to come back. Secondly, a loyal buyer and a first-time visitor got the exact same message. The loyal buyer doesn’t need a push to buy, and the new visitor doesn’t trust us yet. SO basically we lose orders from the people we stopped messaging, AND we risk giving offers to people who would buy anyway.
+
+**Problem in technical terms:**
+- The “Clicked Email or Subscribed?” split sent everyone who didn’t click to “Everyone else,” and that path ended the flow. Non-clickers are usually the biggest group, SO most shoppers stopped at 1 message.
+- There’s no split by customer status, SO new and returning shoppers can’t get a different message or a different offer.
+- IF the flow filters don’t have Placed Order, Started Checkout AND Added to Cart at 0 since starting this flow, THEN a shopper can get browse emails while the cart flow or ESO ACR is already working on them.
+- The SMS split was unclear. It must check “can receive SMS marketing” so we ONLY text people who said yes.
+- The first email waited 4 hours, SO the shopper’s interest had more time to cool down.
+
+**Solution in simple terms:**
+How does this flow fix that? First, we find out who the shopper is: did they buy from us before, or are they new? THEN every shopper gets 2 messages, unless they buy or move to cart or checkout first. Returning buyers get a reminder with NO offer. Why? They already trust us. New shoppers get free US shipping, BUT ONLY in the second message, so anyone who buys after the first one pays full shipping. Secondly, IF they clicked, THEN we show them proof, like reviews and fit notes, so they think “Other people like it, it must be good.” And IF they said yes to SMS, they get a text instead. BUT IF they didn’t click, we send a fresh angle with the product they viewed plus our bestsellers. So basically every shopper gets a second chance, AND the offer only goes where it helps the order happen, SO we get more revenue without losing margin.
+
+**Solution in technical terms:**
+- **Entry:** Viewed Product trigger. Filters: Placed Order 0 times since starting this flow AND Started Checkout 0 times AND Added to Cart 0 times AND hasn’t been in this flow in the last 30 days. Then we wait 2 hours.
+- **Split 1:** Placed Order at least once over all time → Returning. Everyone else → New.
+- **Splits 2 and 3:** Klaviyo checks paths from top to bottom, and the first match wins:
+    - Clicked AND can receive SMS → SMS
+    - Clicked → Proof email
+    - Everyone else → New-angle email
+- **Offer:** Returning shoppers get NONE. New shoppers get OFFBOLT1 ONLY in message 2.
+- **Controls:** Smart Sending ON, SMS quiet hours ON, AND dynamic tags in every message, so each shopper sees the exact product they viewed.
+
+---
+
+## 3. Structure
+
+### 3.1 Trigger
+
+- **Metric:** Viewed Product (Klaviyo onsite tracking).
+- The flow fires ONLY IF Klaviyo has identified the browser.
+- Klaviyo identifies a browser after an email click, a form submit, OR a login or checkout.
+- Anonymous visitors never enter, BECAUSE they’re unknown.
+
+### 3.2 Who enters, who’s blocked, when they leave
+
+|Rule|Setting|Why|
+|---|---|---|
+|**Enter**|Viewed a product|The earliest buying signal the store can act on|
+|**Block**|Placed Order, Started Checkout OR Added to Cart since starting this flow|A higher-intent flow takes over, OR they already bought|
+|**Cooldown**|Hasn’t been in this flow in the last 30 days|At most 2 messages from this flow per 30 days|
+|**Consent**|Klaviyo checks email and SMS consent on every marketing message|We ONLY message people who said yes|
+
+**Note:** Filters are checked before each message, NOT all the time. IF a shopper buys during a wait, THEN they leave quietly at the next check.
+
+### 3.3 Flow map
+
+\`\`\`
+Viewed Product
+   |  Filters: Placed Order, Started Checkout, Added to Cart = 0 since starting
+   |           AND not in this flow in the last 30 days
+   v
+Wait 2 hours
+   v
+S1 | Customer Status: Bought Before?
+   |-- Returning --> E1-R --> Wait 1 day --> S2 | Returning: Clicked E1 + SMS Eligible?
+   |                                           |-- Clicked + SMS    --> SMS2-R
+   |                                           |-- Clicked          --> E2-R-Proof
+   |                                           |-- Everyone else    --> E2-R-Angle
+   |
+   |-- New ------> E1-N --> Wait 1 day --> S3 | New: Clicked E1 + SMS Eligible?
+                                               |-- Clicked + SMS    --> SMS2-N
+                                               |-- Clicked          --> E2-N-Proof
+                                               |-- Everyone else    --> E2-N-Offer
+\`\`\`
+
+### 3.4 Split and path names
+
+|Split|Path|Name|
+|---|---|---|
+|S1 \\| Customer Status: Bought Before?|Path 1|Returning \\| Placed Order ≥1 all time|
+| |Everyone else|New \\| Never ordered|
+|S2 \\| Returning: Clicked E1 + SMS Eligible?|Path 1|Returning \\| Clicked + SMS → SMS2-R|
+| |Path 2|Returning \\| Clicked + No SMS → E2-R-Proof|
+| |Everyone else|Returning \\| No Click → E2-R-Angle|
+|S3 \\| New: Clicked E1 + SMS Eligible?|Path 1|New \\| Clicked + SMS → SMS2-N|
+| |Path 2|New \\| Clicked + No SMS → E2-N-Proof|
+| |Everyone else|New \\| No Click → E2-N-Offer|
+
+### 3.5 Path logic
+
+#### Path 0: Entry gate (applies to all paths)
+
+**Condition criteria:**
+- Trigger: Viewed Product
+- AND Placed Order zero times since starting this flow
+- AND Started Checkout zero times since starting this flow
+- AND Added to Cart zero times since starting this flow, ONLY IF you run an Added to Cart flow. Use the Shopify-branded metric.
+- AND hasn’t been in this flow in the last 30 days
+- THEN wait 2 hours. Klaviyo’s minimum is 1 hour. The 2-hour choice is a judgment call.
+- Smart Sending ON for every message
+- Split rule: Splits check paths top-down, and the first match wins. THEREFORE “Clicked AND SMS” MUST sit above “Clicked”.
+
+**Reasoning:**
+What do these filters do? They check the shopper again before every step. IF they buy, THEN they exit right away. IF they add to cart or start checkout, THEN the cart flow or ESO ACR takes over, since those flows are made for a higher intent. So we never send a browse email to someone who’s already closer to ordering.
+
+Secondly, the 30-day filter means one shopper gets at most 2 messages from this flow in 30 days. Why does that matter? Too many emails lower engagement, and low engagement hurts deliverability, which hurts future revenue.
+
+And the 2-hour wait instead of 4? The shopper still remembers the product, SO the email lands while they still want it.
+
+#### Path 1: Returning · Clicked · SMS-eligible
+
+**Condition criteria:**
+- IF Placed Order at least once over all time
+- AND Clicked Email at least once since starting this flow
+- AND can receive SMS marketing
+- THEN E1-R (Day 0) → SMS2-R (Day 1) with a product link and no offer
+
+**Reasoning:**
+This is our hottest shopper. They bought from us before, AND they clicked the first email. SO we use SMS, since it’s the fastest way to reach them while they’re still deciding.
+
+Why no offer? Klaviyo itself says you may not want a discount for repeat buyers, AND Off-Bolt gives returning customers early access instead of codes. They already trust us, so an offer just cuts our margin on an order that was coming anyway.
+
+IF quiet hours delay the SMS a bit, that’s fine. Email and SMS have separate Smart Sending windows, SO the first email won’t block the text.
+
+#### Path 2: Returning · Clicked · NOT SMS-eligible
+
+**Condition criteria:**
+- IF Placed Order at least once over all time
+- AND Clicked Email at least once since starting this flow
+- AND NOT matched by Path 1
+- THEN E1-R → E2-R-Proof: reviews, fit notes, and a pairing with their past order. No offer.
+
+**Reasoning:**
+They clicked, so they saw the product, BUT they still didn’t add it to cart. What’s stopping them? Probably doubt about the product itself, not that they forgot it.
+
+SO this email removes that doubt with reviews, fit notes and how it pairs with what they already bought. Once they see it, they think “Other people love this, and it goes with what I have.” And since they’re a past buyer, we keep it at full price, SO the order brings full margin.
+
+#### Path 3: Returning · NOT clicked
+
+**Condition criteria:**
+- IF Placed Order at least once over all time
+- AND NOT clicked (falls to “Everyone else”)
+- THEN E1-R → E2-R-Angle: new subject line, the viewed product, plus a recently viewed or bestsellers block. No offer.
+
+**Reasoning:**
+In the old flow, these shoppers got nothing after the first email. BUT this is usually the biggest group, SO this is where most of the lost revenue is.
+
+Why a new angle and not the same reminder? Because the first one didn’t get a click. IF we repeat it, THEN we’ll probably get the same result. So we show them the product again plus our bestsellers. IF the product they viewed didn’t fully fit them, THEN there’s a similar one right there that might.
+
+#### Path 4: New · Clicked · SMS-eligible
+
+**Condition criteria:**
+- IF Placed Order zero times over all time
+- AND Clicked Email at least once since starting this flow
+- AND can receive SMS marketing
+- THEN E1-N (no offer) → SMS2-N with the product link AND OFFBOLT1 (free US shipping on the first order)
+
+**Reasoning:**
+This shopper is new, they clicked, BUT they didn’t buy. Why? Usually price or trust, since they’ve never ordered from us. Klaviyo also suggests an offer for first-time browsers, SO this is where the offer earns its money.
+
+Most importantly, the offer only shows in the second message. IF they buy after the first email, THEN we didn’t give away shipping we didn’t need to.
+
+We also use the same offer as the Welcome flow, OFFBOLT1. Why? So shoppers don’t learn “IF I just browse and leave, I’ll get a better deal.”
+
+#### Path 5: New · Clicked · NOT SMS-eligible
+
+**Condition criteria:**
+- IF Placed Order zero times over all time
+- AND Clicked Email at least once since starting this flow
+- AND NOT matched by Path 4
+- THEN E1-N → E2-N-Proof: reviews, the fit guide, AND OFFBOLT1
+
+**Reasoning:**
+A new shopper doesn’t know us yet, so they have 2 doubts: “Is this product good?” and “Is it worth it?” This email answers both in one go. The reviews and fit guide remove the first doubt, and free shipping removes the second.
+
+And this is their first order. Once they buy, THEN they can move into post-purchase and come back again, SO this one order can turn into more revenue later.
+
+#### Path 6: New · NOT clicked
+
+**Condition criteria:**
+- IF Placed Order zero times over all time
+- AND NOT clicked (falls to “Everyone else”)
+- THEN E1-N → E2-N-Offer: the offer in the subject line, plus the viewed product AND bestsellers
+
+**Reasoning:**
+The first email didn’t get a click, SO we lead with the strongest reason to open, which is the offer, right in the subject line. Once they open, they see the product they viewed plus our bestsellers. That gives them more than one product to click on.
+
+Why no SMS here? A text costs money every time we send it. These shoppers haven’t shown much interest yet, SO a text could just lead to an unsubscribe. So basically we keep SMS for the shoppers most likely to order, AND we keep our SMS list healthy for later.
+
+### 3.6 Messages
+
+|Step|Sent at|Channel|Who|Job|Offer|
+|---|---|---|---|---|---|
+|E1-R|2h|Email|Returning|Reminder of the viewed item|None|
+|E1-N|2h|Email|New|Reminder + reviews|None|
+|SMS2-R|26h|SMS|Returning · Clicked · SMS|Product link nudge|None|
+|E2-R-Proof|26h|Email|Returning · Clicked|Reviews + fit + pairs with past order|None|
+|E2-R-Angle|26h|Email|Returning · Not clicked|Viewed item + bestsellers|None|
+|SMS2-N|26h|SMS|New · Clicked · SMS|Product link + offer|OFFBOLT1|
+|E2-N-Proof|26h|Email|New · Clicked|Reviews + fit guide + offer|OFFBOLT1|
+|E2-N-Offer|26h|Email|New · Not clicked|Offer-led + viewed item + bestsellers|OFFBOLT1|
+
+#### Day 0
+
+**E1-R · E1-R | Returning | Viewed item reminder | No discount**
+
+**Subject:** Still eyeing the {{ event.ProductName|default:’piece you viewed’ }}?
+**Preview:** It’s still here, in your size.
+
+**E1-N · E1-N | New | Viewed item reminder + reviews | No discount**
+
+**Subject:** The {{ event.ProductName|default:’piece’ }} you looked at
+**Preview:** See why customers keep reaching for it.
+
+#### Day 1: Returning
+
+**Path 1 · SMS2-R | Returning · Clicked · SMS | Product link nudge | No discount**
+
+{{ organization.name }}: The {{ event.ProductName|default:’piece’ }} you checked out is still available. Take another look: {{ event.URL|default:organization.url }} Reply STOP to opt out
+
+**Path 2 · E2-R-Proof | Returning · Clicked | Reviews + fit + pairs with past order | No discount**
+
+**Subject:** How the {{ event.ProductName|default:’piece you viewed’ }} fits and wears
+**Preview:** Real reviews, plus what pairs with your last order.
+
+**Path 3 · E2-R-Angle | Returning · Not clicked | Viewed item + bestsellers | No discount**
+
+**Subject:** What {{ organization.name }} regulars are wearing now
+**Preview:** Our bestsellers, plus the piece you viewed.
+
+#### Day 1: New
+
+**Path 4 · SMS2-N | New · Clicked · SMS | Product link + first-order offer**
+
+{{ organization.name }}: Get free US shipping on your first order, {{ event.ProductName|default:’your pick’ }} included. Code: OFFBOLT1 {{ event.URL|default:organization.url }} Reply STOP to opt out
+
+**Path 5 · E2-N-Proof | New · Clicked | Reviews + fit guide + first-order offer**
+
+**Subject:** Not sure about the {{ event.ProductName|default:’piece you viewed’ }}? Read this
+**Preview:** Fit notes, real reviews, and free US shipping on your first order.
+
+**Path 6 · E2-N-Offer | New · Not clicked | Offer-led + viewed item + bestsellers**
+
+**Subject:** Free US shipping on your first {{ organization.name }} order
+**Preview:** Start with the {{ event.ProductName|default:’piece you viewed’ }} or a bestseller.
+
+### 3.7 Smart Sending and quiet hours
+
+Smart Sending skips a message IF the shopper got another message on the same channel inside the time window (email default 16 hours, SMS default 24 hours, both customizable). Email and SMS have separate windows. A skip is logged as a skip, NOT an error.
+
+|Message|Setting|Why|
+|---|---|---|
+|E1-R / E1-N|**ON**|A browser hasn’t decided yet. One more email right after a campaign costs more than it returns.|
+|E2 emails|**ON**|They go out 24h after E1, which is past 16h, SO E1 doesn’t block them. ON guards against campaign overlap.|
+|SMS2-R / SMS2-N|**ON**|IF an SMS campaign went out earlier that day, THEN we don’t text them again.|
+
+**SMS quiet hours:** ON. Klaviyo’s standard window holds texts between 8 p.m. and 11 a.m. For US and Canada numbers, it uses the phone’s area code to find the time zone.
+
+**Rule:** The shopper’s intent decides the settings, NOT the flow type. Browsing is a weak signal, THEREFORE Smart Sending stays ON for every message.
+
+---
+
+## 4. Variables and data
+
+### 4.1 Data the flow needs
+
+- Viewed Product event: name, image, link, price
+- Placed Order, Started Checkout AND Added to Cart (Shopify-branded) events
+- Email click event
+- Email consent
+- SMS consent AND phone number
+- A bestsellers or recommended products feed for the E2-Angle and E2-Offer emails
+
+It comes from Klaviyo’s Shopify sync, onsite tracking, forms AND the shopper’s opt-ins.
+
+### 4.2 Merge tags
+
+Tag paths can change with the integration version. Each one MUST be checked on a real profile before launch. A blank tag is never sent.
+
+|Purpose|Tag|
+|---|---|
+|Product name|\`{{ event.ProductName\\|default:'piece you viewed' }}\`|
+|Product image|\`{{ event.ImageURL }}\`|
+|Product link|\`{{ event.URL\\|default:organization.url }}\`|
+|Price|\`{{ event.Price }}\`|
+|Brand name|\`{{ organization.name }}\`|
+|First name|\`{{ first_name\\|default:"there" }}\`|
+|First-order code|OFFBOLT1 (static code, typed by hand)|
+
+Use straight quotes (‘) in every tag, never curly ones, or the tag won’t render.
+
+---
+
+## 5. Unverified: fix before real use
+
+### 5.1 Copy claims (sample data)
+
+- **Reviews:** use ONLY the verbatim reviews in the Off-Bolt brand file (Priya N., Dana R.). Never write new ones.
+- **Fit notes AND fit guide:** replace with real fit rules from the brand file.
+- **“In your size” in E1-R:** keep it ONLY IF the email shows real stock. IF not, THEN cut it.
+
+### 5.2 Checks
+
+- Every merge tag shows a real value in preview.
+- OFFBOLT1 works at checkout AND is set to first order only.
+- “Can receive SMS” checks BOTH consent AND a phone number.
+- Quiet hours apply correctly to US and Canada numbers.
+- The longest product name still fits 1 SMS segment.
+- Klaviyo short links are used in SMS.
+- The Shopify-branded Added to Cart metric is the one used in the filter.
+- The Added to Cart filter is kept ONLY IF the cart flow is live.
+- Legal basis is written down per market AND confirmed by the client’s lawyer.
+
+---
+
+## 6. Limits
+
+- Only known shoppers enter. Anonymous traffic isn’t reached.
+- The click check counts ANY email click since starting the flow, NOT only E1. A campaign click counts too.
+- IF Smart Sending skips E1, THEN that shopper can’t click it, SO they go down the no-click path. They still get message 2, BUT as the new-angle or offer email.
+- OFFBOLT1 is free US shipping. Canada shoppers can’t use it, SO the offer emails mean nothing to them.
+- US orders over $150 already ship free. IF a new shopper viewed the Selvage Jacket ($215), THEN OFFBOLT1 adds nothing. Consider showing the free size exchange there instead.
+- Practice store only.
+- Consent rules follow the shopper’s country. This document isn’t legal advice.
+
+---
+
+Note from me:
+
+A stranger MUST be able to rebuild this flow from this document alone.
+
+AND good luck building!`,
+          previous: [                          // older versions: same folder, tucked behind a note under the latest file
+            { name: "V1", text: `# V1.0 · Browse Abandonment Flow (Connected with 2 other flow)
+
+**Version:** V1.0 · 15 Sep 2026
+
+## Card details
+
+| | |
+|---|---|
+|**Title**|Browse Abandonment Flow (Connected with 2 other flow)|
+|**Card summary**|One quiet reminder, then a second message only for shoppers who clicked|
+|**Details line**|Klaviyo · Viewed Product · 2 emails, 1 SMS · at most 2 per shopper · no discounts|
+|**Date**|2026-09-15|
+|**Tag**|Klaviyo grouped flows|
+
+## Story
+
+### The problem
+
+A shopper looks at a product and leaves. Browsing is the weakest buying signal a store has, yet most browse flows treat it like a checkout: too many messages, a discount that teaches shoppers that looking earns a code, and paid texts sent to people who never showed real interest.
+
+### What I built
+
+- A Viewed Product trigger for known shoppers, with a 4-hour wait so the reminder never feels like being watched.
+- At most 2 messages: a quiet Email 1, then an SMS for subscribers or Email 2 for everyone else.
+- A click check before the second message, so only interested shoppers get a second touch and fewer paid texts go out.
+- No discount anywhere, Smart Sending on for every message, and 3 A/B tests that each change one thing.
+
+### Result
+
+Built on a practice store with sample brand data. The flow, every email version and the SMS copy are documented well enough to rebuild from scratch. No live results yet, and none are promised.
+
+## Flow screenshots
+
+![The browse abandonment flow, part 1: trigger on Viewed Product, 4 hour wait, E1 Still thinking about it, 20 hour wait, click check](assets/case3-ba-v1-flow-1.png)
+
+![The browse abandonment flow, part 2: click check, SMS subscriber check, then SMS1 or the second email](assets/case3-ba-v1-flow-2.png)
+
+---
+# Browse Abandonment Flow for Lai's Coffee
 
 **Tools:** Shopify · Klaviyo · Email + SMS
 **Version:** 1.0 · 15 Sep 2026
@@ -2219,7 +2618,8 @@ Note from me:
 
 A stranger MUST be able to rebuild this flow from this document alone.
 
-AND goodluck building!`
+AND goodluck building!` }
+          ]
         }
       ]
     },
