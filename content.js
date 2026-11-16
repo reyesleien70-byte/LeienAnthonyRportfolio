@@ -2626,42 +2626,475 @@ AND goodluck building!` }
 
     {
       tag: "Klaviyo grouped flows",
-      title: "Post-Purchase Flow(Connected with 2 other flow)",
+      title: "Off-Bolt ESO Post-Purchase: Consent-Gated Buyer Routing, Fit Checks, Run Notes, Service Recovery",
       slug: "post-purchase-flow-grouped",
       type: "flow",                       // flow | campaign | email-design
-      date: "2026-09-15",
-      blurb: "Tells buyers when the order arrives, how to enjoy it, and when to reorder",
-      photo: "assets/case4-pp-flow-1.png",
-      thumbnailAlt: "The top of the post-purchase flow: the Placed Order trigger, the first time buyer split, the two first emails",
-      meta: "Klaviyo · Placed Order · email + SMS · 3 messages over 21 days · no discounts",
+      date: "2026-11-16",
+      blurb: "Turns one paid order into the next one at full price, without giving codes to people who will buy anyway",
+      photo: "assets/case4-pp-v2-flow-1.webp",
+      thumbnailAlt: "The top of the post-purchase flow: the Placed Order trigger, a 2 hour wait, the OB email list split and the split by buyer type",
+      meta: "Klaviyo · Placed Order, Fulfilled Order, staff tag · email only · 1 to 5 emails over 110 days, plus 1 fit check · codes for E4-O and service recovery only",
       video: "",
       poster: "",
       photos: [
-        { src: "assets/case4-pp-flow-1.png", alt: "The post-purchase flow, part 1: trigger on Placed Order, first time buyer split, E1 Welcome or E1B Thanks for coming back", wide: true },
-        { src: "assets/case4-pp-flow-2.png", alt: "The post-purchase flow, part 2: 7 day wait, E2 Getting the most out of your bag, 14 day wait, Can receive SMS split" },
-        { src: "assets/case4-pp-flow-3.png", alt: "The post-purchase flow, part 3: 14 day wait, Can receive SMS split, SMS1 or E3 Something to put through it on Day 21", wide: true }
+        { src: "assets/case4-pp-v2-flow-1.webp", alt: "PP-A, the main post-purchase flow: Placed Order trigger, 2 hour wait, the OB email list split, the split by buyer type into the VIP, welcome back, plain thanks, repeat and first order emails, then the Day 21, Day 35, Day 75 and Day 110 gates and emails", wide: true },
+        { src: "assets/case4-pp-v2-flow-2.png", alt: "PP-B, the fit check: Fulfilled Order trigger, the In the OB list split, the Ships to Canada split, then FIT-CA after a 14 day wait or FIT-US after a 10 day wait" },
+        { src: "assets/case4-pp-v2-flow-3.png", alt: "PP-C, service recovery: added to the service recovery tag, the Our mistake split, then RC1 apology with $25 off (OFFBOLT5) or RC2 apology with free shipping (OFFBOLT6)" }
       ],
       story: [
         {
           heading: "The problem",
-          text: "The sale gets treated as the end. A first-time customer who does not know the roast schedule reads a three-day gap as a problem, may never brew a good first cup, and runs out of coffee on the morning they buy somewhere else."
+          text: "This post-purchase flow solves the problem of treating the sale as the end. A buyer worries about when the order will arrive, might wash it wrong the first time, and might never come back for a second piece."
         },
         {
           heading: "What I built",
-          bullets: [
-            "Three messages over 21 days, in order: when the order will arrive, how to brew a good first cup, and a reminder to reorder before the bag runs out.",
-            "A first-time vs repeat buyer split on Day 0, so repeat customers are thanked without being told the basics again.",
-            "A Day 21 reorder reminder by SMS or email, designed to skip anyone who has already reordered.",
-            "No discounts anywhere (points or a subscription reward loyalty instead), and 5 A/B tests, each changing one thing."
-          ]
+          text: "How does this flow solve that? First, every buyer gets an email that tells them when the order arrives and how to wash it, BEFORE they start to worry. Secondly, we talk to each buyer type differently: non-subscriber, VIP, welcome back, repeat, entry OR first order. A 4th-order buyer doesn't need the same email as someone who just found us."
         },
         {
-          heading: "Result",
-          text: "Built on a practice store with sample brand data, and documented well enough to rebuild from scratch. No live results yet, and none are promised. Settings still to confirm, such as the wait lengths and the refund, cancel and Day 21 filters, are listed openly in the documentation."
+          text: "Thirdly, after delivery we check the fit. IF it doesn't fit, THEN they swap the size instead of returning it, so we keep the revenue. Then we ask for a review, THEN one pairing, THEN Run Notes, THEN the next piece. IF they order again at any point, THEN the flow stops for them."
+        },
+        {
+          text: "Finally, last part, we send an apology code ONLY when staff confirm it was our mistake."
+        },
+        {
+          text: "So basically we turn one paid order into the next one at full price, without hurting deliverability AND without giving codes to people who will buy anyway."
         },
         {
           heading: "Documentation",
-          text: `# Post-Purchase Flow for Lai's Coffee
+          text: `# Off-Bolt ESO Post-Purchase: Consent-Gated Buyer Routing, Fit Checks, Run Notes, Service Recovery
+
+**Tools:** Shopify · Klaviyo 
+**Version:** 2.2 · 16 Nov 2026
+**Grouped with:** Browse Abandonment (BA) · Abandoned Checkout Recovery (ACR V1.2)
+
+---
+
+## At a glance
+
+|   |   |
+|---|---|
+|**Goal**|Use the paid order to make the next one, at full price|
+|**Trigger**|Placed Order ($value > 0) for PP-A · Fulfilled Order for PP-B · staff tag for PP-C|
+|**Messages per person**|1 to 5 emails over 110 days (varies per buyer type), plus 1 fit check|
+|**Channels**|Email only|
+|**Discounts**|OFFBOLT14 at E4-O ONLY. OFFBOLT5 AND OFFBOLT6 for service recovery ONLY.|
+|**Success metric**|Placed orders from this flow|
+
+---
+
+## 1. Purpose
+
+This post-purchase flow solves the problem of treating the sale as the end. A buyer worries about when the order will arrive, might wash it wrong the first time, and might never come back for a second piece.
+
+How does this flow solve that? First, every buyer gets an email that tells them when the order arrives and how to wash it, BEFORE they start to worry. Secondly, we talk to each buyer type differently: non-subscriber, VIP, welcome back, repeat, entry OR first order. A 4th-order buyer doesn't need the same email as someone who just found us.
+
+Thirdly, after delivery we check the fit. IF it doesn't fit, THEN they swap the size instead of returning it, so we keep the revenue. Then we ask for a review, THEN one pairing, THEN Run Notes, THEN the next piece. IF they order again at any point, THEN the flow stops for them.
+
+Finally, last part, we send an apology code ONLY when staff confirm it was our mistake.
+
+**Where it sits:** one part of the ESO group. These three MUST fit each other.
+
+- **Browse Abandonment (BA):** shoppers who viewed a product.
+- **Abandoned Checkout Recovery (ACR):** shoppers who started checkout.
+- **Post-Purchase (PP):** customers who paid.
+
+**ESO rules it follows:**
+
+- **Consent list:** \`OB | email list\` (called "OB list" below).
+- **Path order:** top-down, the first match wins.
+- **Lapsed:** no order in the last 180 days.
+- **Tests:** one A/B test live at a time, across the whole account.
+- **Codes:** a code goes ONLY where it likely causes the order. One code per order.
+
+**How it is judged:** placed orders. Clicks are NOT the goal.
+
+So basically we turn one paid order into the next one at full price, without hurting deliverability AND without giving codes to people who will buy anyway.
+
+---
+
+## 2. Structure
+
+### 2.1 Trigger
+
+|Flow|Trigger|Trigger filter|Re-entry|
+|---|---|---|---|
+|PP-A|Placed Order (Shopify integration)|$value is greater than 0|Every paid order, first or repeat|
+|PP-B|Fulfilled Order|Collections contains \`Current Runs\`|Every fulfilled order|
+|PP-C|Added to segment|Shopify Tags contains \`ob-recovery-25\` OR \`ob-recovery-ship\`|Once per profile|
+
+Why is there no list filter on the PP-A trigger, unlike ACR? Because E1-T MUST reach every buyer. IF we filter by the list at the trigger, THEN non-subscribers never get their order email, and that's exactly how "where is my order?" tickets start.
+
+Why paid orders only? Because a Shopify size swap can create a $0 order. IF that counted as a new order, THEN the flow would end for someone who just swapped a size. So "paid order" below always means Placed Order where $value is greater than 0.
+
+### 2.2 Who enters, who is blocked, when they leave
+
+|Rule|Applies to|Why|
+|---|---|---|
+|**Enter**|Placed a paid order|A paying customer|
+|**Block:** Refunded Order zero times since starting this flow (profile filter)|All PP-A messages|No care tips for a refunded order. It fires on full refunds only, so a partial return stays in.|
+|**Block:** Cancelled Order zero times since starting this flow (profile filter)|All PP-A AND PP-B messages|Same reason|
+|**S0:** Is in list OB email list (split, not a filter)|Day 0|NOT in the list, they get E1-T only. In the list, they go to S1.|
+|**G1:** In the OB list AND paid order zero times since starting this flow|Day 21 onward|Someone who subscribed after ordering still gets in. Someone who ordered again leaves.|
+|**G2:** paid order zero times since starting this flow|Day 35|Someone who already reordered doesn't need a pairing|
+|**G3, G3e, G4:** G2 AND engaged in the last 60 days|Day 75 AND Day 110|We don't send late emails to people who never engage|
+|**Consent**|All messages|Klaviyo checks channel consent on every message. IF someone unsubscribes after G1, THEN Klaviyo skips them on its own.|
+
+**Engaged** = at least once in the last 60 days, ANY of: Clicked Email · Opened Email where Apple Privacy Open = False · Active on Site. Why leave out Apple Privacy Opens? Because Apple opens the email on its own, so that open doesn't mean they read it.
+
+Most important note here: flow filters are checked before EVERY step, not all the time. IF we put the OB list check in the flow filter, THEN it also blocks E1-T. SO the list check is a split at Day 0 (S0) AND a gate at Day 21 (G1) instead. This way every buyer gets the useful order email, but ONLY people who said yes to emails get the marketing, which protects deliverability for BA AND ACR too.
+
+### 2.3 Flow map
+
+\`\`\`
+PP-A · Day 0 · every E1 Smart Sending OFF
+
+Placed Order ($value > 0)
+   v
+Wait 2h
+   v
+S0  In OB list?
+   |-- NO  --> EMAIL E1-T: Order timeline + care (transactional) --> G1
+   |-- YES --> S1  Which paid order is this?  (top-down, first YES wins)
+                 |-- 3rd order                --> EMAIL E1-V: VIP note from Lorelei
+                 |-- bought before, none 180d --> EMAIL E1-W: Welcome back
+                 |-- 4th+ order               --> EMAIL E1-P: Plain thanks
+                 |-- 2nd order                --> EMAIL E1-R: Two orders in
+                 |-- 1st order --> T1  Final sale only?
+                        |-- YES --> EMAIL E1-O: Final sale + care
+                        |-- NO  --> S2  In Run Notes?
+                               |-- NO  --> EMAIL E1-A: Join Run Notes
+                               |-- YES --> S3  Can receive SMS?
+                                      |-- YES --> EMAIL E1-C: Plain thanks
+                                      |-- NO  --> EMAIL E1-B: Run Notes by text
+                                                  (E1-C until SMS is verified)
+                 v
+              (merge)
+                 v
+
+PP-A · Day 21 to 110 · Smart Sending ON
+
+Wait 21 days
+   v
+G1  In OB list AND no new paid order?
+   |-- NO  --> End
+   |-- YES --> EMAIL E2: Review or reply ask                  (Day 21)
+                 v
+              Wait 14 days
+                 v
+              G2  No new paid order?
+                 |-- NO  --> End
+                 |-- YES --> S4  Only 1 paid order ever?
+                        |-- NO  --> EMAIL E3: What pairs with it, A/B   (Day 35)
+                        |-- YES --> T2  Final sale only?
+                               |-- NO  --> EMAIL E3                     (Day 35)
+                               |-- YES --> EMAIL E3-O: First full-price (Day 35)
+
+After E3:
+   Wait 40 days --> G3  No new paid order AND engaged?
+                      |-- NO  --> End
+                      |-- YES --> S5  In Run Notes?
+                             |-- NO  --> EMAIL E4: Next run early      (Day 75)
+                             |-- YES --> skip E4
+                      v
+                   Wait 35 days --> G4  No new paid order AND engaged?
+                      |-- NO  --> End
+                      |-- YES --> EMAIL E5: Your next piece            (Day 110)
+
+After E3-O:
+   Wait 40 days --> G3e  No new paid order AND engaged?
+                      |-- NO  --> End
+                      |-- YES --> EMAIL E4-O: Size chart + OFFBOLT14   (Day 75)
+
+
+PP-B · Fit check
+
+Fulfilled Order (Current Runs piece)
+   v
+In OB list?  (skip IF FIT gets transactional approval)
+   |-- NO  --> End
+   |-- YES --> Ships to Canada?
+                 |-- NO  --> Wait 10 days --> EMAIL FIT-US: free size swap
+                 |-- YES --> Wait 14 days --> EMAIL FIT-CA: postage is theirs
+
+
+PP-C · Service recovery
+
+Added to segment (staff tag)
+   v
+SC  Our mistake?
+   |-- YES --> EMAIL RC1: Apology + $25 off       (OFFBOLT5)
+   |-- NO  --> EMAIL RC2: Apology + free shipping (OFFBOLT6)
+\`\`\`
+
+Why "equals 1" for a first-time buyer and not 0? Because the order that started the flow is already counted, over all time. So a true first-time buyer shows 1, a 2nd-order buyer shows 2, a 3rd-order buyer shows 3.
+
+**Split conditions, PP-A:**
+
+|Card|Condition|YES|NO|
+|---|---|---|---|
+|S0|Is in list OB email list|S1|E1-T|
+|S1 · P1|Paid order equals 3 over all time|E1-V|P2|
+|S1 · P2|Paid order at least 2 over all time AND equals 1 in the last 180 days|E1-W|P3|
+|S1 · P3|Paid order at least 4 over all time|E1-P|P4|
+|S1 · P4|Paid order equals 2 over all time|E1-R|T1|
+|T1 · T2|Trigger split: Collections contains \`Final Sale\` AND doesn't contain \`Current Runs\`|E1-O · E3-O|S2 · E3|
+|S2 · S5|Is in list \`Run Notes\` (the TLRE list, same brand)|S3 · skip E4|E1-A · E4|
+|S3|Can receive SMS marketing|E1-C|E1-B|
+|G1|In OB list AND paid order zero times since starting this flow|E2|End|
+|G2|Paid order zero times since starting this flow|S4|End|
+|S4|Paid order equals 1 over all time|T2|E3|
+|G3 · G3e · G4|G2 AND engaged|S5 · E4-O · E5|End|
+
+**Split conditions, PP-B AND PP-C:**
+
+|Card|Condition|YES|NO|
+|---|---|---|---|
+|PP-B consent|Is in list OB email list|SB|End|
+|SB|Trigger split: shipping country equals Canada (check the property exists). Fallback: profile Country equals Canada|Wait 14d, FIT-CA|Wait 10d, FIT-US|
+|SC|Shopify Tags contains \`ob-recovery-25\`|RC1|RC2|
+
+**Messages:** every E1 has the delivery timeline AND a first-wash line. Packed in Providence · US 3–7 business days · Canada 7–12 days, duties may apply. Why the first-wash line? Because "indigo bleeds" and "never wring it" stop the damage before it happens, and damage turns into returns.
+
+|Card|Day|Job · one button|Code|
+|---|---|---|---|
+|E1-T|0 (+2h)|Timeline + care + Bound for Life as repair info · View your order. No marketing.|None|
+|E1-V|0|Note from Lorelei: 3 orders, repairs for life, early access · reply|None|
+|E1-W|0|Runs since their last order + "Lorelei runs the studio now" · Join Run Notes (hidden IF member)|None|
+|E1-P|0|Plain thanks · reply|None|
+|E1-R|0|Two orders in · Join Run Notes (hidden IF member)|None|
+|E1-O|0|Final sale + colour/care line · Join Run Notes (hidden IF member)|None|
+|E1-A|0|Thanks · Join Run Notes|None|
+|E1-B|0|Thanks · Get Run Notes by text|None|
+|E1-C|0|Plain note · reply|None|
+|E2|21|IF a reviews tool is live THEN "Leave a review" ELSE "Reply: how is it wearing?"|None|
+|E3|35|One pairing + ships-free line + Bound for Life · the ONLY A/B test|None|
+|E3-O|35|First full-price piece + its fit rule + free US size swap|None|
+|E4|75|Join Run Notes: next run 24h early|None|
+|E4-O|75|Size chart + fit rules + 10% off a full-price piece|OFFBOLT14: 10%, \`OB14-\`, one use, 30d, \`Current Runs\` only (check coupons can limit to a collection)|
+|E5|110|Runs since their order + one pick in their size · See the current runs|None|
+|FIT-US|Fulfilled +10|Fit rule per piece · reply with your size. One free swap IF the run still has it.|None|
+|FIT-CA|Fulfilled +14|Same, but the postage is theirs|None|
+|RC1|On tag|Apology|OFFBOLT5: $25, \`OB5-\`, one use, 90d|
+|RC2|On tag|Apology|OFFBOLT6: free shipping, \`OB6-\`, one use, 90d|
+
+Why does OFFBOLT14 sit at E4-O only? Because entry buyers chose final-sale prices. IF they're still engaged at Day 75 AND haven't ordered, THEN a code is more likely to actually cause their first full-price order. Everyone else is warm OR about to come back anyway, so a code there just pays for an order we were already getting.
+
+**Subjects and previews:**
+
+|Card|Subject|Preview|
+|---|---|---|
+|E1-T|Your Off-Bolt order is being packed|Here's when {{ event.Items.0\\|default:'your piece' }} arrives, and how to wash it the first time.|
+|E1-V|Three orders in, {{ first_name\\|default:'friend' }}|A note from Lorelei: repairs for life and a first look at every run.|
+|E1-W|Welcome back, {{ first_name\\|default:'there' }}|{{ event.Items.0\\|default:'Your piece' }} ships from Providence. Here's what we've cut since you last ordered.|
+|E1-P|Thank you again, {{ first_name\\|default:'there' }}|{{ event.Items.0\\|default:'Your order' }} is being packed in Providence.|
+|E1-R|Two orders in. Thank you|{{ event.Items.0\\|default:'Your piece' }} ships from Providence. Here's how to wash it first.|
+|E1-O|About your {{ event.Items.0\\|default:'piece' }}|It's final sale, and no two are alike. Here's how to care for it.|
+|E1-A|Your first Off-Bolt piece is coming|{{ event.Items.0\\|default:'Your order' }} ships from Providence. See the next run a day early.|
+|E1-B|Your first Off-Bolt piece is coming|{{ event.Items.0\\|default:'Your order' }} ships soon. Get Run Notes by text so you never miss a run.|
+|E1-C|Thank you, {{ first_name\\|default:'there' }}|{{ event.Items.0\\|default:'Your piece' }} is being packed in Providence.|
+|FIT-US|How does {{ event.Items.0\\|default:'it' }} fit?|Wrong size? Reply with the one you need. Your first swap is free.|
+|FIT-CA|How does {{ event.Items.0\\|default:'it' }} fit?|Wrong size? Reply with the one you need. We'll swap it; the postage is yours.|
+|E2|How is {{ event.Items.0\\|default:'your piece' }} wearing?|Three weeks in, {{ first_name\\|default:'there' }}. Your honest take helps the next person size right.|
+|E3|What pairs with {{ event.Items.0\\|default:'your piece' }}|One piece from the current runs. Orders over $100 ship free in the US.|
+|E3-O|Something to go with {{ event.Items.0\\|default:'your piece' }}|One piece from the current runs, with its fit rule and a free US size swap.|
+|E4|See the next run a day early|Run Notes members see every run 24 hours before the public, {{ first_name\\|default:'there' }}. Free to join.|
+|E4-O|How Off-Bolt sizes run|Every piece has its own fit rule. Here's the one for {{ event.Items.0\\|default:'yours' }}, plus 10% off a full-price piece.|
+|E5|Four months with {{ event.Items.0\\|default:'your piece' }}|Here's what we've cut since your order, in US sizes 0–24.|
+|RC1|We got this one wrong, {{ first_name\\|default:'there' }}|Here's $25 off your next order. Your code is inside and works for 90 days.|
+|RC2|Sorry for the wait, {{ first_name\\|default:'there' }}|Your next order ships free. Your code is inside and works for 90 days.|
+
+**A/B test (E3 only):** one pairing vs one pairing + the newest run. No code in either. 50/50, judged on placed order rate. Why only one test? Because only one test runs live across the whole account, so this one waits in line with BA AND ACR.
+
+### 2.4 Smart Sending
+
+Smart Sending skips a message IF the customer got another message on the same channel inside the window (default 16 hours). It skips, it does NOT reschedule. So IF we turn it on for an email that must land, THEN that email can be lost for good.
+
+|Message|Setting|Why|
+|---|---|---|
+|All E1|**OFF**|A customer waiting on an order is the most engaged person on the list. This message must land. (E1-T is transactional)|
+|FIT-US, FIT-CA|**OFF**|Timed to delivery. This is the one that turns a return into an exchange.|
+|RC1, RC2|**OFF**|A staff-confirmed apology must land.|
+|E2, E3, E3-O|**ON**|The gap is weeks. Nothing here is urgent.|
+|E4, E4-O, E5|**ON**|The gap is weeks. Nothing here is urgent.|
+
+**Rule:** the ONLY urgent message is the one that prevents "where is my order?"
+
+---
+
+## 3. Variables and data
+
+### 3.1 Data the flow needs
+
+- Placed Order event: Items, Collections, $value
+- Paid order count, over all time, in the last 180 days AND since starting the flow
+- Refunded Order AND Cancelled Order events
+- Fulfilled Order event with shipping country (check it exists)
+- First name
+- OB list AND Run Notes list membership
+- SMS consent AND phone number
+- Engagement: clicks, opens without Apple Privacy Opens, Active on Site
+- Shopify tags: \`ob-recovery-25\`, \`ob-recovery-ship\`
+- Collections: \`Current Runs\` AND \`Final Sale\` (hidden smart collection, tag = final-sale)
+- Catalog: \`Current Runs\` products with stock
+
+this data is obtainable via Klaviyo, Shopify syncs, onsite tracking, shopper's opt in and forms.
+
+### 3.2 Merge tags
+
+Tag paths can change with the integration version. Each one MUST be checked on a real profile before launch. A blank tag is never sent.
+
+|Purpose|Tag|
+|---|---|
+|First ordered item|\`{{ event.Items.0\\|default:'your piece' }}\`|
+|Ordered items|\`{{ event.extra.line_items }}\`|
+|Item image|\`{{ item.product.images.0.src }}\`|
+|Order value|\`{{ event.$value }}\`|
+|First name|\`{{ first_name\\|default:"there" }}\`|
+|First-wash block, per piece|show IF \`'<piece name>' in event.Items\`|
+|E4-O code|\`{% coupon_code 'OFFBOLT14' %}\`|
+|RC1 · RC2 codes|\`{% coupon_code 'OFFBOLT5' %}\` · \`{% coupon_code 'OFFBOLT6' %}\`|
+
+**Show/hide rules:**
+
+- **First-wash line** (every E1 AND FIT): one block per piece, so they only read the care rule for what they bought.
+- **Swap offer** (FIT): shows ONLY IF the piece is in \`Current Runs\`. Why? Because final sale can't be swapped, and we don't promise what we can't do.
+- **Pairing** (E3, E3-O): exactly ONE piece, and NEVER one already in the order.
+    - First choice: a catalog block, Collection = \`Current Runs\` AND in stock AND NOT in the order (check the block supports these filters).
+    - BUT IF the block can't do that, THEN use the table below. Update it every run release, because runs are 30–48 pieces AND never remade.
+
+|IF the order has|THEN show|
+|---|---|
+|The Bolt Trouser|The Mill Shirt $128|
+|The Mill Shirt|The Bolt Trouser $148|
+|The Hem Dress|The Selvage Jacket $215|
+|The Selvage Jacket|The Hem Dress $178|
+|The Offcut Tee (E3-O)|The Bolt Trouser $148|
+|The Bias Skirt (E3-O)|The Mill Shirt $128|
+
+Every pairing is $128 or more, AND free US shipping starts at $100. So each pairing ships free on its own, and the customer thinks "I don't even need to add anything to get free shipping."
+
+Klaviyo's built-in product blocks are preferred over hand-coded loops where they work.
+
+
+---
+
+## 4. Limits
+
+- BA AND ACR can still email PP buyers, because they exit ONLY on their own Placed Order. A BA email can also make Smart Sending skip E3.
+- ACR P4 gives 10% to anyone with exactly 1 order, and that includes someone who bought from us days ago.
+- ACR's 90-day block checks ONLY OFFBOLT3 AND OFFBOLT4.
+- E1-T AND FIT as transactional need a paid plan AND Klaviyo's approval.
+- E1-B needs a verified SMS number. Until then, we route to E1-C.
+- The catalog block may not filter by collection AND stock. IF so, THEN the pairing table is updated by hand.
+- OFFBOLT14 limited to \`Current Runs\` depends on coupon settings. Not checked yet.
+- Day 110 is an estimate (buyers come back about every 4 months in the seed data). Real gaps vary.
+- PP-C enters once per profile. A second mistake needs a code sent by hand.
+- Delivered Shipment works only with some carriers, so FIT uses Fulfilled Order + a wait.
+- A small list may never reach a clear A/B result (under ~200 per version, no call).
+- IF TLRE's F5 also runs on this store, THEN turn one off. Both trigger on Placed Order.
+- Practice store.
+- Consent rules follow the customer's country.
+
+---
+
+## 5. Versions
+
+|Version|Date|Change|
+|---|---|---|
+|1.0|15 Sep 2026|First build on an earlier practice brand. 3 messages over 21 days, Day 21 reorder by SMS OR email.|
+|1.3|Nov 2026|Rebuilt on Off-Bolt data. Added the consent gate, 5 buyer types, the entry path, fit check AND service recovery. Built the refund, cancel AND new-order gates.|
+|2.1|15 Nov 2026|Removed codes that pay for orders that would happen anyway. OFFBOLT14 stays at E4-O ONLY.|
+|2.2|16 Nov 2026|PP-A built in Klaviyo. Subjects, previews AND placeholder bodies in. This doc merged with the plan.|
+|2.3|Planned|Fixes AND decisions below|
+
+### Planned for 2.3
+
+**Build fixes** (seen on the canvas, open each split to confirm):
+
+1. **Add T2 at Day 35.**
+   Why? Because without it, a first-order full-price buyer gets E3-O instead of E3.
+2. **Fix G3's path.** It says "equals [value]".
+   Why? Because an empty value lets the wrong people through OR blocks everyone.
+3. **Check \`Split #13\`** after T1's "Everyone else". Path #1 shows "Collections contains Final Sale", and the other path ends.
+   Why? Because IF that's real, THEN full-price first orders end at Day 0, and those are the buyers we want most.
+4. **Rename \`Split #13\` AND \`Path #1\`** to the names in this doc.
+5. **Check E5's subject, preview AND body.** The fill stopped halfway.
+6. **Route S3 NO to E1-C** until SMS is verified.
+
+**Setup AND decisions:**
+
+7. **Widen ACR's 90-day block** to OFFBOLT1, 3, 4, 5, 6 AND 14.
+   Why? Because without it, a shopper gets a code every time they abandon, and learns to abandon on purpose.
+8. **Pick the recent-buyer window [X]** for BA AND ACR entry, AND ACR P4.
+   Why? Because a PP buyer shouldn't get a 10% code days after buying at full price.
+9. **Check the catalog block** filters by collection AND stock.
+10. **Test IF a Shopify size swap makes a $0 order.**
+11. **Create the coupons:** OFFBOLT14 (\`OB14-\`), OFFBOLT5 (\`OB5-\`), OFFBOLT6 (\`OB6-\`).
+12. **Apply for transactional approval** for E1-T AND FIT.
+13. **Verify the toll-free SMS number.**
+14. **Check checkout opt-ins sync** to the OB list.
+15. **Check Fulfilled Order has shipping country.**
+16. **Choose the RC process:** manual send OR a metric trigger.
+17. **Update the brand code log:** OFFBOLT15 is no longer used, OFFBOLT14 is E4-O only.
+18. **Review Day 110** once real return gaps are known.
+
+Older versions are kept, NOT deleted. BECAUSE again, if the new one fails we have a fallback.
+
+---
+
+## 6. Rebuild check
+
+A stranger MUST be able to rebuild this flow from this document alone.
+
+- Trigger and filters
+- Waits and splits
+- Messages and A/B versions
+- Smart Sending settings
+- Merge tags AND links
+
+Goodluck building!`,
+          previous: [                          // older versions: same folder, tucked behind a note under the latest file
+            { name: "V1", text: `# V1.0 · Post-Purchase Flow(Connected with 2 other flow)
+
+**Version:** V1.0 · 15 Sep 2026
+
+## Card details
+
+| | |
+|---|---|
+|**Title**|Post-Purchase Flow(Connected with 2 other flow)|
+|**Card summary**|Tells buyers when the order arrives, how to enjoy it, and when to reorder|
+|**Details line**|Klaviyo · Placed Order · email + SMS · 3 messages over 21 days · no discounts|
+|**Date**|2026-09-15|
+|**Tag**|Klaviyo grouped flows|
+
+## Story
+
+### The problem
+
+The sale gets treated as the end. A first-time customer who does not know the roast schedule reads a three-day gap as a problem, may never brew a good first cup, and runs out of coffee on the morning they buy somewhere else.
+
+### What I built
+
+- Three messages over 21 days, in order: when the order will arrive, how to brew a good first cup, and a reminder to reorder before the bag runs out.
+- A first-time vs repeat buyer split on Day 0, so repeat customers are thanked without being told the basics again.
+- A Day 21 reorder reminder by SMS or email, designed to skip anyone who has already reordered.
+- No discounts anywhere (points or a subscription reward loyalty instead), and 5 A/B tests, each changing one thing.
+
+### Result
+
+Built on a practice store with sample brand data, and documented well enough to rebuild from scratch. No live results yet, and none are promised. Settings still to confirm, such as the wait lengths and the refund, cancel and Day 21 filters, are listed openly in the documentation.
+
+## Flow screenshots
+
+![The post-purchase flow, part 1: trigger on Placed Order, first time buyer split, E1 Welcome or E1B Thanks for coming back](assets/case4-pp-flow-1.png)
+
+![The post-purchase flow, part 2: 7 day wait, E2 Getting the most out of your bag, 14 day wait, Can receive SMS split](assets/case4-pp-flow-2.png)
+
+![The post-purchase flow, part 3: 14 day wait, Can receive SMS split, SMS1 or E3 Something to put through it on Day 21](assets/case4-pp-flow-3.png)
+
+---
+# Post-Purchase Flow for Lai's Coffee
 
 **Tools:** Shopify · Klaviyo · Email + SMS
 **Version:** 1.0 · 15 Sep 2026
@@ -2905,7 +3338,8 @@ A stranger MUST be able to rebuild this flow from this document alone.
 - Smart Sending settings
 - Merge tags AND links
 
-Goodluck building!`
+Goodluck building!` }
+          ]
         }
       ]
     },

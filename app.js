@@ -300,6 +300,10 @@ function richText(str){
     const base = indentOf(start);
     const ordered = ORDERED.test(line(start));
     const el = document.createElement(ordered ? "ol" : "ul");
+    if (ordered){                                        // a list that goes on from 7 keeps its 7
+      const first = parseInt(line(start), 10);
+      if (first > 1) el.start = first;
+    }
     let li = null, k = start;
 
     while (k < raw.length){
