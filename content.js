@@ -110,8 +110,8 @@ nav: {
 
 home: {
 
-  tabTitle: "Leien · Email & automation for Shopify brands",
-  tabNote: "Klaviyo lifecycle email automation for Shopify brands.",
+  tabTitle: "Leien · Email marketing automation for ecommerce brands",
+  tabNote: "Email marketing automations that increases sales & optimizes margin for e commerce brands",
 
   photo: "assets/profile.jpg",
   photoAlt: "Leien Anthony R.",
@@ -182,8 +182,8 @@ home: {
       type: "text",
       id: "who",
       eyebrow: "Who I help",
-      heading: "All Shopify brands that are looking to optimize revenue.",
-      lede: "I build lifecycle email automation/marketing strategy that turns one-time buyers into repeat customers.",
+      heading: "Ecommerce brands that wants to increase sales & optimize margin",
+      lede: "I build email marketing automation strategy with only one goal increased sales & maximized margin potential.",
 
       /* the two buttons on the first screen. Change a label OR where it goes. */
       buttons: [
@@ -193,14 +193,14 @@ home: {
 
       /* the line of proof under the buttons */
       proof: [
-        { text: "Klaviyo Practitioner certified", url: "certifications.html" },
+        { text: "Klaviyo Strategist certified", url: "certifications.html" },
         { text: "{count} documented builds" }
       ],
 
       bullets: [
         "Teams and solo founders losing sales to abandoned carts, one-time buyers, and dead lists.",
-        "Brands whose flows exist but aren't optimized for maximal revenue.",
-        "Brands that want automation that saves time and money and delivers better results.",
+        "Brands with existing flows but aren't optimized for maximal margin potential.",
+        "Brands that wants their email automation to be maximized for sales & margin.",
         "Available for long-term retainers, short-term sprints, or fixed-scope projects."
       ]
     },
@@ -216,8 +216,10 @@ home: {
          A slug that is misspelled, hidden OR a draft is skipped. */
       cases: [
         "cart-abandonment-email-2-off-bolt",
-        "tlre-lifecycle-revenue-engine",
-        "abandoned-cart-recovery-grouped"
+        "browse-abandonment-routed-history-clicks-sms",
+        "abandoned-cart-recovery-grouped",
+        "post-purchase-flow-grouped",
+        "new-product-launch-email-off-bolt"
       ],
 
       /* the link under the cards. {count} = the number of case studies on show. "" hides the link. */
@@ -228,14 +230,14 @@ home: {
     {
       type: "text",
       id: "automate",
-      eyebrow: "What I automate and specialize in",
-      heading: "Flows that run 24/7 and HTML code to fit the situation",
+      eyebrow: "What specialize in",
+      heading: "Sophisticated Klaviyo flows/campaigns & email designs that leverages visual hierarchy",
       bullets: [
-        "Abandonment recovery: Cart, checkout, and browse flows that win back buyers, even before a cart exists.",
-        "Retention flows: Post-purchase upsell, cross-sell, and repeat-order timing, plus win-back for lapsed buyers.",
-        "List health: Welcome series that convert new subscribers. Sunset flows that protect deliverability and sender reputation.",
-        "Smart logic: Rule-based and AI-driven segments, branching, timing, and suppression.",
-        "Custom builds: Hand-coded HTML emails and Klaviyo blocks, with JS or Python in n8n for tighter data control."
+        "Abandonment recovery: Browse, cart and checkout flows routed by who the shopper is and why they stopped, so each message removes one reason not to buy.",
+        "Margin control: Discounts sent only where they can cause the order, proven with a no-discount holdout judged on placed orders.",
+        "Retention flows: Post-purchase, reorder reminders, VIP and win-back timed to the brand's buying cycle, so repeat orders come mostly without discount codes.",
+        "Lifecycle logic: One lifecycle stage per customer, so flows hand off profiles to higher intent flows and any order stops every \"please buy\" email. Sunset flows protect deliverability.",
+        "Custom builds: Figma email designs with visual hierarchy built for conversion, HTML and CSS, and n8n + Shopify webhooks for checks Klaviyo can't do alone."
       ]
     },
 
@@ -252,7 +254,7 @@ home: {
       type: "tools",
       id: "stack",
       eyebrow: "My stack",
-      heading: "The tools I actually build in.",
+    heading: "The tools I actually build in.",
 
       /* "icon" picks a ready-made drawing. The choices are:
          mail  nodes  bag  code  grid  cube  chart  clock  star  plug
@@ -260,13 +262,13 @@ home: {
          right to use that brand's own logo. */
       tools: [
         { name: "Klaviyo", icon: "mail" },
-        { name: "n8n", icon: "nodes" },
         { name: "Shopify", icon: "bag" },
-        { name: "JavaScript", icon: "code" },
-        { name: "Python", icon: "code" },
+        { name: "Figma", icon: "grid" },
+        { name: "n8n", icon: "nodes" },
         { name: "HTML", icon: "code" },
         { name: "CSS", icon: "code" },
-        { name: "APIs", icon: "cube" },
+        { name: "APIs & Webhooks", icon: "plug" },
+        { name: "Canva", icon: "star" },
       ]
     },
 
@@ -340,7 +342,7 @@ cases: {
 
   eyebrow: "Case studies",
   heading: "Builds, opened up.",
-  lede: "Each card holds the walkthrough: what was broken, what I built, what it does now.",
+  lede: "Each card shows the walkthrough: what's broken, what I built, what it does.",
   openLabel: "Open case",
 
   /* THE "FEATURED" ORDER, which is how the page opens.
