@@ -899,7 +899,7 @@ Reminder: Add more to this the more updates/changes/error encounter happens.`
 
     {
       tag: "Klaviyo grouped flows",
-      title: "Segmented Checkout Recovery: Reason-Routed Recovery With Controlled Discount Distribution",
+      title: "Segmented Checkout Recovery: Reason routed recovery With Controlled discount distribution",
       slug: "abandoned-cart-recovery-grouped",
       type: "flow",                       // flow | campaign | email-design
       date: "2026-11-13",
@@ -2626,7 +2626,7 @@ AND goodluck building!` }
 
     {
       tag: "Klaviyo grouped flows",
-      title: "Off-Bolt ESO Post-Purchase: Consent-Gated Buyer Routing, Fit Checks, Run Notes, Service Recovery",
+      title: "Off-Bolt ESO Post-Purchase: Consent gated routing, Fit Checks, Run Notes, Service Recovery",
       slug: "post-purchase-flow-grouped",
       type: "flow",                       // flow | campaign | email-design
       date: "2026-11-16",
