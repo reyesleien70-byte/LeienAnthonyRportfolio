@@ -363,9 +363,18 @@ cases: {
      The cases listed here come first, in this order. Each line is a case's "slug".
      Every case NOT listed follows after them, A to Z. Add a slug to move a case up. */
   featured: [
+    /* flows: the ESO grouped flows first */
+    "abandoned-cart-recovery-grouped",                  // Segmented Checkout Recovery
+    "browse-abandonment-routed-history-clicks-sms",     // Browse Abandonment (grouped)
+    "post-purchase-flow-grouped",                       // ESO Post-Purchase
     "item-specific-abandoned-cart-recovery",
     "tlre-lifecycle-revenue-engine",
-    "new-product-launch-email-off-bolt"
+    /* email designs */
+    "new-product-launch-email-off-bolt",
+    "black-friday-sms-subscription-email-off-bolt",
+    "cart-abandonment-email-2-off-bolt",
+    "sms-subscription-campaign-email-off-bolt",
+    "cart-abandonment-email-off-bolt"
   ],
 
   /* the words on the sort buttons, AND how the small "Showing ..." line names each order */
@@ -5418,6 +5427,60 @@ So basically we will maximize the intent's potential to become an order by filte
         },
         {
           text: "So basically, this email turns curiosity and Unfamiliarity into clicks by answering each doubt in order: what it is, why to buy it, which color, which size and who we are. More clicks, THEREFORE more chances of a placed order."
+        }
+      ]
+    },
+
+    {
+      tag: "Klaviyo · Email design",
+      title: "Black Friday SMS Subscription Email for Off-Bolt",
+      slug: "black-friday-sms-subscription-email-off-bolt",
+      type: "email-design",
+      date: "2026-11-18",                 // YYYY-MM-DD. The day this case was first added. Correct it IF the email was made on another day.
+      blurb: "A Black Friday email that grows the SMS list before the sale",
+      photo: "assets/email-bfsms-full.webp",
+      thumbnailAlt: "The top of the Off-Bolt Black Friday SMS subscription email",
+      meta: "Klaviyo · Black Friday SMS subscription email · Off-Bolt",
+      video: "",
+      poster: "",
+      photos: [
+        { src: "assets/email-bfsms-full.webp", alt: "The full Off-Bolt Black Friday SMS subscription email: Get Black Friday first, Join by text with a Join Text button and the consent text, What you get with three perks, a product photo, How it works in three steps, What to expect, What customer says with a subscriber quote, Get early sale access with a second Join Text button and the consent text, and the footer links Visit website, About us, Similar products and Email us", tall: true }
+      ],
+      story: [
+        {
+          heading: "About this email",
+          text: "This email helps a brand with a big sale coming to increase SMS list. SMS is the fastest channel to reach customer it's urgent, 3x more open rate than email, easier to click and less inbox competition, which puts you ahead of brands who don't use it."
+        },
+        {
+          text: "AND"
+        },
+        {
+          text: "On the visual side this design leverages hyper loud color mixed with extra calm color which makes it look alive and makes customer know immediately where to click. Plus, it also uses Icons to make it skim easy. most customer won't read a lot of text they skim."
+        },
+        {
+          heading: "Here's the features",
+          text: "**First, the hero.** Once the email is opened, they see the offer right away: get Black Friday first, join by text. The button sits right below it. That’s very important, since not everyone scrolls to the end. “Join” is in cyan bright green, SO the eye lands on the action first. Then the line “Tomorrow, we’re giving our subscribers first access” gives them a deadline. SO they have a reason to why they should join."
+        },
+        {
+          text: "**Secondly, the consent text sits right under the button.** Why? BECAUSE they MUST know what they’re signing up for before they send the message(helps us by keeping the list clean). It also works for people on a computer, since they can just text BOLT from their phone."
+        },
+        {
+          text: "**Thirdly, the WHAT YOU GET section.** This is where we convince them. They get deals 24 hours before email, an extra 10% sent ONLY by text. SO they’ll think, “IF I join, I get it before everyone else, and cheaper.” Email subscribers get NONE of these, which makes the text list worth joining."
+        },
+        {
+          text: "**Then HOW IT WORKS.** Tap the button, hit send, done. What does this section do? It removes the doubt that joining is a hassle. 3 steps, about 10 seconds, which matches the preheader."
+        },
+        {
+          text: "**Then WHAT TO EXPECT.** 4 texts a month, reply STOP anytime. This removes the fear of spam, the most common reason people don’t give their number. They’re more likely to think, “I can stop anytime anyways.”"
+        },
+        {
+          text: "**Then the SOCIAL PROOF section.** A subscriber got the text a full day before the inbox AND grabbed their size before it sold out. This removes the last doubt BECAUSE it shows the early access is real."
+        },
+        {
+          text: "**Finally, last part.** A second CTA over the clothing rack: get early sale access. IF they scrolled all the way down, THEN they’re probably is only looking for a reason, since we already gave them a lot they're more likely to click. SO we give them another button before they leave. The consent text shows again, then the footer links lead back to our site AND products."
+        },
+        {
+          text: "So basically, this email grows the SMS list before the sale. More SMS subscribers means we reach them faster on sale day. Therefore more clicks, more placed orders, AND then revenue."
         }
       ]
     }
