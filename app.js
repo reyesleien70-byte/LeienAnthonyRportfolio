@@ -34,6 +34,7 @@ const CASE_LABELS = Object.assign({
   folder: "Project files",             // the folder that holds the documentation file
   file: "Document",                    // what kind of file it is
   openFile: "Open",                    // the button on the file
+  videoBadge: "Video walkthrough",     // the label on a card whose case has a video
   olderOne: "previous version inside", // the note at the bottom of a folder with older versions
   olderMany: "previous versions inside",
   sections: "sections",
@@ -487,7 +488,7 @@ function isEmbed(src){
   return /^https?:/i.test(src) && !/\.(mp4|webm|ogv|ogg|mov|m4v)(\?|#|$)/i.test(src);
 }
 
-function videoNode(src, poster){
+function videoNode(src, poster, title){
   if (!src) return null;
   if (isEmbed(src)){
     const box = make("div", "media__frame");
@@ -495,7 +496,8 @@ function videoNode(src, poster){
     f.src = src;
     f.loading = "lazy";
     f.allowFullscreen = true;
-    f.title = "Video";
+    f.title = title || "Video";
+    f.referrerPolicy = "strict-origin-when-cross-origin";   // YouTube refuses to play without it
     f.setAttribute("allow", "accelerometer; encrypted-media; picture-in-picture; fullscreen");
     box.appendChild(f);
     return box;
@@ -514,7 +516,7 @@ function videoNode(src, poster){
 function mediaFor(o, cls){
   const parts = [];
   if (o.photo) parts.push(photoNode(o.photo, o.photoAlt));
-  const v = videoNode(o.video, o.poster);
+  const v = videoNode(o.video, o.poster, o.videoTitle);
   if (v) parts.push(v);
   if (!parts.length) return null;
 
@@ -973,6 +975,7 @@ function homeBlock(b, isFirst){
       const thumb = item.thumbnail || item.photo;
       /* no picture -> the same small drawn flow the case's own card shows */
       pic.appendChild(thumb ? photoNode(thumb, item.thumbnailAlt || "", "pick__shot") : caseArt(CONTENT.cases.items.indexOf(item)));
+      if (item.video) pic.appendChild(videoBadge());
       a.appendChild(pic);
       const body = make("span", "pick__body");
       body.appendChild(make("span", "pick__type", FILTER_LABELS[item.type || "flow"] || item.type));
@@ -1038,6 +1041,14 @@ function caseBySlug(s){
 }
 
 /* the link that opens a case: its own page IF it has one, ELSE the case studies page with the case open */
+/* the small "▶ Video walkthrough" label on a card whose case has a video */
+function videoBadge(){
+  const b = make("span", "video-badge");
+  b.insertAdjacentHTML("beforeend", "<svg viewBox='0 0 24 24' aria-hidden='true'><path d='M8 5.5v13l10.5-6.5z'/></svg>");
+  b.appendChild(make("span", null, CASE_LABELS.videoBadge));
+  return b;
+}
+
 function caseHref(item){
   return item.url || "case-studies.html#case-" + (item.slug || item._n);
 }
@@ -1137,6 +1148,7 @@ function renderCases(){
     const media = make("div", "case-card__media");
     const thumb = item.thumbnail || item.photo;
     media.appendChild(thumb ? photoNode(thumb, item.thumbnailAlt || "", "case-card__shot") : caseArt(i));
+    if (item.video) media.appendChild(videoBadge());
     card.appendChild(media);
 
     const body = make("div", "case-card__body");
@@ -1323,8 +1335,8 @@ function casePanel(item, n){
   art.appendChild(title);
   if (item.meta) art.appendChild(make("p", "meta", item.meta));
 
-  const v = videoNode(item.video, item.poster);
-  if (v) art.appendChild(v);
+  const v = videoNode(item.video, item.poster, item.videoTitle);
+  if (v){ v.id = "case-video"; art.appendChild(v); }
 
   if (item.photos && item.photos.length){
     const wrap = make("div", "shots");

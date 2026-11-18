@@ -1419,6 +1419,19 @@ h1 + .lede,h2 + .lede{margin-top:clamp(12px,1.6vw,18px)}
   font-size:13.5px;font-weight:600;color:var(--accent-text);
 }
 .file__open svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.6;transition:transform .6s var(--ease-out)}
+/* "▶ Video walkthrough" on a card whose case has a video */
+.video-badge{
+  position:absolute;left:10px;bottom:10px;z-index:1;
+  display:inline-flex;align-items:center;gap:6px;
+  padding:5px 10px 5px 8px;border-radius:999px;
+  background:var(--accent);color:var(--on-accent);
+  font-size:12px;font-weight:600;line-height:1;
+  box-shadow:0 2px 8px rgba(0,0,0,.25);
+  pointer-events:none;
+}
+.video-badge svg{width:12px;height:12px;fill:currentColor;stroke:none;flex:none}
+#case-video{margin:0 0 20px;scroll-margin-top:80px}
+
 .file + .file{border-top:1px solid var(--line)}
 /* older versions: a small note at the bottom of the folder, the files show on a click */
 .folder__older{border-top:1px solid var(--line)}

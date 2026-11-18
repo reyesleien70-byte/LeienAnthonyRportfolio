@@ -227,6 +227,20 @@ home: {
       moreUrl: "case-studies.html"
     },
 
+    /* a build walkthrough video, playing right on the home page */
+    {
+      type: "text",
+      id: "walkthrough",
+      eyebrow: "Build walkthrough",
+      heading: "Watch me walk through a full build.",
+      lede: "Segmented Checkout Recovery flow in Klaviyo: who gets which message, and where the discount goes.",
+      video: "https://www.youtube-nocookie.com/embed/QpVXSGKls2w?rel=0",
+      videoTitle: "Segmented Checkout Recovery walkthrough",
+      buttons: [
+        { label: "Open the case", url: "case-studies.html#case-abandoned-cart-recovery-grouped" }
+      ]
+    },
+
     {
       type: "text",
       id: "automate",
@@ -909,7 +923,8 @@ Reminder: Add more to this the more updates/changes/error encounter happens.`
       photo: "assets/case2-acr-v12-flow-1.png",
       thumbnailAlt: "The top of the checkout recovery flow: the Checkout Started trigger with profile filters, a 1 hour 30 minute wait, the Are they active split, and the two first emails",
       meta: "Klaviyo · Checkout Started · email + SMS · 3 messages per shopper · discounts by buying history and cart value",
-      video: "",
+      video: "https://www.youtube-nocookie.com/embed/QpVXSGKls2w?rel=0",   // the walkthrough, plays on the page. Share link: watch/segmented-checkout-recovery.html
+      videoTitle: "Segmented Checkout Recovery walkthrough",
       poster: "",
       photos: [
         { src: "assets/case2-acr-v12-flow-1.png", alt: "The checkout recovery flow, part 1: Checkout Started trigger with profile filters, 1 hour 30 minute wait, the Are they active split, E1P1 warm message for VIP or loyal customers on the Yes path, and E1P2 informative email for everyone else" },
