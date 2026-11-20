@@ -3372,40 +3372,1262 @@ Goodluck building!` }
 
     {
       tag: "Klaviyo · Shopify · Lifecycle system",
-      title: "TLRE: The Lifecycle Revenue Engine",
+      title: "TLRE V2.1: The Lifecycle Revenue Engine",
       slug: "tlre-lifecycle-revenue-engine",
       type: "flow",                       // flow | campaign | email-design
-      date: "",                        // YYYY-MM-DD. "" = not stated, shows no date
-      blurb: "Nine flows, one stage per customer",
-      photo: "",
-      meta: "Klaviyo + Shopify · 9 flows · 6 lifecycle segments · 2 signup forms · 4 A/B tests · email only · practice store",
+      date: "2026-11-20",
+      blurb: "The most placed orders from every lifecycle stage, and a discount only where it causes the order",
+      photo: "assets/tlre-v21-engine-map.webp",
+      photosNoteTop: "Please ZOOM in to read the engine map.",
+      thumbnailAlt: "The TLRE V2.1 engine map: triggers on top, flows grouped by stage, all leading to Placed Order",
+      meta: "Klaviyo + Shopify · 26 flows · 30 splits · 73 emails · 6 SMS · 3 WhatsApp · 10 segments · practice store, test data",
       video: "",
       poster: "",
-      photos: [],
-      photosNote: "Too many flows inside to render, the visual is inside the documentation.",
+      photos: [
+        { src: "assets/tlre-v21-engine-map.webp", alt: "The TLRE V2.1 full engine map: triggers on top, then 01 Convert (F1 Welcome, F10 Site, F11 Search, F12 Collection, F2 Browse, F3 Cart, F4 Checkout, F1-S SMS Welcome), 02 Scarcity (F13 Price Drop, F14 Low Stock, F15 Pattern Returns), 05 Protect (F9 Sunset, F25 Channel Switch, the monthly suppression), all leading to Placed Order. Below it 03 Grow (F22 Birthday, F6 Run Notes, F17 Return Save, F18 Next Piece, F5 Post-Purchase, F7 VIP, F21 Referral, F16 Fit Check, F20 Review Ask, F19 Predicted Reorder, F5-PS Price Signal), 04 Rescue (F8 Win-Back, F23 VIP At-Risk, F24 Lapsed), and the Offer Gate with its 15% holdout", tall: true }
+      ],
       story: [
         {
           heading: "The problem",
-          text: "Separate flows do not know about each other. One shopper can sit in the browse, cart and checkout flows at once, keep getting \"please buy\" emails after they have bought, and be offered a first-order code they have already used. Nothing ties the emails to where the customer is in their life with the brand."
+          text: "Off-Bolt was giving discounts to people who would have bought anyway, so every one of those orders lost money for nothing. Its only code, free shipping, barely mattered, because every full-price piece costs $128 or more and orders over $100 already ship free. Shoppers also hesitated over fit, and wrong sizes came back as returns. Many buying moments got no message at all: a search, a price drop, low stock, a reorder coming due, or a VIP going quiet. The store also couldn’t tell whether a code actually caused a sale, and emailing people who never open risks pushing everyone’s emails into spam. TLRE V2 lifts sales by reaching more of these moments and answering each doubt. It protects margin by giving codes only to people a code can change, and by proving that it worked."
         },
         {
           heading: "What I built",
-          bullets: [
-            "One lifecycle stage per customer, stored in a profile property. Six lifecycle segments and four helper segments decide who gets which email.",
-            "Nine flows that hand off to each other: welcome, browse, cart, checkout, post-purchase, Run Notes, VIP, win-back and sunset. A higher-intent event stops the lower flow, and any order stops every \"please buy\" flow.",
-            "Win-back timing set from the practice brand's buying cycle of about four months: At-Risk at 120 days with no order, Lapsed at 240.",
-            "No discount codes except free US shipping on a first order. Returning customers get early access through Run Notes, and scarcity is always a real run number.",
-            "Cart and checkout recovery that sells certainty about fit instead of a discount, and shows the shopper's usual size when it is known. 4 A/B tests, each changing one thing and judged by orders or joins, not opens.",
-            "A reporting dashboard, plus a rebuild and maintenance guide that lists every form, property, segment, flow and setting with the reason behind each one."
-          ]
+          text: "Before any code goes out, a checkpoint asks three questions. Did this person get a code recently? Did they show interest? Do they normally pay full price? IF a code wouldn’t change their mind, THEN they get the same email without it. Some eligible people never get the code at all, so we can compare and see whether the code really added orders. Every shopper gets the cheapest fix first: fit help, free size exchanges, reviews, early access and real stock counts. Money only comes last. The system remembers who hunts for deals, so only they see the Rack or a code. Each shopper gets one buying sequence at a time, plus fit help before returns happen. People who stop opening are asked if they still want emails, then removed. Texts and WhatsApp go only to big carts, VIPs, and people leaving email."
         },
         {
           heading: "Result",
-          text: "Built and tested on a Shopify development store with test data, for Off-Bolt, a practice brand. The documentation makes no revenue claims. Three things are still unverified and listed openly in section 14: whether the units-left metafield syncs to Klaviyo, whether the run number arrives on the Checkout Started event, and whether a backdated test order keeps its date."
+          text: "**Why this matters:** most Klaviyo builds prove an email made money. TLRE V2 also proves whether the discount did. It runs on test data, so the lift is designed and testable but not yet measured."
+        },
+        {
+          text: "Built in Klaviyo. Every flow is a draft. Every split, path AND message is named `Code = what it does`. Every email AND SMS holds placeholder copy. Emails send from Lorelei at Off-Bolt"
         },
         {
           heading: "Documentation",
-          text: `# TLRE: The Lifecycle Revenue Engine
+          text: `# TLRE V2: The Lifecycle Revenue Engine (synthetic data only)
+
+**Tools:** Shopify · Klaviyo · Email · SMS · WhatsApp
+**Version:** 2.1 · 20 Nov 2026 (2.0 · 20 Nov 2026 · first build 1.0 · 19 Sep 2026)
+**Store:** Off-Bolt, a practice women's clothing brand from Providence, RI. Mill-end cloth, numbered runs, never remade. Built on a Shopify dev store with test data. NO live results exist, AND every number marked "seed" or "illustrative" is made up for the build.
+
+---
+
+**Please ZOOM in to read the engine map.**
+
+![TLRE V2.1 full engine map: the triggers on top, the five stages Convert, Scarcity, Grow, Rescue and Protect, every flow from F1 to F25 with its splits and message counts, all leading to Placed Order, and the Offer Gate with its 15% holdout at the bottom](assets/tlre-v21-engine-map.webp)
+
+## At a glance
+
+| | |
+|---|---|
+| **Goal**           | The most placed orders from every lifecycle stage, AND a discount ONLY where it causes the order. Inbox placement protected the whole way.                                                     |
+| **Size**           | 26 flows · 30 splits · 73 emails · 6 SMS · 3 WhatsApp · 10 segments                                                                                                                            |
+| **Stages**         | Convert · Scarcity · Grow · Rescue · Protect                                                                                                                                                   |
+| **Channels**       | Email in every flow. SMS AND WhatsApp ONLY where they pay back: carts $100+, VIPs, AND profiles leaving email                                                                                  |
+| **Discounts**      | 4 money-off codes (OFFBOLT16, 17, 20, 21), each behind the Offer Gate AND a 15% holdout. Free shipping (OFFBOLT1, OFFBOLT2) for first orders. OFFBOLT12 by SMS. OFFBOLT13 for referred friends |
+| **Success metric** | Placed order rate per flow. Every code judged against its no-code holdout on net revenue per recipient                                                                                         |
+| **Status**         | Built in Klaviyo. Every flow is a draft. Every split, path AND message is named \`Code = what it does\`. Every email AND SMS holds placeholder copy. Emails send from Lorelei at Off-Bolt        |
+
+---
+
+### 1. What problem it solves, and how it helps sales and margin
+
+**Simple terms:** Off-Bolt was giving discounts to people who would have bought anyway, so every one of those orders lost money for nothing. Its only code, free shipping, barely mattered, because every full-price piece costs $128 or more and orders over $100 already ship free. Shoppers also hesitated over fit, and wrong sizes came back as returns. Many buying moments got no message at all: a search, a price drop, low stock, a reorder coming due, or a VIP going quiet. The store also couldn’t tell whether a code actually caused a sale, and emailing people who never open risks pushing everyone’s emails into spam. TLRE V2 lifts sales by reaching more of these moments and answering each doubt. It protects margin by giving codes only to people a code can change, and by proving that it worked.
+
+**Technical terms:**
+
+| Problem                | Cause                                                                               | Effect on sales and/or margin                                                                                                                |
+| ---------------------- | ----------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| One code for everyone  | Untargeted incentive in V1                                                          | The discount is paid on orders it didn’t cause, which lowers net revenue per recipient                                                       |
+| OFFBOLT1 barely worked | Full-price pieces cost $128+ AND the free US shipping threshold is $100             | Almost no extra US full-price orders                                                                                                         |
+| Fit doubt              | No pre-purchase fit help AND no exchange-first step                                 | Abandoned checkouts AND a 19% return rate, mostly sizing (seed data)                                                                         |
+| Unused triggers        | V1 had 9 email-only flows                                                           | No messages on Submitted Search, Viewed Collection, Price Drop, Low Inventory, predicted next order date, or the at-risk and lapsed segments |
+| Unproven code lift     | Klaviyo’s attribution credits a flow even when the order would have happened anyway | No way to tell real lift from orders that would have come anyway                                                                             |
+| Inbox risk             | Sending to unengaged profiles                                                       | Higher spam placement risk AND more billable profiles                                                                                        |
+
+|Result|How V2 delivers it|
+|---|---|
+|More placed orders|26 flows across email, SMS and WhatsApp|
+|Protected margin|Every money-off code is gated AND tested against a holdout|
+|Break-even awareness|A 20% code needs 2.5 times the extra orders a 10% code needs (illustrative, 60% margin)|
+
+### 2. How it solves each problem
+
+**Simple terms:** Before any code goes out, a checkpoint asks three questions. Did this person get a code recently? Did they show interest? Do they normally pay full price? IF a code wouldn’t change their mind, THEN they get the same email without it. Some eligible people never get the code at all, so we can compare and see whether the code really added orders. Every shopper gets the cheapest fix first: fit help, free size exchanges, reviews, early access and real stock counts. Money only comes last. The system remembers who hunts for deals, so only they see the Rack or a code. Each shopper gets one buying sequence at a time, plus fit help before returns happen. People who stop opening are asked if they still want emails, then removed. Texts and WhatsApp go only to big carts, VIPs, and people leaving email.
+
+**Technical terms:**
+
+|Mechanism|Build|Rule|
+|---|---|---|
+|Offer Gate|Multi-branch split before every money-off code|Block IF \`tlre_last_offer\` is within 30 days OR there’s no click or site visit since the flow started OR a repeat buyer has \`price_sens\` ≠ high|
+|Holdout|15% random-sample split after the gate|Judge on placed order rate AND net revenue per recipient. IF the code wins, THEN cut the holdout to 5%. ELSE remove the code|
+|Offer ladder|Message order inside each flow|Info → early access → Rack → free shipping → 10% → 15% → 20%|
+|Price signal|F5-PS, a flow with no messages, on Placed Order|\`price_sens\` = high from codes the shopper went looking for, Rack buys, “sale” searches and Rack views. A full-price order resets it to low|
+|Intent ladder|Flow filters|Lower-intent flows exit when a higher event fires: site → search/collection → browse → cart → checkout|
+|Return cutters|F16 on Fulfilled Order, F17 on Refunded Order|Fit check at home AND free size exchange before a refund|
+|Inbox protection|F9 Sunset + suppression + message filters|Suppress the Sunset Complete segment monthly. Fewer than 3 emails received in 7 days on low-priority flows. Engaged in the last 180 days on win-back flows|
+|Channel limits|SMS and WhatsApp steps|SMS on F4 carts of $100+, F23 VIPs and F25. WhatsApp only when there’s no SMS consent|
+
+**Why this matters:** most Klaviyo builds prove an email made money. TLRE V2 also proves whether the discount did. It runs on test data, so the lift is designed and testable but not yet measured.
+
+## 1. Purpose
+
+- **Why it exists:** Off-Bolt now allows codes in any flow. The usual setup gives one code to everyone. SO codes go to people who'd buy anyway, AND margin leaks on every one of those orders.
+- **The V1 problem nobody saw:** V1's only incentive was free US shipping. BUT every full-price piece costs $128 or more, AND US orders over $100 already ship free. SO that code changed almost no orders. The shopper's thought was simply "It ships free anyway."
+- **How V2 works:** every shopper gets the cheapest fix first: fit help, the free size exchange, reviews, early access, a real stock count. Money comes last, AND ONLY IF the Offer Gate says it can cause the order.
+- **How it's judged:** placed order rate. Each code is tested against a holdout that gets the same email without the code.
+
+### The offer ladder
+
+| Step | Doubt it removes | Cost to the store |
+| --- | --- | --- |
+| L0 Information: fit rule, free exchange, reviews, care | "Will it fit?", "Is $148 worth it?", "Will it wrinkle?" | None |
+| L1 Early access (Run Notes) | "Will I miss the next run?" | None |
+| L2 Remnant Rack | "I only buy on markdown" | None. The markdown already exists |
+| L3 Free shipping (first order) | "Shipping costs too much" | $8, AND ONLY on carts under $100 |
+| L4 10% code (OFFBOLT16, OFFBOLT17) | "Is it worth the money?" | Margin |
+| L5 15% code at day 180 (OFFBOLT20) | "I forgot about this store" | More margin |
+| L6 20% code at day 240 (OFFBOLT21) | "I'm gone unless it's worth it" | The most margin, so it's used last |
+
+### The Offer Gate
+
+The Offer Gate is a split that sits right before every money-off code. A code goes out ONLY IF ALL of these are true:
+
+1. No order since the flow started (flow filter).
+2. No money-off code in the last 30 days (profile property \`tlre_last_offer\`).
+3. They showed intent. In F1 that's a click OR a site visit since the flow started. In F4 the checkout itself is the intent.
+4. A repeat buyer needs \`price_sens\` = high (F4, F8). F24 is the one exception (see the table below).
+5. They land outside the 15% holdout.
+6. Win-back flows also need engagement in the last 180 days.
+
+ELSE the same email goes out without the code.
+
+What does the holdout do? It answers one question: did the code cause the order, or did Klaviyo just credit it? Why does that matter? Because Klaviyo credits the email even WHEN the shopper would have bought anyway.
+
+**Repeat-buyer code rule** (repeat buyer = 1 or more orders):
+
+| Flow | Code for repeat buyers? | Condition |
+| --- | --- | --- |
+| F4 Checkout, last message | OFFBOLT17 | ONLY IF \`price_sens\` = high |
+| F8 Win-Back, day 180 | OFFBOLT20 | ONLY IF \`price_sens\` = high |
+| F24 Lapsed | OFFBOLT21 | Any lapsed buyer engaged in the last 180 days |
+| F18 Next Piece | None | The reorder is already coming |
+| F22 Birthday | None, for anyone | A birthday shows no doubt about buying |
+| F1, F1-S | None | First-order offers only |
+
+### Break-even math
+
+A code pays ONLY IF the extra orders it brings cover the discount given to every coded order.
+
+\`\`\`
+A code pays IF   order rate with code × (margin − discount)   >   order rate without code × margin
+\`\`\`
+
+**Example (illustrative):** assumed 60% gross margin, $164 seed AOV, 5% order rate without a code. So the margin per order is $98.40.
+
+| Code | Discount per order | Break-even order rate | Lift needed |
+| --- | --- | --- | --- |
+| 10% | $16.40 | 6.0% | +20% |
+| 15% | $24.60 | 6.7% | +33% |
+| 20% | $32.80 | 7.5% | +50% |
+
+SO a 20% code needs 2.5 times the extra orders a 10% code needs, just to break even. That's why the bigger codes sit at the end of the ladder.
+
+SO basically, every message has one job, the cheapest fix goes first, AND a code is sent ONLY where it can cause the order. More placed orders, AND the margin stays with the store.
+
+---
+
+## 2. Structure
+
+### 2.1 How the engine reads
+
+- **One stage per customer:** stored in \`tlre_stage\`. Orders move a customer up. Time moves them down.
+- **Intent ladder:** Site < Collection OR Search < Browse < Cart < Checkout. IF a higher event happens, THEN the lower flow exits (flow filters). SO nobody gets two "please buy" flows at once.
+- **Any order** stops every "please buy" flow.
+- **Splits** are Klaviyo multi-branch splits. Paths are checked in order, 1 by 1. A shopper takes the FIRST path that matches. Else catches everyone left.
+- **Paths never rejoin.** SO each path carries its own messages after the split.
+- **Filters:** flow filters are re-checked before every step. A message filter (Additional filter) skips ONLY that one message, AND the profile keeps going.
+
+### 2.2 Naming code
+
+Every split, path AND message is named so a report reads like a map.
+
+| Code | Means | Example |
+| --- | --- | --- |
+| S + number | Split | \`S1\`, \`S2\` |
+| S + number + P + number | Path of that split | \`S1P2\` = Split 1, Path 2 |
+| E + split number | Email inside that split | \`S2P1E2\` = email in Split 2, Path 1 |
+| E0 | Email before any split | \`E0\` |
+| a, b, c | Several messages in the same path | \`S2P2E2a\`, \`S2P2E2b\` |
+| SMS / WA | Text OR WhatsApp, same rule as E | \`S1P1SMS1\`, \`WA0\` |
+
+**Full name in Klaviyo:** \`{Code} = {4 to 8 words on what it does}\`. SO a report OR the flow canvas explains itself without opening anything.
+
+| Part | Example |
+| --- | --- |
+| Split | \`S3 = Offer Gate: can a code go out?\` |
+| Path | \`S3P2 = Clicked or visited, eligible for code\` |
+| Email | \`S4P2E4 = OFFBOLT16 10% off, 72 hours\` |
+| SMS | \`SMS0a = Size question text for clickers\` |
+| WhatsApp | \`WA0 = WhatsApp cart reminder, no SMS consent\` |
+
+Message tables below use the full name. Every split AND path name sits in 2.14.
+
+### 2.3 Engine map
+
+\`\`\`mermaid
+flowchart LR
+  V["Visitor"] --> F10["F10 Site Abandon"]
+  V --> F11["F11 Search Abandon"]
+  V --> F12["F12 Collection Abandon"]
+  F10 --> F2["F2 Browse"]
+  F11 --> F2
+  F12 --> F2
+  F2 --> F3["F3 Cart"]
+  F3 --> F4["F4 Checkout"]
+  SU["Email signup"] --> F1["F1 Welcome"]
+  SMSU["SMS signup"] --> F1S["F1-S SMS Welcome"]
+  F13["F13 Price Drop"] -.-> ORD
+  F14["F14 Low Stock"] -.-> ORD
+  F1 --> ORD(("Order"))
+  F4 --> ORD
+  ORD --> F5["F5 Post-Purchase"]
+  ORD --> F5PS["F5-PS Price Signal"]
+  ORD --> F16["F16 Fit Check"]
+  ORD --> F18["F18 Next Piece"]
+  ORD --> F19["F19 Predicted Reorder"]
+  ORD --> F8["F8 Win-Back clock"]
+  ORD -.->|refunded| F17["F17 Return Save"]
+  F16 --> F20["F20 Review Ask"]
+  RN["Run Notes signup"] --> F6["F6 Run Notes"]
+  ORD --> VIP["3rd order"]
+  VIP --> F7["F7 VIP"]
+  F7 --> F21["F21 Referral"]
+  F8 -->|VIP at 120 days| F23["F23 VIP At-Risk"]
+  F8 -->|240 days| F24["F24 Lapsed"]
+  BD["Birthday"] --> F22["F22 Birthday"]
+  UN["Unengaged, any stage"] --> F9["F9 Sunset"]
+  F9 --> F25["F25 Channel Switch"]
+\`\`\`
+
+Plain-text version:
+
+\`\`\`
+Visitor -> F10 Site / F11 Search / F12 Collection -> F2 Browse -> F3 Cart -> F4 Checkout -> Order
+Email signup -> F1 Welcome -> Order        SMS signup -> F1-S SMS Welcome
+F13 Price Drop, F14 Low Stock -> Order (real markdown, real stock count)
+Order -> F5 Post-Purchase + F5-PS Price Signal + F16 Fit Check (-> F20 Review Ask)
+      -> F18 Next Piece + F19 Predicted Reorder + F8 Win-Back clock
+      -> refund -> F17 Return Save
+3rd order -> F7 VIP -> F21 Referral
+F8: VIP at 120 days -> F23 VIP At-Risk     240 days -> F24 Lapsed
+Run Notes signup -> F6 Run Notes           Birthday -> F22 Birthday
+Unengaged (any stage) -> F9 Sunset -> F25 Channel Switch -> suppressed monthly
+\`\`\`
+
+### 2.4 Stage moves
+
+\`\`\`mermaid
+stateDiagram-v2
+  state "At-Risk" as AtRisk
+  [*] --> Prospect: subscribes
+  [*] --> New: buys without signing up
+  Prospect --> New: 1st order
+  New --> Repeat: 2nd order
+  Repeat --> VIP: 3rd order
+  New --> AtRisk: 120 days, no order
+  Repeat --> AtRisk: 120 days, no order
+  VIP --> AtRisk: 120 days, no order
+  AtRisk --> Repeat: orders again
+  AtRisk --> Lapsed: 240 days, no order
+  Lapsed --> Repeat: orders again
+  Lapsed --> Sunset: stops engaging
+  Sunset --> [*]: suppressed
+\`\`\`
+
+Why 120 AND 240? Off-Bolt customers buy about one piece every 4 months (seed data). At-Risk = one missed cycle. Lapsed = two.
+
+### 2.5 Build these first
+
+**Lists**
+
+| List | Used by |
+| --- | --- |
+| \`OB \\| Email Subscriber\` | F1 Welcome trigger |
+| \`OB \\| SMS subscribers list\` | F1-S SMS Welcome trigger |
+| \`TLRE \\| Run notes\` | F6 Run Notes trigger |
+
+**Segments** (every line must be true; OR marks choices inside one line)
+
+| Segment | Rule | Used by |
+| --- | --- | --- |
+| \`TLRE2 \\| S1 Prospect\` | Can receive email AND 0 orders over all time | Reporting |
+| \`TLRE2 \\| S2 New\` | Exactly 1 order over all time AND 1+ order in the last 120 days | Reporting |
+| \`TLRE2 \\| S3 Repeat\` | Exactly 2 orders over all time AND 1+ order in the last 120 days | Reporting |
+| \`TLRE2 \\| S4 VIP\` | 3+ orders over all time AND 1+ order in the last 120 days | F7, F21 triggers |
+| \`TLRE2 \\| S5 At-Risk\` | 1+ orders over all time AND 0 orders in the last 120 days AND 1+ order in the last 240 days | F23 trigger |
+| \`TLRE2 \\| S6 Lapsed\` | 1+ orders over all time AND 0 orders in the last 240 days | F24 trigger |
+| \`TLRE2 \\| E1 Engaged-90\` | Can receive email AND (Opened Email OR Clicked Email OR Active on Site OR Placed Order in the last 90 days) | Campaign audience |
+| \`TLRE2 \\| E2 Unengaged\` | Can receive email AND 5+ Received Email in 90 days AND 0 Opened AND 0 Clicked AND 0 Active on Site AND 0 Placed Order in 90 days | F9 trigger |
+| \`TLRE2 \\| Offcut Entry\` | Placed Order where Items contains "The Offcut Tee" AND exactly 1 order over all time | F18 exclusion, reporting |
+| \`TLRE2 \\| Sunset Complete\` | \`tlre_stage\` = sunset | F25 trigger, monthly suppression |
+
+Opens alone don't decide anything. Apple Mail Privacy Protection inflates them, SO Unengaged also checks clicks, visits AND orders.
+
+**Coupons** (create in Klaviyo: Content → Coupons → Create Shopify Coupon, before real emails go in)
+
+| Coupon | Type | Offer | Expiry setting | Used in |
+| --- | --- | --- | --- | --- |
+| OFFBOLT1 | Static | Free US shipping, first order, no minimum, one use per customer, combines with nothing | None | F1 S2P2E2a |
+| OFFBOLT2 | Static | Free standard shipping to Canada, first order | None | F1 S2P1E2a |
+| OFFBOLT12 | Unique \`OB12-\` | $10 off a first order of $100+ | 30 days | F1-S S1P1SMS1 |
+| OFFBOLT13 | Unique \`OB13-\` | $15 off a first order of $100+, for the referred friend | 60 days | F21 E0 |
+| OFFBOLT16 | Unique \`OB16-\` | 10% off, Rack AND Offcut Tee excluded | 48 h (+24 h Klaviyo grace = 72 h) | F1 S4P2E4, S6P2E6 |
+| OFFBOLT17 | Unique \`OB17-\` | 10% off, Rack AND Offcut Tee excluded | 48 h (+24 h grace) | F4 S2P2E2 |
+| OFFBOLT20 | Unique \`OB20-\` | 15% off, Rack AND Offcut Tee excluded | 48 h (+24 h grace) | F8 S3P2E3 |
+| OFFBOLT21 | Unique \`OB21-\` | 20% off, Rack AND Offcut Tee excluded | 6 days (+24 h grace = 7 days) | F24 S2P2E2a |
+
+Why set 48 hours for a 72-hour deadline? Because Klaviyo adds a 24-hour grace period to unique coupons that expire after a set number of hours or days.
+
+**Sender:** every email is from **Lorelei at Off-Bolt**. Personal notes are first person AND signed Lorelei, Off-Bolt, Providence.
+
+### 2.6 Flows: Convert
+
+#### F1 Welcome
+
+| Setting | Value |
+| --- | --- |
+| Trigger | Added to list \`OB \\| Email Subscriber\` |
+| Re-entry | None. Once per profile |
+| Flow filter | Placed Order zero times since starting this flow |
+| Messages | 15 emails. Each profile gets at most 4 |
+
+\`\`\`
+Added to list: OB | Email Subscriber
+   |  Flow filter: Placed Order zero times since starting this flow
+   |
+   S1  Ordered before?
+   ├─ S1P1  Placed Order 1+ over all time ......... S1P1E1  welcome back, no code
+   └─ S1P2  Else
+        Update profile: tlre_stage = prospect
+        S2  Canada?
+        ├─ S2P1  location country = Canada
+        │    S2P1E2a  welcome + OFFBOLT2 (Smart Sending OFF)
+        │    wait 2 days → S2P1E2b  how a run works
+        │    wait 3 days → S2P1E2c  size chart + fit rules + review
+        │    wait 2 days
+        │    S3  Offer Gate
+        │    ├─ S3P1  tlre_first_offer is set OR tlre_last_offer in the last 30 days ... S3P1E3  Run Notes invite
+        │    ├─ S3P2  Clicked Email OR Active on Site since starting this flow
+        │    │    S4  Holdout
+        │    │    ├─ S4P1  random 15% ......................... S4P1E4  same email, no code
+        │    │    └─ S4P2  Else
+        │    │         Update profile: tlre_last_offer = today, tlre_first_offer = OFFBOLT16
+        │    │         S4P2E4  OFFBOLT16
+        │    └─ S3P3  Else (no intent) .......................... S3P3E3  Run Notes invite
+        └─ S2P2  Else (US OR unknown country)
+             S2P2E2a  welcome + OFFBOLT1 (Smart Sending OFF)
+             wait 2 days → S2P2E2b  how a run works
+             wait 3 days → S2P2E2c  size chart + fit rules + review
+             wait 2 days
+             S5  Offer Gate (same rules as S3)
+             ├─ S5P1  offer already given OR cooldown .......... S5P1E5  Run Notes invite
+             ├─ S5P2  clicked OR visited since starting
+             │    S6  Holdout
+             │    ├─ S6P1  random 15% ......................... S6P1E6  same email, no code
+             │    └─ S6P2  Else
+             │         Update profile: tlre_last_offer = today, tlre_first_offer = OFFBOLT16
+             │         S6P2E6  OFFBOLT16
+             └─ S5P3  Else ...................................... S5P3E5  Run Notes invite
+\`\`\`
+
+| Message | When | Job | Offer | Preferred content (customizable per case) |
+| --- | --- | --- | --- | --- |
+| S1P1E1 = Welcome back note for past buyers | Now | Welcome a past buyer back | None | Plain note from Lorelei, the newest run, Run Notes invite (hidden IF already a member) |
+| S2P1E2a = Canada welcome with OFFBOLT2 free shipping | Now | Deliver the promised Canada offer | OFFBOLT2 | Code at the top, $18 standard shipping AND 7 to 12 days stated plainly, one button |
+| S2P1E2b = How a numbered run works | Day 2 | Explain the runs | None | One run card (\`RUN 14 · 62 YD · 41 GARMENTS\`), mill-end cloth, never remade |
+| S2P1E2c = Size chart, fit rules and review | Day 5 | Answer "will it fit?" | None | Size chart (body measurements), each piece's fit rule, one review |
+| S3P1E3 = Run Notes invite, offer already given | Day 7 | Gate fail: offer already given | None | Run Notes invite: every new run 24 hours early |
+| S3P3E3 = Newest run plus one honest line | Day 7 | Gate fail: no click AND no visit | None | Newest run + one honest line ("This wrinkles. That is linen.") |
+| S4P1E4 = Holdout copy without the code | Day 7 | Holdout | None | Same email as S4P2E4 without the code |
+| S4P2E4 = OFFBOLT16 10% off, 72 hours | Day 7 | Turn an interested prospect into a first order | OFFBOLT16, 10%, real 72-hour deadline | The offer, what's included (Rack AND Offcut Tee excluded), the real end time, one button |
+| S2P2E2a = US welcome with OFFBOLT1 free shipping | Now | Deliver the promised US offer | OFFBOLT1 | Code at the top. Honest line: orders over $100 already ship free |
+| S2P2E2b = How a numbered run works | Day 2 | Explain the runs | None | Same as S2P1E2b |
+| S2P2E2c = Size chart, fit rules and review | Day 5 | Answer "will it fit?" | None | Same as S2P1E2c |
+| S5P1E5 = Run Notes invite, offer already given | Day 7 | Gate fail: offer already given | None | Same as S3P1E3 |
+| S5P3E5 = Newest run plus one honest line | Day 7 | Gate fail: no intent | None | Same as S3P3E3 |
+| S6P1E6 = Holdout copy without the code | Day 7 | Holdout | None | Same email as S6P2E6 without the code |
+| S6P2E6 = OFFBOLT16 10% off, 72 hours | Day 7 | Turn an interested prospect into a first order | OFFBOLT16 | Same as S4P2E4 |
+
+Country is often unknown at signup. IF it's unknown, THEN the profile takes the US path.
+
+#### F1-S SMS Welcome
+
+| Setting | Value |
+| --- | --- |
+| Trigger | Added to list \`OB \\| SMS subscribers list\` |
+| Re-entry | None |
+| Flow filter | None |
+| Messages | 2 SMS, 1 per profile |
+
+\`\`\`
+Added to list: OB | SMS subscribers list
+   S1  First-order offer?
+   ├─ S1P1  0 orders over all time AND tlre_first_offer not set
+   │    Update profile: tlre_first_offer = OFFBOLT12, tlre_last_offer = today
+   │    S1P1SMS1  welcome + OFFBOLT12
+   └─ S1P2  Else ........................ S1P2SMS1  welcome, no code
+\`\`\`
+
+| Message | When | Job | Offer | Preferred content (customizable per case) |
+| --- | --- | --- | --- | --- |
+| S1P1SMS1 = SMS welcome with OFFBOLT12 $10 off | Now | Welcome + first-order offer by text | OFFBOLT12: $10 off $100+, 30 days | Starts "Off-Bolt:", one link, real numbers, no emoji, ends "Reply STOP to opt out" |
+| S1P2SMS1 = SMS welcome, Run Notes by text | Now | Welcome by text | None | Run Notes by text: new runs 24 hours early |
+
+Why does the SMS code set \`tlre_first_offer\`? SO the F1 email Gate sees it AND sends no second first-order code. One money-off first-order code per profile, ever.
+
+#### F10 Site Abandon
+
+| Setting | Value |
+| --- | --- |
+| Trigger | Active on Site |
+| Re-entry | 30 days |
+| Flow filters | Viewed Product, Added to Cart, Checkout Started AND Placed Order: each zero times since starting this flow |
+| Messages | 1 email |
+
+\`\`\`
+Active on Site → wait 4 hours → E0  newest run (message filter: Received Email fewer than 3 times in the last 7 days)
+\`\`\`
+
+| Message | When | Job | Offer | Preferred content (customizable per case) |
+| --- | --- | --- | --- | --- |
+| E0 = Newest run for a quiet visitor | 4 hours | Re-open the store for a visitor who saw no piece | None | The newest run + 2 pieces, one button |
+
+#### F11 Search Abandon
+
+| Setting | Value |
+| --- | --- |
+| Trigger | Submitted Search |
+| Re-entry | 14 days |
+| Flow filters | Same 4 as F10 |
+| Messages | 2 emails, 1 per profile |
+
+\`\`\`
+Submitted Search
+   S1  Sale search?
+   ├─ S1P1  SearchQuery contains "sale" OR "Sale" OR "discount" OR "rack" OR "Rack"
+   │    Update profile: price_sens = high
+   │    wait 1 hour → S1P1E1  results + Remnant Rack (capped)
+   └─ S1P2  Else
+        wait 1 hour → S1P2E1  results for their search (capped)
+\`\`\`
+
+| Message | When | Job | Offer | Preferred content (customizable per case) |
+| --- | --- | --- | --- | --- |
+| S1P1E1 = Search results plus Remnant Rack | 1 hour | Give a bargain hunter a cheaper door | None | Results for their search term + Remnant Rack pieces (20% off, final sale) |
+| S1P2E1 = Results for their search plus fit | 1 hour | Finish the search for them | None | Results for their search term + one fit rule |
+
+Both emails skip IF the profile got 3+ emails in the last 7 days.
+
+#### F12 Collection Abandon
+
+| Setting | Value |
+| --- | --- |
+| Trigger | Viewed Collection |
+| Re-entry | 14 days |
+| Flow filters | Same 4 as F10 |
+| Messages | 2 emails, 1 per profile |
+
+\`\`\`
+Viewed Collection
+   S1  Rack viewer?
+   ├─ S1P1  CollectionName contains "Remnant" OR URL contains "remnant-rack"
+   │    Update profile: price_sens = high
+   │    wait 2 hours → S1P1E1  Rack pieces in their size (capped)
+   └─ S1P2  Else
+        wait 2 hours → S1P2E1  picks from that collection (capped)
+\`\`\`
+
+| Message | When | Job | Offer | Preferred content (customizable per case) |
+| --- | --- | --- | --- | --- |
+| S1P1E1 = Rack pieces in their size | 2 hours | Show the Rack to a Rack viewer | None | Rack pieces in their size (\`usual_size\` IF known), final sale stated |
+| S1P2E1 = Three picks from viewed collection | 2 hours | Bring a collection viewer back | None | 3 pieces from the viewed collection, cloth AND mill country on each |
+
+#### F2 Browse
+
+| Setting | Value |
+| --- | --- |
+| Trigger | Viewed Product |
+| Re-entry | 1 day |
+| Flow filters | Added to Cart, Checkout Started AND Placed Order: each zero times since starting this flow |
+| Messages | 3 emails |
+
+\`\`\`
+Viewed Product
+   wait 2 hours
+   S1  Got F2 in the last 14 days?
+   ├─ S1P1  tlre_f2_last in the last 14 days ........ (ends, no message)
+   └─ S1P2  Else
+        Update profile: tlre_f2_last = today
+        S1P2E1a  the piece + its fabric
+        wait 1 day → S1P2E1b  fit rule + review
+        wait 2 days
+        S2  Price-sensitive?
+        ├─ S2P1  price_sens = high ................. S2P1E2  Rack picks, no code
+        └─ S2P2  Else ................................ (ends)
+\`\`\`
+
+| Message | When | Job | Offer | Preferred content (customizable per case) |
+| --- | --- | --- | --- | --- |
+| S1P2E1a = Viewed piece with fabric and mill | 2 hours | Bring the viewed piece back | None | The piece: cloth, mill country, weight (e.g. 11 oz Japanese cotton twill), 4:5 image, one button |
+| S1P2E1b = Fit rule and one review | Day 1 | Answer the fit doubt | None | That piece's fit rule + one review + the honest line |
+| S2P1E2 = Remnant Rack picks, no code | Day 3 | Give price-sensitive browsers a cheaper door | None. The Rack is already 20% off | Remnant Rack pieces, final sale stated |
+
+Why a split AND a stamp instead of a 14-day re-entry? A 14-day re-entry also blocks shoppers who entered, carted within 2 hours AND never got an F2 email. With re-entry at 1 day, they can enter again. The stamp \`tlre_f2_last\` stops anyone who already got F2 in the last 14 days.
+
+#### F3 Cart
+
+| Setting | Value |
+| --- | --- |
+| Trigger | Added to Cart |
+| Re-entry | 7 days |
+| Flow filters | Checkout Started AND Placed Order: each zero times since starting this flow |
+| Messages | 2 emails |
+
+\`\`\`
+Added to Cart → wait 1 hour → E0a  cart + fit rule → wait 1 day → E0b  review + free size exchange
+\`\`\`
+
+| Message | When | Job | Offer | Preferred content (customizable per case) |
+| --- | --- | --- | --- | --- |
+| E0a = Carted piece with its fit rule | 1 hour | Remind them of the carted piece | None | The carted piece (each Added to Cart event holds one item), its fit rule, "Return to cart" |
+| E0b = Review plus free size exchange | Day 1 | Remove the risk | None | One review + the free US size exchange + 30-day returns |
+
+What does E0b do? It removes the risk, SO they think "There's a free size exchange, I can just swap it IF it doesn't fit."
+
+#### F4 Checkout
+
+| Setting | Value |
+| --- | --- |
+| Trigger | Checkout Started |
+| Re-entry | 7 days |
+| Flow filter | Placed Order zero times since starting this flow |
+| Messages | 6 emails, 2 SMS, 1 WhatsApp. Each profile gets 3 emails AND at most 1 text OR WhatsApp |
+
+\`\`\`
+Checkout Started
+   wait 1 hour
+   E0a  reminder (Smart Sending OFF)
+   wait 4 hours
+   SMS0a  message filter: cart $100+ in the last day AND clicked email since starting
+   SMS0b  message filter: cart $100+ in the last day AND clicked zero times since starting
+   WA0    message filter: cart $100+ in the last day AND no SMS consent AND WhatsApp opt-in
+   wait 19 hours
+   E0b  fit help + free exchange
+   wait 2 days
+   S1  Offer Gate
+   ├─ S1P1  tlre_last_offer in the last 30 days ................ S1P1E1  run card, no code
+   ├─ S1P2  price_sens = high OR 0 orders over all time
+   │    S2  Holdout
+   │    ├─ S2P1  random 15% ...................................... S2P1E2  run card, no code
+   │    └─ S2P2  Else
+   │         Update profile: tlre_last_offer = today
+   │         S2P2E2  run card + OFFBOLT17
+   └─ S1P3  Else (full-price buyer) ............................. S1P3E1  run card, no code
+\`\`\`
+
+| Message | When | Job | Offer | Preferred content (customizable per case) |
+| --- | --- | --- | --- | --- |
+| E0a = Cart and checkout link reminder | 1 hour | Remind | None | Cart items AND the checkout link (Checkout Started carries a URL that rebuilds the cart) |
+| SMS0a = Size question text for clickers | 5 hours | Answer the fit question in person | None | "Reply with your size question", a person reads every text |
+| SMS0b = Cart reminder text for non-clickers | 5 hours | Second chance for non-clickers | None | Cart reminder + checkout link |
+| WA0 = WhatsApp cart reminder, no SMS consent | 5 hours | Same reminder on WhatsApp | None | Meta-approved template: cart reminder + checkout button |
+| E0b = Fit help, free exchange, 30-day returns | Day 1 | Remove the fit risk | None | Fit rules, measurements are of the body, one free US size exchange, 30-day returns |
+| S1P1E1 = Run card, cooldown, no code | Day 3 | Gate fail: code in the last 30 days | None | Run card. Units left ONLY IF \`units_left\` syncs, ELSE the run number only |
+| S1P3E1 = Run card with Bound for Life | Day 3 | Gate fail: full-price buyer | None | Run card + Bound for Life repairs |
+| S2P1E2 = Holdout run card without code | Day 3 | Holdout | None | Same email as S2P2E2 without the code |
+| S2P2E2 = Run card with OFFBOLT17 10% | Day 3 | Close with money, last | OFFBOLT17, 10%, real 72-hour deadline | Run card + the offer + what's included + the real end time |
+
+The size-anxious are Off-Bolt's biggest abandon group, AND returns run at 19% (seed), almost all sizing. SO F4 sells certainty about fit first, AND money last.
+
+### 2.7 Flows: Scarcity (no codes)
+
+#### F13 Price Drop
+
+| Setting | Value |
+| --- | --- |
+| Trigger | Price Drop: viewed the product in the last 30 days, price dropped 10% or more |
+| Re-entry | 7 days |
+| Flow filter | Placed Order zero times since starting this flow |
+| Messages | 1 email |
+
+\`\`\`
+Price Drop (viewed, 10%+ drop) → E0  the piece is on the Remnant Rack
+\`\`\`
+
+| Message | When | Job | Offer | Preferred content (customizable per case) |
+| --- | --- | --- | --- | --- |
+| E0 = Viewed piece moved to the Rack | Now | Tell a viewer their piece moved to the Rack | None. The markdown already exists | The piece, its Rack price, final sale, units left IF synced |
+
+Works ONLY IF moving a piece to the Rack changes the variant price.
+
+#### F14 Low Stock
+
+| Setting | Value |
+| --- | --- |
+| Trigger | Low Inventory: product level, 5 or fewer left, audience viewed OR added to cart in the last 30 days |
+| Re-entry | 7 days |
+| Flow filter | Placed Order zero times since starting this flow |
+| Messages | 1 email, 1 WhatsApp |
+
+\`\`\`
+Low Inventory (5 or fewer) → E0  real low stock → wait 4 hours → WA0 (message filter: WhatsApp opt-in AND clicked zero times since starting)
+\`\`\`
+
+| Message | When | Job | Offer | Preferred content (customizable per case) |
+| --- | --- | --- | --- | --- |
+| E0 = Real low stock count | Now | Real scarcity | None | The piece + the live count, written plainly ("12 of 30 are left") |
+| WA0 = WhatsApp low stock alert, non-clickers | 4 hours | Same alert on WhatsApp | None | Meta-approved template: the piece, the count, one button |
+
+Klaviyo's Low Inventory trigger fires once WHEN stock crosses the threshold, AND it skips people who bought the item within the set timeframe.
+
+#### F15 Pattern Returns (campaign)
+
+Built as a campaign, sent WHEN a pattern comes back in new cloth. Run Notes members get it first, AND past viewers of the old run get it after. No code.
+
+### 2.8 Flows: Grow
+
+#### F5 Post-Purchase
+
+| Setting | Value |
+| --- | --- |
+| Trigger | Placed Order |
+| Re-entry | Allowed |
+| Flow filter | None. Every buyer finishes their thank-you path |
+| Messages | 7 emails |
+
+\`\`\`
+Placed Order
+   S1  First order?
+   ├─ S1P1  exactly 1 order over all time
+   │    Update profile: tlre_stage = new, tlre_tier = standard
+   │    S2  Offcut Tee only?
+   │    ├─ S2P1  Items contains "The Offcut Tee" AND order value under $100
+   │    │    wait 1 day → S2P1E2a  thanks + final sale
+   │    │    wait 29 days → S2P1E2b  a first full-price piece
+   │    │    wait 30 days → S2P1E2c  size chart + review
+   │    └─ S2P2  Else
+   │         wait 1 day → S2P2E2a  thanks + Run Notes invite
+   │         wait 6 days → S2P2E2b  care + Bound for Life
+   └─ S1P2  Else
+        S3  3+ orders?
+        ├─ S3P1  3+ orders over all time
+        │    Update profile: tlre_stage = vip, tlre_tier = vip
+        │    wait 1 day → S3P1E3  note from Lorelei
+        └─ S3P2  Else
+             Update profile: tlre_stage = repeat
+             wait 1 day → S3P2E3  thanks for coming back
+\`\`\`
+
+| Message | When | Job | Offer | Preferred content (customizable per case) |
+| --- | --- | --- | --- | --- |
+| S2P1E2a = Offcut Tee thanks, final sale | Day 1 | Thank an Offcut Tee buyer | None | Colour is never guaranteed, final sale, Bound for Life still covers it |
+| S2P1E2b = First full-price piece with fit rule | Day 30 | Move a tee buyer to a first full-price piece | None | One full-price piece + its fit rule |
+| S2P1E2c = Size chart and one review | Day 60 | Second nudge to full price | None | Size chart + one review |
+| S2P2E2a = First order thanks plus Run Notes | Day 1 | Thank AND grow Run Notes | None | Thanks + Run Notes invite (hidden IF already a member) |
+| S2P2E2b = Fabric care and Bound for Life | Day 7 | Set care expectations, cut returns | None | Fabric care for their piece + the 3 Bound for Life steps |
+| S3P1E3 = Third order note from Lorelei | Day 1 | Recognise the third order | None | Plain first-person note from Lorelei |
+| S3P2E3 = Thanks for coming back | Day 1 | Thank a returning buyer | None | Thanks for coming back + Run Notes |
+
+The $100 cap keeps mixed orders (tee + trouser) out of the Offcut path. Review requests live in F20, BECAUSE a review asked on delivery reads better than one asked on the order date.
+
+#### F5-PS Price Signal (no messages)
+
+| Setting | Value |
+| --- | --- |
+| Trigger | Placed Order |
+| Re-entry | Allowed |
+| Messages | None. It ONLY sets \`price_sens\` |
+
+\`\`\`
+Placed Order
+   S1  What kind of order?
+   ├─ S1P1  Discount Codes not empty AND tlre_last_offer in the last 7 days ... no change (they used our own code)
+   ├─ S1P2  Discount Codes not empty AND Discount Codes doesn't contain OFFBOLT1 ... price_sens = high
+   ├─ S1P3  Collections contains "Remnant Rack" ............................... price_sens = high
+   └─ S1P4  Else (full price) ........................................... price_sens = low
+\`\`\`
+
+Why a separate flow? Paths never rejoin. Putting this inside F5 would copy F5's paths 4 times.
+
+#### F16 Fit Check
+
+| Setting | Value |
+| --- | --- |
+| Trigger | Fulfilled Order |
+| Re-entry | Allowed |
+| Messages | 1 email |
+
+\`\`\`
+Fulfilled Order → wait 1 day → E0  fit check at home
+\`\`\`
+
+| Message | When | Job | Offer | Preferred content (customizable per case) |
+| --- | --- | --- | --- | --- |
+| E0 = Fit check at home, free exchange | 1 day after shipping | Cut size returns | None | How to check the fit before washing, how the free size exchange works. Rack AND Offcut Tee are final sale |
+
+#### F17 Return Save
+
+| Setting | Value |
+| --- | --- |
+| Trigger | Refunded Order |
+| Re-entry | 30 days |
+| Flow filter | Placed Order zero times since starting this flow |
+| Messages | 1 email |
+
+\`\`\`
+Refunded Order → E0  size help + exchange first next time
+\`\`\`
+
+| Message | When | Job | Offer | Preferred content (customizable per case) |
+| --- | --- | --- | --- | --- |
+| E0 = Size help, exchange first next time | Now | Save the next order after a refund | None | Size help for their piece, "exchange first next time", Run Notes invite |
+
+#### F18 Next Piece
+
+| Setting | Value |
+| --- | --- |
+| Trigger | Placed Order |
+| Re-entry | Allowed |
+| Flow filters | Placed Order zero times since starting this flow AND NOT in \`TLRE2 \\| Offcut Entry\` |
+| Messages | 1 email |
+
+\`\`\`
+Placed Order → wait 30 days → E0  a piece that pairs with what they bought
+\`\`\`
+
+| Message | When | Job | Offer | Preferred content (customizable per case) |
+| --- | --- | --- | --- | --- |
+| E0 = Piece that pairs with their order | Day 30 | Plant the second piece | None | One piece that pairs with what they bought + its fit rule |
+
+#### F19 Predicted Reorder
+
+| Setting | Value |
+| --- | --- |
+| Trigger | Placed Order |
+| Re-entry | Allowed |
+| Flow filter | Placed Order zero times since starting this flow |
+| Messages | 7 emails, at most 1 per profile |
+| Needs | Klaviyo predictive analytics. Off-Bolt's test data doesn't qualify yet |
+
+\`\`\`
+Placed Order → wait 28 days
+   S1  expected date of next order in the next 14 days? ── S1P1 → S1P1E1  |  S1P2 → wait 14 days
+   S2  same check (day 42) ─────────────────────────────── S2P1 → S2P1E2  |  S2P2 → wait 14 days
+   S3  same check (day 56) ─────────────────────────────── S3P1 → S3P1E3  |  S3P2 → wait 14 days
+   S4  same check (day 70) ─────────────────────────────── S4P1 → S4P1E4  |  S4P2 → wait 14 days
+   S5  same check (day 84) ─────────────────────────────── S5P1 → S5P1E5  |  S5P2 → wait 14 days
+   S6  same check (day 98) ─────────────────────────────── S6P1 → S6P1E6  |  S6P2 → wait 14 days
+   S7  same check (day 112) ────────────────────────────── S7P1 → S7P1E7  |  S7P2 → (ends)
+\`\`\`
+
+| Message | When | Job | Offer | Preferred content (customizable per case) |
+| --- | --- | --- | --- | --- |
+| S1P1E1 to S7P1E7 = Day 28 to Day 112 newest run before reorder | The first check that matches, day 28 to day 112 | Reach them up to 14 days before their predicted reorder | None | The newest run + Run Notes early access |
+
+#### F20 Review Ask
+
+| Setting | Value |
+| --- | --- |
+| Trigger | Fulfilled Order |
+| Re-entry | Allowed |
+| Messages | 1 email |
+
+\`\`\`
+Fulfilled Order → wait 14 days → E0  review ask (message filter: fewer than 3 emails in the last 7 days)
+\`\`\`
+
+| Message | When | Job | Offer | Preferred content (customizable per case) |
+| --- | --- | --- | --- | --- |
+| E0 = One-question review ask | 14 days after shipping | Collect a review | None | One question ("How is it wearing?"), one button. Reviews are published as written |
+
+#### F21 Referral
+
+| Setting | Value |
+| --- | --- |
+| Trigger | Added to segment \`TLRE2 \\| S4 VIP\` |
+| Re-entry | None |
+| Messages | 1 email |
+| Needs | The a-friend-sent-you page AND form |
+
+\`\`\`
+Enters S4 VIP → wait 21 days → E0  share Off-Bolt
+\`\`\`
+
+| Message | When | Job | Offer | Preferred content (customizable per case) |
+| --- | --- | --- | --- | --- |
+| E0 = Share link, friend gets OFFBOLT13 | Day 21 | Bring new buyers in through VIPs | OFFBOLT13 for the friend ($15 off $100+). Nothing for the VIP | Share link to the a-friend-sent-you page |
+
+#### F6 Run Notes
+
+| Setting | Value |
+| --- | --- |
+| Trigger | Added to list \`TLRE \\| Run notes\` |
+| Re-entry | None |
+| Messages | 3 emails |
+
+\`\`\`
+Added to list: TLRE | Run notes
+   Update profile: run_notes_optin = true
+   E0a  how early access works
+   wait 7 days → E0b  the studio + the next run
+   wait 3 days → E0c  Run Notes by text OR WhatsApp (message filter: no SMS consent)
+\`\`\`
+
+| Message | When | Job | Offer | Preferred content (customizable per case) |
+| --- | --- | --- | --- | --- |
+| E0a = How 24-hour early access works | Now | Explain early access | None | Every new run reaches Run Notes 24 hours early, 10:00 AM ET |
+| E0b = Studio story and next run | Day 7 | Tell the story | None | The Providence studio AND what the next run depends on. The mills decide the date |
+| E0c = Run Notes by text or WhatsApp | Day 10 | Add a second channel | None | Run Notes by text OR WhatsApp. Skipped IF they already have SMS consent |
+
+\`run_notes_optin\` is ONLY ever set to true. Other emails read it to hide the Run Notes invite from members.
+
+#### F7 VIP
+
+| Setting | Value |
+| --- | --- |
+| Trigger | Added to segment \`TLRE2 \\| S4 VIP\` |
+| Re-entry | None. The VIP welcome happens once per lifetime |
+| Messages | 2 emails |
+
+\`\`\`
+Enters S4 VIP → Update profile: tlre_tier = vip → E0a  note from Lorelei → wait 14 days → E0b  Bound for Life + Run Notes
+\`\`\`
+
+| Message | When | Job | Offer | Preferred content (customizable per case) |
+| --- | --- | --- | --- | --- |
+| E0a = VIP note from Lorelei | Now | Recognise a VIP | None | A note from Lorelei + one review |
+| E0b = Bound for Life plus Run Notes | Day 14 | Show the long-term promise | None | Bound for Life repairs + Run Notes invite (hidden IF already a member) |
+
+\`tlre_tier\` never goes down. F8 reads it to route VIPs to F23.
+
+#### F22 Birthday
+
+| Setting | Value |
+| --- | --- |
+| Trigger | Date: profile property \`birthday\`, every year, on the day, 10:00 AM in the profile's time zone |
+| First step | Target date step (Klaviyo needs one in every date-triggered flow) |
+| Messages | 1 email |
+| Needs | A birthday field on a form |
+
+\`\`\`
+Birthday (yearly) → target date → E0  birthday note
+\`\`\`
+
+| Message | When | Job | Offer | Preferred content (customizable per case) |
+| --- | --- | --- | --- | --- |
+| E0 = Birthday note from Lorelei | Birthday, 10:00 AM | A yearly personal touch | None | A short birthday note from Lorelei |
+
+### 2.9 Flows: Rescue
+
+#### F8 Win-Back
+
+| Setting | Value |
+| --- | --- |
+| Trigger | Placed Order |
+| Re-entry | Allowed |
+| Flow filters | Placed Order zero times since starting this flow AND (Opened Email OR Clicked Email OR Active on Site OR Placed Order in the last 180 days) |
+| Messages | 7 emails |
+
+\`\`\`
+Placed Order
+   wait 120 days
+   S1  VIP?
+   ├─ S1P1  tlre_tier = vip ................ (ends. F23 takes over)
+   └─ S1P2  Else
+        Update profile: tlre_stage = at_risk
+        S1P2E1a  the newest run
+        wait 7 days → S1P2E1b  run card vs plain note (A/B)
+        wait 7 days → S1P2E1c  Run Notes invite
+        wait 46 days (day 180)
+        S2  Offer Gate
+        ├─ S2P1  tlre_last_offer in the last 30 days ........ S2P1E2  plain note, no code
+        ├─ S2P2  price_sens = high
+        │    S3  Holdout
+        │    ├─ S3P1  random 15% ........................... S3P1E3  same email, no code
+        │    └─ S3P2  Else
+        │         Update profile: tlre_last_offer = today
+        │         S3P2E3  OFFBOLT20
+        └─ S2P3  Else (full-price buyer) .................... S2P3E2  plain note, no code
+\`\`\`
+
+| Message | When | Job | Offer | Preferred content (customizable per case) |
+| --- | --- | --- | --- | --- |
+| S1P2E1a = Newest run for a quiet buyer | Day 120 | Bring a quiet buyer back | None | The newest run + its run card |
+| S1P2E1b = A/B: run card vs plain note | Day 127 | Test the angle | None | A/B: full run card vs a plain note from Lorelei |
+| S1P2E1c = Run Notes early access invite | Day 134 | Offer early access | None | Run Notes invite: new runs 24 hours early |
+| S2P1E2 = Plain note, cooldown, no code | Day 180 | Gate fail: cooldown | None | Plain note + the newest run |
+| S2P3E2 = Plain note with Bound for Life | Day 180 | Gate fail: full-price buyer | None | Plain note + Bound for Life reminder |
+| S3P1E3 = Holdout win-back without the code | Day 180 | Holdout | None | Same email as S3P2E3 without the code |
+| S3P2E3 = OFFBOLT20 15% off, 72 hours | Day 180 | Win back a code buyer | OFFBOLT20, 15%, real 72-hour deadline | The offer + the real end time + the newest run |
+
+Each new order kills the old clock (flow filter). SO ONLY the latest order keeps a live win-back.
+
+#### F23 VIP At-Risk
+
+| Setting | Value |
+| --- | --- |
+| Trigger | Added to segment \`TLRE2 \\| S5 At-Risk\` |
+| Re-entry | 240 days |
+| Flow filters | \`tlre_tier\` = vip AND (Opened OR Clicked OR Active on Site OR Placed Order in the last 180 days) AND Placed Order zero times since starting this flow |
+| Messages | 2 emails, 1 SMS |
+
+\`\`\`
+Enters S5 At-Risk (VIPs only)
+   Update profile: tlre_stage = at_risk
+   E0a  plain note from Lorelei
+   wait 2 days → SMS0  short note by text
+   wait 7 days → E0b  early access to the newest run
+\`\`\`
+
+| Message | When | Job | Offer | Preferred content (customizable per case) |
+| --- | --- | --- | --- | --- |
+| E0a = Personal check-in from Lorelei | Now | Personal check-in | None | Plain first-person note from Lorelei |
+| SMS0 = VIP check-in text from Lorelei | Day 2 | Same note, by text | None | "Off-Bolt:" opener, newest run link, "Reply STOP to opt out" |
+| E0b = VIP early access to newest run | Day 9 | Early access | None | The newest run, 24 hours before the public |
+
+#### F24 Lapsed
+
+| Setting | Value |
+| --- | --- |
+| Trigger | Added to segment \`TLRE2 \\| S6 Lapsed\` |
+| Re-entry | 52 weeks |
+| Flow filters | Placed Order zero times since starting this flow AND (Opened OR Clicked OR Active on Site OR Placed Order in the last 180 days) |
+| Messages | 4 emails |
+
+\`\`\`
+Enters S6 Lapsed
+   Update profile: tlre_stage = lapsed
+   S1  Offer Gate
+   ├─ S1P1  tlre_last_offer in the last 30 days ........ S1P1E1  the newest run, no code
+   └─ S1P2  Else
+        S2  Holdout
+        ├─ S2P1  random 15% ........................... S2P1E2  same email, no code
+        └─ S2P2  Else
+             Update profile: tlre_last_offer = today
+             S2P2E2a  OFFBOLT21
+             wait 5 days → S2P2E2b  reminder, ends in 2 days
+\`\`\`
+
+| Message | When | Job | Offer | Preferred content (customizable per case) |
+| --- | --- | --- | --- | --- |
+| S1P1E1 = Newest run, cooldown, no code | Now | Gate fail: cooldown | None | The newest run |
+| S2P1E2 = Holdout lapsed email without code | Now | Holdout | None | Same email as S2P2E2a without the code |
+| S2P2E2a = OFFBOLT21 20% off, 7 days | Now | The last real offer | OFFBOLT21, 20%, real 7-day deadline | The offer + what's included + the real end time |
+| S2P2E2b = OFFBOLT21 ends in 2 days | Day 5 | Reminder | Same code | "Ends in 2 days" + the real end time |
+
+### 2.10 Flows: Protect
+
+#### F9 Sunset
+
+| Setting | Value |
+| --- | --- |
+| Trigger | Added to segment \`TLRE2 \\| E2 Unengaged\` |
+| Re-entry | 180 days |
+| Flow filters | Clicked Email, Active on Site AND Placed Order: each zero times since starting this flow |
+| Messages | 2 emails |
+
+\`\`\`
+Enters E2 Unengaged
+   E0a  still want our emails?
+   wait 4 days → E0b  last email
+   wait 3 days → Update profile: tlre_stage = sunset
+\`\`\`
+
+| Message | When | Job | Offer | Preferred content (customizable per case) |
+| --- | --- | --- | --- | --- |
+| E0a = Still want our emails? | Now | Ask to stay | None | "Still want our emails?" with ONE button: "Yes, keep me" |
+| E0b = Last email before we stop | Day 4 | Last email | None | A short last note. The unsubscribe link stays visible |
+
+A click means "keep me": the flow filter removes them AND they leave the segment. Monthly: Audience → \`TLRE2 | Sunset Complete\` → Suppress current members. Suppressed profiles stop counting toward the billed profile count.
+
+#### F25 Channel Switch
+
+| Setting | Value |
+| --- | --- |
+| Trigger | Added to segment \`TLRE2 \\| Sunset Complete\` |
+| Re-entry | 180 days |
+| Messages | 1 SMS, 1 WhatsApp. At most 1 per profile |
+
+\`\`\`
+Enters Sunset Complete
+   S1  Another channel?
+   ├─ S1P1  SMS consent .................. S1P1SMS1  email is paused, Run Notes by text
+   ├─ S1P2  WhatsApp opt-in .............. S1P2WA1   same message on WhatsApp
+   └─ S1P3  Else ......................... (ends)
+\`\`\`
+
+| Message | When | Job | Offer | Preferred content (customizable per case) |
+| --- | --- | --- | --- | --- |
+| S1P1SMS1 = Email paused, Run Notes by text | Now | Keep the buyer reachable by text | None | "Email is paused. Run Notes continues by text." + "Reply STOP to opt out" |
+| S1P2WA1 = Email paused, Run Notes on WhatsApp | Now | Keep the buyer reachable on WhatsApp | None | Meta-approved template with the same message |
+
+### 2.11 Smart Sending AND frequency
+
+| Setting | Where | Why |
+| --- | --- | --- |
+| Smart Sending OFF | F1 S2P1E2a, S2P2E2a. F4 E0a | Smart Sending skips, it never reschedules. A promised offer AND the highest-intent reminder must land |
+| Smart Sending ON | Every other email, SMS AND WhatsApp | Stops two messages landing too close together |
+| SMS quiet hours ON | Every SMS | No texts before 8 AM OR after 9 PM local time |
+| 3-a-week cap | F10, F11, F12, F20 emails | Message filter: skip IF 3+ emails received in the last 7 days. These are the lowest-priority emails |
+| Campaign audience | \`TLRE2 \\| E1 Engaged-90\` ONLY | Mailing people who never engage hurts inbox placement |
+
+### 2.12 Campaigns per run
+
+| Campaign | Audience | Timing | Smart Sending |
+| --- | --- | --- | --- |
+| Run release, Run Notes | \`TLRE \\| Run notes\` | 10:00 AM ET on release day | OFF. Early access is the promise |
+| Run release, public | \`TLRE2 \\| E1 Engaged-90\`, excluding Run Notes | 24 hours later | ON |
+| F15 Pattern Returns | Run Notes first, THEN past viewers of that pattern | WHEN a pattern returns in new cloth | ON |
+
+### 2.13 Test before going live
+
+1. Keep every flow on Draft OR Manual until its paths pass.
+2. Use one test profile per path (plus-address emails, one incognito window each).
+3. For the 120, 180 AND 240-day steps: clone the flow as \`TLRE2 TEST | ...\`, shrink waits to minutes, run it, THEN delete the clone.
+4. Check every Gate path: cooldown, price_sens high, never ordered, full-price buyer, AND the holdout.
+5. Check the stamps: \`tlre_last_offer\`, \`tlre_first_offer\`, \`tlre_f2_last\`, \`price_sens\`, \`tlre_stage\`, \`tlre_tier\`.
+6. Preview every email with a real test profile. Links work, unsubscribe present, mobile view clean.
+7. Switch flows to Live one at a time.
+
+### 2.14 Split AND path names
+
+| Flow | Split | Paths |
+| --- | --- | --- |
+| F1 | \`S1 = Has this subscriber ordered before?\` | \`S1P1 = Past buyer, welcome back only\` · \`S1P2 = New prospect, start welcome series\` |
+| F1 | \`S2 = Is the subscriber in Canada?\` | \`S2P1 = Canada, free Canada shipping welcome\` · \`S2P2 = US or unknown, free US shipping\` |
+| F1 | \`S3\` AND \`S5 = Offer Gate: can a code go out?\` | \`P1 = Offer already given or cooldown active\` · \`P2 = Clicked or visited, eligible for code\` · \`P3 = No intent shown, no code\` |
+| F1 | \`S4\` AND \`S6 = Holdout: does OFFBOLT16 cause orders?\` | \`P1 = Random 15% holdout, no code\` · \`P2 = Gets OFFBOLT16 first order code\` |
+| F1-S | \`S1 = Can this subscriber get a first-order offer?\` | \`S1P1 = Never ordered, no first offer yet\` · \`S1P2 = Already ordered or offer used\` |
+| F2 | \`S1 = Got a browse email in 14 days?\` | \`S1P1 = Emailed within 14 days, exit quietly\` · \`S1P2 = Not emailed recently, send browse series\` |
+| F2 | \`S2 = Is this browser price-sensitive?\` | \`S2P1 = Price-sensitive, show Remnant Rack picks\` · \`S2P2 = Full-price browser, end the flow\` |
+| F4 | \`S1 = Offer Gate: can a code go out?\` | \`S1P1 = Code in last 30 days, cooldown\` · \`S1P2 = Price-sensitive or never ordered before\` · \`S1P3 = Full-price repeat buyer, no code\` |
+| F4 | \`S2 = Holdout: does OFFBOLT17 cause orders?\` | \`S2P1 = Random 15% holdout, no code\` · \`S2P2 = Gets OFFBOLT17 10% checkout code\` |
+| F11 | \`S1 = Did they search for a deal?\` | \`S1P1 = Deal search, flag as price-sensitive\` · \`S1P2 = Regular search, show their results\` |
+| F12 | \`S1 = Did they view the Remnant Rack?\` | \`S1P1 = Rack viewer, flag as price-sensitive\` · \`S1P2 = Other collection, show its picks\` |
+| F5 | \`S1 = Is this their first order?\` | \`S1P1 = First order, set stage new\` · \`S1P2 = Second order or later\` |
+| F5 | \`S2 = Was it an Offcut Tee order?\` | \`S2P1 = Offcut Tee under $100, upsell path\` · \`S2P2 = Full-price first order, care path\` |
+| F5 | \`S3 = Has this buyer reached VIP?\` | \`S3P1 = Third order or more, VIP\` · \`S3P2 = Second order, set stage repeat\` |
+| F5-PS | \`S1 = What kind of discount did they use?\` | \`S1P1 = Used our own code, no change\` · \`S1P2 = Sought out a code, flag high\` · \`S1P3 = Bought from the Rack, flag high\` · \`S1P4 = Full-price order, reset to low\` |
+| F19 | \`S1\` to \`S7 = Day 28\` to \`Day 112: reorder due within 14 days?\` | \`P1 = Reorder predicted soon, send newest run\` · \`P2 = Not due yet, wait 14 days\` (\`S7P2 = Still not due, end flow\`) |
+| F8 | \`S1 = Is this quiet buyer a VIP?\` | \`S1P1 = VIP, exit to F23 VIP At-Risk\` · \`S1P2 = Standard buyer, start win-back series\` |
+| F8 | \`S2 = Offer Gate at day 180\` | \`S2P1 = Code in last 30 days, cooldown\` · \`S2P2 = Price-sensitive buyer, test the code\` · \`S2P3 = Full-price buyer, no code\` |
+| F8 | \`S3 = Holdout: does OFFBOLT20 cause orders?\` | \`S3P1 = Random 15% holdout, no code\` · \`S3P2 = Gets OFFBOLT20 15% win-back code\` |
+| F24 | \`S1 = Offer Gate: code in 30 days?\` | \`S1P1 = Code in last 30 days, cooldown\` · \`S1P2 = No recent code, test the offer\` |
+| F24 | \`S2 = Holdout: does OFFBOLT21 cause orders?\` | \`S2P1 = Random 15% holdout, no code\` · \`S2P2 = Gets OFFBOLT21 20% last offer\` |
+| F25 | \`S1 = Can we reach them elsewhere?\` | \`S1P1 = Has SMS consent, switch to text\` · \`S1P2 = WhatsApp opt-in, switch to WhatsApp\` · \`S1P3 = No other channel, end flow\` |
+
+### 2.15 Placeholder copy
+
+Every email AND SMS now holds plain placeholder copy. Why? Because a client review goes faster WHEN they read real sentences instead of empty blocks.
+
+- **Emails:** one simple HTML template per email, built from the "Preferred content" column. Each is named \`TLRE2 | F# | {Code} = {description}\` in the template library. Klaviyo stores its own copy inside the flow.
+- **Every email starts** with \`[PLACEHOLDER COPY. Customizable per case.]\`, AND every holdout email says which coded email it mirrors.
+- **Brackets mark the swaps:** \`[PRODUCT NAME]\`, \`[RUN CARD]\`, \`[FIT RULE PLACEHOLDER]\`, \`[REVIEW QUOTE PLACEHOLDER]\`, \`[END TIME]\`.
+- **Codes show as text,** e.g. \`[UNIQUE CODE: OFFBOLT16]\`. Swap in Klaviyo's coupon tag ONLY after the coupon exists. ELSE the email breaks.
+- **Live tags already in place:** \`first_name\`, \`event.SearchQuery\`, \`event.CollectionName\`, \`event.extra.checkout_url\` (falls back to the cart), \`usual_size\`. The Run Notes invite hides itself IF \`run_notes_optin\` is true.
+- **Every email** is signed Lorelei, Off-Bolt, Providence, AND ends with the unsubscribe tag.
+- **SMS** starts "Off-Bolt: [PLACEHOLDER]" AND ends "Reply STOP to opt out".
+- **WhatsApp** has a name but no text. WhatsApp messages need Meta-approved templates, SO the copy goes in after approval.
+
+---
+
+## 3. Variables and data
+
+### 3.1 Data the flows need
+
+| Data | From | Used in |
+| --- | --- | --- |
+| Placed Order: \`Discount Codes\`, \`Collections\`, \`Items\`, \`$value\` | Shopify | F5, F5-PS, F8, F18, F19, every flow filter |
+| Checkout Started: \`$value\`, checkout URL | Shopify | F4 |
+| Added to Cart | Shopify onsite tracking | F3, flow filters |
+| Viewed Product | Klaviyo onsite tracking | F2, flow filters |
+| Active on Site | Klaviyo onsite tracking | F10, Gate intent check, engagement filters |
+| Submitted Search: \`SearchQuery\` | Shopify | F11 |
+| Viewed Collection: \`CollectionName\`, \`URL\` | Shopify | F12 |
+| Fulfilled Order | Shopify | F16, F20 |
+| Refunded Order | Shopify | F17 |
+| Received, Opened AND Clicked Email | Klaviyo | Gate intent, engagement filters, 3-a-week cap |
+| Catalog price AND inventory | Shopify catalog sync | F13 Price Drop, F14 Low Inventory |
+| Expected date of next order | Klaviyo predictive analytics | F19 |
+| Location country | Klaviyo profile | F1 Canada split |
+| SMS consent AND WhatsApp opt-in | Klaviyo profile | F4, F6, F25 |
+
+### 3.2 Profile properties
+
+| Property | Values | Set by | Read by |
+| --- | --- | --- | --- |
+| \`tlre_stage\` | prospect, new, repeat, vip, at_risk, lapsed, sunset | F1, F5, F8, F9, F23, F24 | Reporting, Sunset Complete segment |
+| \`tlre_tier\` | standard, vip (never goes down) | F5, F7 | F8, F23 |
+| \`price_sens\` | high, low | F5-PS, F11, F12 | F2, F4, F8 Gates |
+| \`tlre_last_offer\` | Date of the last money-off code | Every code path, F1-S | Every Gate (30-day cooldown), F5-PS |
+| \`tlre_first_offer\` | OFFBOLT12 OR OFFBOLT16 | F1-S, F1 | F1 Gate, F1-S |
+| \`tlre_f2_last\` | Date F2 last sent | F2 | F2 S1 |
+| \`run_notes_optin\` | true (never false) | F6 | Run Notes invite blocks |
+| \`usual_size\`, \`fit_preference\` | From the signup form (optional) | Forms | Fit lines in F2, F3, F4, F12 |
+| \`birthday\` | Date | Form | F22 trigger |
+
+\`price_sens\` counts ONLY discounts the shopper went looking for: sale codes, Rack buys, "sale" searches AND Rack views. Using OUR code doesn't count. A later full-price order resets it to low.
+
+### 3.3 What must exist before it can send
+
+| Item | Needed for |
+| --- | --- |
+| The 8 coupons in 2.5 | Every code message |
+| Final copy in place of the placeholder copy | Every email AND SMS |
+| A verified toll-free number | Every SMS |
+| WhatsApp connected AND Meta-approved templates (the 3 WhatsApp steps hold names only) | F4 WA0, F14 WA0, F25 S1P2WA1 |
+| The a-friend-sent-you page AND form | F21 |
+| A birthday field on a form | F22 |
+| Predictive analytics eligibility | F19 |
+| A native app with Klaviyo's SDK | Push (planned) |
+
+---
+
+## 4. Decisions
+
+| Choice | Because |
+| --- | --- |
+| Information before money, every time | The cause is usually a small doubt. A code pays shoppers who were coming back anyway |
+| The Offer Gate before every money-off code | Codes go ONLY to people they can change |
+| A 15% holdout on every code | Klaviyo credits the email even IF the shopper would have bought anyway. The holdout proves the code earned its money |
+| Holdout as a test window, THEN 5% OR the code goes | A permanent 15% holdout caps sales IF the code really works |
+| 30-day cooldown on money-off codes | Stops shoppers learning to wait for a code |
+| One first-order money-off code per profile | No collecting OFFBOLT12 AND OFFBOLT16 in the same week |
+| \`price_sens\` from sought discounts ONLY | Using our own code isn't a signal. OFFBOLT1 is ignored. A full-price order resets it |
+| Repeat-buyer codes ONLY in F4, F8 day 180 AND F24 | Each one is real doubt: an abandoned checkout, a missed cycle, two missed cycles |
+| No code in F18 AND F22 | The reorder is already coming. A birthday shows no doubt |
+| Unique codes set to 48 hours | No leaking to coupon sites. The +24 h grace makes a real 72-hour deadline |
+| Rack AND Offcut Tee excluded from codes | They're already marked down AND final sale |
+| OFFBOLT1 kept in F1 | The popup promised it, AND it costs about $0 BECAUSE orders over $100 ship free |
+| Smart Sending OFF on the promised AND highest-intent emails | A skipped email is gone for good |
+| Intent ladder exits | ONE "please buy" flow at a time |
+| F2 stamp split with 1-day re-entry | A browse that got no email can enter again. A repeat browse inside 14 days stops |
+| SMS AND WhatsApp ONLY on carts $100+ | Every message costs money. Bigger carts pay it back |
+| Texts to clickers AND non-clickers in F4 | A clicker who didn't order still has friction, SO the text asks their size question |
+| WhatsApp in place of push | Push needs a native app. WhatsApp reaches anyone who opts in |
+| Rack in place of codes for price-sensitive browsers | The markdown already exists, AND it clears the older runs |
+| Low stock AND pattern returns with no code | Real scarcity costs $0 |
+| Fit check on delivery AND return save | Returns are 19% (seed), almost all sizing. Fewer returns means more revenue kept |
+| Review ask 14 days after delivery | She has worn the piece by then |
+| F14 WhatsApp ONLY IF E0 wasn't clicked, after 4 hours | No paid message to someone who already acted |
+| F19 checks every 14 days, between day 28 and day 112 | The email lands up to 14 days before the predicted reorder, AND at most once |
+| VIPs leave F8 at day 120 for F23 | A VIP gets a personal note AND early access, no code |
+| Engagement filter (180 days) on win-back | Emailing dead addresses hurts inbox placement |
+| 3-a-week cap on low-priority flows | Protects the inbox AND the shopper's attention |
+| F5-PS as its own flow | Paths never rejoin, SO this avoids copying F5 four times |
+| Naming code S/P/E | Reports read like the flow map |
+
+### 4.1 Tests
+
+Each test changes ONE thing. Codes are judged on placed order rate AND net revenue per recipient: (revenue minus discounts) divided by recipients.
+
+| Flow | Where | What changes | Holdout size |
+| --- | --- | --- | --- |
+| F1 Welcome | S4, S6 | OFFBOLT16 vs no code | 15% |
+| F4 Checkout | S2 | OFFBOLT17 vs no code | 15% |
+| F8 Win-Back | S3 | OFFBOLT20 vs no code | 15% |
+| F24 Lapsed | S2 | OFFBOLT21 vs no code | 15% |
+| F8 Win-Back | S1P2E1b | Full run card vs plain note (set the A/B in the Klaviyo editor) | 50/50 |
+
+**After the test window:** IF the code wins on net revenue per recipient, THEN the holdout drops to 5% for monitoring. ELSE the code is removed. With test data, the setup is the proof. There is no winner to report yet.
+
+Klaviyo's revenue won't match Shopify's. Shopify subtracts cancelled AND refunded orders, AND Klaviyo doesn't.
+
+---
+
+## 5. Versions
+
+| Version | Date | Change |
+| --- | --- | --- |
+| 1.0 | 19 Sep 2026 | 9 flows, email only, OFFBOLT1 as the only code, 4 A/B tests |
+| 2.0 | 20 Nov 2026 | 26 flows, the Offer Gate, 5 holdout splits, 4 money-off codes, SMS AND WhatsApp, price signal, scarcity AND return-cutting flows |
+| 2.1 | 20 Nov 2026 | \`Code = description\` names on every split, path AND message. Placeholder copy in every email AND SMS. Sender set to Lorelei at Off-Bolt |
+
+### What changed in 2.1
+
+1. **Names that explain themselves**
+   Was: codes only (\`S3P2\`). Now: \`S3P2 = Clicked or visited, eligible for code\`. 30 splits, every path, 73 emails, 6 SMS AND 3 WhatsApp steps.
+2. **Placeholder copy**
+   Was: empty emails. Now: 73 emails AND 6 SMS hold plain placeholder copy, each built from its job AND preferred content.
+3. **Sender**
+   Was: the account default. Now: every email sends from Lorelei at Off-Bolt.
+
+### What changed in 2.0
+
+1. **Codes, with a gate**
+   Was: no codes except free US shipping. Now: 4 money-off codes, each behind the Offer Gate AND a 15% holdout.
+2. **Who gets a code**
+   Was: nobody. Now: decided by intent, \`price_sens\`, a 30-day cooldown AND the repeat-buyer rule.
+3. **17 new flows**
+   F1-S SMS Welcome, F5-PS Price Signal, F10 Site, F11 Search, F12 Collection, F13 Price Drop, F14 Low Stock, F16 Fit Check, F17 Return Save, F18 Next Piece, F19 Predicted Reorder, F20 Review Ask, F21 Referral, F22 Birthday, F23 VIP At-Risk, F24 Lapsed, F25 Channel Switch.
+4. **Channels**
+   Was: email only. Now: SMS AND WhatsApp on the steps where they pay back.
+5. **Win-back**
+   Was: one path for everyone. Now: VIPs go to F23, unengaged buyers get nothing, a gated code at day 180, AND a last offer in F24.
+6. **Browse**
+   Was: 14-day re-entry. Now: 1-day re-entry plus a 14-day stamp split.
+7. **Reviews**
+   Was: asked in F5 on the order date. Now: F20, 14 days after delivery.
+8. **Brand facts**
+   Free US shipping now starts at $100. Emails now come from Lorelei.
+
+### Coming next
+
+- Create the 8 coupons, THEN swap the code placeholders for Klaviyo coupon tags AND the placeholder copy for final copy.
+- Connect WhatsApp AND get the 3 templates approved.
+- Verify the toll-free number for SMS.
+- Build the a-friend-sent-you page (F21) AND add a birthday field (F22).
+- Add push WHEN a native app exists.
+- Send the run release AND F15 Pattern Returns campaigns per run.
+- Archive the 9 V1 flows.`,
+          previous: [                          // older versions: same folder, tucked behind a note under the latest file
+            { name: "V1", text: `# V1.0 · TLRE: The Lifecycle Revenue Engine
+
+**Version:** V1.0 · 19 Sep 2026
+
+## Card details
+
+| | |
+|---|---|
+|**Title**|TLRE: The Lifecycle Revenue Engine|
+|**Card summary**|Nine flows, one stage per customer|
+|**Details line**|Klaviyo + Shopify · 9 flows · 6 lifecycle segments · 2 signup forms · 4 A/B tests · email only · practice store|
+|**Tag**|Klaviyo · Shopify · Lifecycle system|
+
+## Story
+
+### The problem
+
+Separate flows do not know about each other. One shopper can sit in the browse, cart and checkout flows at once, keep getting "please buy" emails after they have bought, and be offered a first-order code they have already used. Nothing ties the emails to where the customer is in their life with the brand.
+
+### What I built
+
+- One lifecycle stage per customer, stored in a profile property. Six lifecycle segments and four helper segments decide who gets which email.
+- Nine flows that hand off to each other: welcome, browse, cart, checkout, post-purchase, Run Notes, VIP, win-back and sunset. A higher-intent event stops the lower flow, and any order stops every "please buy" flow.
+- Win-back timing set from the practice brand's buying cycle of about four months: At-Risk at 120 days with no order, Lapsed at 240.
+- No discount codes except free US shipping on a first order. Returning customers get early access through Run Notes, and scarcity is always a real run number.
+- Cart and checkout recovery that sells certainty about fit instead of a discount, and shows the shopper's usual size when it is known. 4 A/B tests, each changing one thing and judged by orders or joins, not opens.
+- A reporting dashboard, plus a rebuild and maintenance guide that lists every form, property, segment, flow and setting with the reason behind each one.
+
+### Result
+
+Built and tested on a Shopify development store with test data, for Off-Bolt, a practice brand. The documentation makes no revenue claims. Three things are still unverified and listed openly in section 14: whether the units-left metafield syncs to Klaviyo, whether the run number arrives on the Checkout Started event, and whether a backdated test order keeps its date.
+
+*Too many flows inside to render, the visual is inside the documentation.*
+
+---
+# TLRE: The Lifecycle Revenue Engine
 
 **Rebuild and Maintenance Guide**
 **Klaviyo + Shopify** · Built for Off-Bolt (practice store)
@@ -3979,7 +5201,8 @@ Klaviyo renames report options over time. The logic is what matters: one row per
 
 ---
 
-That's all of it, goodluck building!`
+That's all of it, goodluck building!` }
+          ]
         }
       ]
     },
@@ -5481,6 +6704,198 @@ So basically we will maximize the intent's potential to become an order by filte
         },
         {
           text: "So basically, this email grows the SMS list before the sale. More SMS subscribers means we reach them faster on sale day. Therefore more clicks, more placed orders, AND then revenue."
+        }
+      ]
+    },
+    {
+      tag: "Klaviyo · Shopify · Campaign",
+      title: "November BFCM Omnichannel Campaign: Built for Sales AND Margin",
+      slug: "november-bfcm-omnichannel-campaign",
+      type: "campaign",                       // flow | campaign | email-design
+      date: "2026-11-20",
+      blurb: "The most BFCM sales, with the least margin given away",
+      photo: "assets/campaign-bfcm-calendar.png",
+      thumbnailAlt: "The November BFCM campaign calendar in Klaviyo",
+      meta: "Klaviyo + Shopify · 17 messages: 8 emails, 5 SMS, 4 push · 4 phases over one month · Off-Bolt",
+      video: "",
+      poster: "",
+      photos: [
+        { src: "assets/campaign-bfcm-calendar.png", alt: "The November BFCM campaign calendar in Klaviyo: E1 Gift Guide on Nov 2, E2 11.11 on Nov 11, E3 Teaser on Nov 16, SMS1 VIP Early Access on Nov 17, E4 VIP Early Access on Nov 18, PUSH and SMS2 VIP Reminder on Nov 23, SMS3 BF Early and E5 Thanksgiving Preview on Nov 25, E6 BF Launch, PUSH BF and SMS4 BF Public on Nov 26, E7 and PUSH Cyber Sunday on Nov 28, E8, PUSH and SMS5 CM Last Call on Nov 29", wide: true }
+      ],
+      story: [
+        {
+          heading: "The problem",
+          text: "Most brands treat Black Friday as one big email. They send the discount on Friday morning, to everyone, and hope it lands."
+        },
+        {
+          text: "But IF the first email of the season is the discount, THEN every sale in November is a discounted sale. The shoppers who would have paid full price two weeks earlier now wait for the code. Loyal buyers, the people who buy anyway, get the same cut as a stranger. And the inbox on Black Friday morning is the most crowded it will be all year."
+        },
+        {
+          text: "SO the brand gives away margin on orders it was going to get, AND fights for attention on the one day it's hardest to win."
+        },
+        {
+          heading: "What I built",
+          text: "Each send has one job, timed to when buyers are most ready. Discounts go ONLY to the people AND days that need them.",
+          bullets: [
+            "**Build intent (no prices).** Get shoppers to pick what they want, AND grow the SMS list, before any deal exists.",
+            "**Reward VIPs (gift, not discount).** Our best buyers get in first, with a free tee instead of a price cut.",
+            "**Black Friday.** The deal opens on SMS first, THEN goes public with spend tiers.",
+            "**Cyber Monday.** One real deadline, THEN the offer ends."
+          ]
+        },
+        {
+          heading: "Result",
+          text: "SO we get more orders at a bigger order value, AND we give away less margin to get them."
+        },
+        {
+          heading: "Documentation",
+          text: `# November BFCM Omnichannel Campaign: Built for Sales AND Margin
+
+**Brand:** Off-Bolt (women's clothing)
+**Tools:** Shopify · Klaviyo · Email · SMS · Push
+
+---
+
+## At a glance
+
+| | |
+| --- | --- |
+| **Goal** | The most BFCM sales, with the least margin given away |
+| **Length** | One full month, 4 phases |
+| **Messages** | 17 total: 8 emails, 5 SMS, 4 push |
+| **Offers** | No prices before VIP week. VIPs get a free gift. Black Friday uses spend tiers with unique codes |
+| **SMS rule** | SMS gets every deal 24 hours before email |
+| **Audiences** | 5 new segments + engaged segments. Buyers excluded from every deal send after they order |
+| **Send time** | 8 a.m. ET for email and push. Texts at noon, unless the deal opens on SMS first |
+
+---
+
+## 1. The problem
+
+Most brands treat Black Friday as one big email. They send the discount on Friday morning, to everyone, and hope it lands.
+
+But IF the first email of the season is the discount, THEN every sale in November is a discounted sale. The shoppers who would have paid full price two weeks earlier now wait for the code. Loyal buyers, the people who buy anyway, get the same cut as a stranger. And the inbox on Black Friday morning is the most crowded it will be all year.
+
+SO the brand gives away margin on orders it was going to get, AND fights for attention on the one day it's hardest to win.
+
+## 2. The idea
+
+Each send has one job, timed to when buyers are most ready. Discounts go ONLY to the people AND days that need them.
+
+We split the month into 4 phases:
+
+1. **Build intent (no prices).** Get shoppers to pick what they want, AND grow the SMS list, before any deal exists.
+2. **Reward VIPs (gift, not discount).** Our best buyers get in first, with a free tee instead of a price cut.
+3. **Black Friday.** The deal opens on SMS first, THEN goes public with spend tiers.
+4. **Cyber Monday.** One real deadline, THEN the offer ends.
+
+Five rules run through the whole month:
+
+- **No prices before VIP week.** Anyone who buys in the first weeks pays full price.
+- **A gift beats a price cut.** A free tee costs the store only what it costs to make. A percentage off costs the full amount, on every item in the cart.
+- **SMS first, by 24 hours.** It gives shoppers a real reason to join SMS, AND it spreads the orders over two days.
+- **Spend tiers.** $15 off $100+ and $30 off $200+. The shopper adds one more piece to reach the next tier, SO the order value goes up.
+- **Unique codes AND buyer exclusions.** A one-time code can't leak to coupon sites. And once someone orders, they drop out of every deal send, SO nobody gets discounted twice.
+
+---
+
+## 3. The calendar
+
+Email and push send at 8 a.m. ET. Texts send at noon, EXCEPT where SMS opens a deal early.
+
+![The November BFCM campaign calendar: E1 Gift Guide on Nov 2, E2 11.11 on Nov 11, E3 Teaser on Nov 16, SMS1 VIP Early Access on Nov 17, E4 VIP Early Access on Nov 18, PUSH and SMS2 VIP Reminder on Nov 23, SMS3 BF Early and E5 Thanksgiving Preview on Nov 25, E6 BF Launch, PUSH BF and SMS4 BF Public on Nov 26, E7 and PUSH Cyber Sunday on Nov 28, E8, PUSH and SMS5 CM Last Call on Nov 29](assets/campaign-bfcm-calendar.png)
+
+### Phase 1: Build intent (no prices)
+
+| # | When | Channel | Message | Audience | Offer | Why |
+| --- | --- | --- | --- | --- | --- | --- |
+| E1 | Tue Nov 2 | Email | Gift Guide: best sellers grouped by who they're for, "Start your wishlist" | Engaged 90 days | None | Plants products at full price. Wishlist clicks show what each person wants |
+| E2 | Thu Nov 11 | Email | 11.11: "Save your BFCM picks now," AND join SMS to get Black Friday 24 h early | Engaged 60 days | None | Grows the SMS list before the peak, with no discount spent |
+| E3 | Tue Nov 16 | Email | Teaser: "Something's coming." One button: "Get early access" | Engaged 90 days | None | Clicks build the early-access list, SO we reward intent, not everyone |
+
+### Phase 2: Reward VIPs (gift, not discount)
+
+| # | When | Channel | Message | Audience | Offer | Why |
+| --- | --- | --- | --- | --- | --- | --- |
+| SMS1 | Wed Nov 17, 8 a.m. | SMS | VIP early access is open | VIPs | Free Offcut Tee on $100+ | SMS gets it a day before email. Rewards joining SMS |
+| E4 | Thu Nov 18 | Email | "You're in early." The free tee, the end date, best sellers | VIPs + early-access clickers | Free Offcut Tee on $100+ | Sales come in 8 days before Black Friday, before the inbox fills up, with no price cut |
+| PUSH | Tue Nov 23, 8 a.m. | Push | "Early access ends tomorrow" | VIPs | Same | Recovers VIPs who meant to buy but waited |
+| SMS2 | Tue Nov 23, noon | SMS | "Early access ends tomorrow" | VIPs | Same | Midday is when people decide. Low cost per send |
+
+### Phase 3: Black Friday
+
+| # | When | Channel | Message | Audience | Offer | Why |
+| --- | --- | --- | --- | --- | --- | --- |
+| SMS3 | Thu Nov 25, 8 a.m. (Thanksgiving) | SMS | "Black Friday is live for you, 24 hours early" | SMS subscribers, engaged | $15 off $100+ / $30 off $200+, unique code | Spreads orders over two days. Tiers protect order value |
+| E5 | Thu Nov 25, 7 p.m. | Email | Preview: "Opens tomorrow at 8 a.m." 2–3 best sellers. "Join SMS to shop now" | Engaged 90 days, not on SMS | None | Builds the launch, AND every SMS join is a buyer we got with no discount cost |
+| E6 + PUSH | Fri Nov 26, 8 a.m. | Email + Push | Main sale launch: the offer, best sellers, the deadline | Engaged 90 days + lapsed buyers (180+ days) | $15 off $100+ / $30 off $200+, unique codes | The biggest revenue send of the month |
+| SMS4 | Fri Nov 26, noon | SMS | "Sale's public now. The best sizes are going" | SMS subscribers who haven't bought | Same | Real scarcity moves people still deciding, without a deeper discount |
+| E7 + PUSH | Sun Nov 28, 8 a.m. | Email + Push | Cyber Sunday: a different product category for each shopper | Engaged, haven't bought | Same | A new angle for non-buyers, with no new offer |
+
+### Phase 4: Cyber Monday
+
+| # | When | Channel | Message | Audience | Offer | Why |
+| --- | --- | --- | --- | --- | --- | --- |
+| E8 + PUSH | Mon Nov 29, 8 a.m. | Email + Push | "Ends tonight at 11:59 p.m. ET." Countdown, offer, best sellers | Engaged, haven't bought | Same | A real deadline turns "later" into an order |
+| SMS5 | Mon Nov 29, noon | SMS | "Last call: hours left" | SMS subscribers who haven't bought | Same | A low-cost final push to warm SMS buyers |
+
+The offer ends on schedule. SO shoppers don't learn to wait for the next code.
+
+---
+
+## 4. Audiences
+
+Every send goes to people who engaged recently. That keeps the inbox placement healthy at the busiest time of the year. Sunset candidates (people who stopped engaging) are excluded from every email.
+
+New segments built for this campaign:
+
+| Segment | Who's in it | Used for |
+| --- | --- | --- |
+| **BFCM VIP** | Placed 2 or more orders | Early access (SMS1, E4, VIP reminders) |
+| **Early-access clickers** | Clicked the E3 teaser | Early access (E4), next to VIPs |
+| **SMS engaged** | Subscribed to SMS marketing AND opened, clicked OR visited the site in the last 90 days | Every Black Friday and Cyber Monday text |
+| **Lapsed buyers (180+ days)** | Ordered before, but not in the last 180 days | The Black Friday launch (E6) |
+| **Bought since Thanksgiving** | Placed an order from Thanksgiving on | Excluded from every deal send after the sale opens |
+
+Why does the "Bought since Thanksgiving" exclusion matter so much? Because a shopper who already ordered and THEN gets another discount email either buys again at a lower price, or feels they paid too much. Both cost us. SO once they buy, they're out.
+
+And why does E5 skip SMS subscribers? Because they already have the deal. E5's job is to bring the rest onto SMS, so we don't send it to people who are already there.
+
+---
+
+## 5. How the offers protect margin
+
+What does a free gift cost compared to a discount? Here's an example on a $120 order (example numbers only):
+
+| | 15% off | Free tee |
+| --- | --- | --- |
+| What the shopper sees | $18 off | A $35 tee |
+| What it costs the store | $18 | ~$8 (the cost to make it) |
+
+The shopper feels they got more, AND the store keeps about $10 more on that one order. That's WHY VIPs get the tee. They're our most likely buyers, so we don't need a price cut to win them, just a reason to buy now.
+
+The spend tiers work the same way. A shopper at $85 sees "$15 off $100+" and thinks "I'm almost there, I'll add one more piece." SO the discount comes with a bigger cart attached.
+
+---
+
+## 6. Why this makes the most sales AND keeps the margin
+
+**More sales:**
+
+- First, the early emails show us who plans to buy. Wishlists and early-access clicks mean the launch goes to warm shoppers.
+- Secondly, VIPs buy first, before the inbox gets crowded.
+- Thirdly, SMS gets every deal a day early. That grows the SMS list AND spreads the orders over two days.
+- Finally, email, SMS and push cover every peak day, through to the last hours of Cyber Monday.
+
+**More margin:**
+
+- 3 of the 8 emails carry no price at all, SO anyone who buys then pays full price.
+- VIPs get a gift that costs the store a fraction of a discount.
+- The $100 and $200 tiers lift the order value.
+- Unique codes can't leak.
+- Buyers drop out the moment they order, SO nobody gets discounted twice.
+
+SO we get more orders at a bigger order value, AND we give away less margin to get them.`
         }
       ]
     }

@@ -1339,6 +1339,8 @@ function casePanel(item, n){
   if (v){ v.id = "case-video"; art.appendChild(v); }
 
   if (item.photos && item.photos.length){
+    /* a short line ABOVE the pictures, e.g. "Please zoom in" for a big map */
+    if (item.photosNoteTop) art.appendChild(make("p", "shots-note shots-note--top", item.photosNoteTop));
     const wrap = make("div", "shots");
     item.photos.forEach(p => wrap.appendChild(p.src ? shotFigure(p) : emptyShot(p.alt)));
     art.appendChild(wrap);
