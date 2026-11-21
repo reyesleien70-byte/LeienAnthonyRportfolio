@@ -182,8 +182,8 @@ home: {
       type: "text",
       id: "who",
       eyebrow: "Who I help",
-      heading: "Ecommerce brands that wants to increase sales & optimize margin",
-      lede: "I build email marketing automation strategy with only one goal increased sales & maximized margin potential.",
+      heading: "Ecommerce brands that wants to increase sales, retention & margin.",
+      lede: "I build email marketing automation strategy with only one goal increased sales, retention & margin.",
 
       /* the two buttons on the first screen. Change a label OR where it goes. */
       buttons: [
@@ -200,7 +200,7 @@ home: {
       bullets: [
         "Teams and solo founders losing sales to abandoned carts, one-time buyers, and dead lists.",
         "Brands with existing flows but aren't optimized for maximal margin potential.",
-        "Brands that wants their email automation to be maximized for sales & margin.",
+        "Brands that wants their email automation to be maximized for sales, retention & margin.",
         "Available for long-term retainers, short-term sprints, or fixed-scope projects."
       ]
     },
