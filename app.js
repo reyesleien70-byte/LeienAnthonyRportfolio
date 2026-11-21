@@ -571,15 +571,73 @@ function renderPage(){
   renderNav();
   renderHome();
   renderCases();
+  renderSop();
   renderCerts();
   renderContactPage();
 }
 
 function renderNav(){
-  [["home", "Home"], ["cases", "Case studies"], ["certs", "Certifications"], ["contact", "Contact me"]].forEach(([key, fallback]) => {
+  [["home", "Home"], ["cases", "Case studies"], ["sop", "SOP"], ["certs", "Certifications"], ["contact", "Contact me"]].forEach(([key, fallback]) => {
     const a = document.querySelector('[data-nav="' + key + '"]');
     if (a) a.textContent = (CONTENT.nav && CONTENT.nav[key]) || fallback;
   });
+}
+
+/* ------------------------------------------------------------
+   SOP: the infographic (a click opens it full size), a PDF
+   download, AND the same 6 steps as text for small screens.
+   ------------------------------------------------------------ */
+function renderSop(){
+  const body = document.getElementById("sop-body");
+  if (!body) return;                      // NOT the SOP page -> do nothing
+
+  const c = CONTENT.sop || {};
+  setTab(c.tabTitle, c.tabNote);
+
+  const head = document.getElementById("sop-intro");
+  if (head){
+    if (c.eyebrow) head.appendChild(make("p", "eyebrow", c.eyebrow));
+    if (c.heading) head.appendChild(splitWords(make("h1", null, c.heading)));
+    if (c.lede)    head.appendChild(splitWords(make("p", "lede", c.lede), 14));
+  }
+
+  if (c.zoomNote) body.appendChild(make("p", "shots-note shots-note--top", c.zoomNote));
+  if (c.photo){
+    const a = make("a", "sop__shot");
+    a.href = c.photo;
+    a.target = "_blank";
+    a.rel = "noopener noreferrer";
+    a.setAttribute("aria-label", (c.photoAlt || "SOP") + ". Opens full size");
+    a.appendChild(photoNode(c.photo, c.photoAlt || ""));
+    body.appendChild(a);
+  }
+  if (c.pdf){
+    const row = make("div", "sop__actions");
+    const dl = make("a", "btn", c.pdfLabel || "Download the PDF");
+    dl.href = c.pdf;
+    dl.setAttribute("download", "");
+    row.appendChild(dl);
+    body.appendChild(row);
+  }
+
+  if ((c.steps || []).length){
+    if (c.stepsHeading) body.appendChild(make("h2", "sop__h", c.stepsHeading));
+    const ol = make("ol", "sop__steps");
+    c.steps.forEach(s => {
+      const li = make("li", "sop__step");
+      li.appendChild(make("span", "sop__n", s.n || ""));
+      li.appendChild(make("h3", null, s.title || ""));
+      if (s.sub) li.appendChild(make("p", "sop__sub", s.sub));
+      if ((s.bullets || []).length){
+        const ul = document.createElement("ul");
+        s.bullets.forEach(b => ul.appendChild(make("li", null, b)));
+        li.appendChild(ul);
+      }
+      if (s.note) li.appendChild(make("p", "sop__note", s.note));
+      ol.appendChild(li);
+    });
+    body.appendChild(ol);
+  }
 }
 
 /* ------------------------------------------------------------

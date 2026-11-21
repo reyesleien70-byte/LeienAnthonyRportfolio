@@ -1482,6 +1482,31 @@ h1 + .lede,h2 + .lede{margin-top:clamp(12px,1.6vw,18px)}
    11. CERTIFICATIONS AND CONTACT PAGES
    ============================================================ */
 
+/* --- SOP page: the infographic, a download button, the steps as text --- */
+.sop{margin:clamp(30px,6vh,60px) 0 12vh}
+.sop__shot{display:block}
+.sop__shot img{
+  display:block;width:100%;height:auto;
+  border:1px solid var(--img-line);border-radius:var(--radius);
+  box-shadow:var(--img-shadow);
+}
+.sop__actions{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0 0}
+.sop__h{margin:clamp(40px,7vh,70px) 0 18px;font-size:var(--step-2)}
+.sop__steps{
+  list-style:none;padding:0;margin:0;
+  display:grid;gap:clamp(14px,2vw,22px);
+  grid-template-columns:repeat(auto-fill,minmax(min(100%,320px),1fr));
+}
+.sop__step{
+  border:1px solid var(--line);border-radius:var(--radius);
+  background:var(--card);padding:clamp(20px,2.4vw,28px);
+}
+.sop__n{display:block;font-size:var(--step-2);font-weight:700;color:var(--accent);line-height:1;margin-bottom:10px}
+.sop__step h3{font-size:var(--step-1);line-height:1.3;margin:0 0 10px}
+.sop__sub{margin:0 0 10px;color:var(--ink);font-weight:600}
+.sop__step ul{margin:0;padding-left:1.1em;display:grid;gap:8px;font-size:15px}
+.sop__note{margin:12px 0 0;color:var(--muted);font-style:italic;font-size:15px}
+
 /* --- certificate cards: the picture on one side, the facts on the other --- */
 .certs{
   list-style:none;padding:0;
@@ -1553,6 +1578,12 @@ h1 + .lede,h2 + .lede{margin-top:clamp(12px,1.6vw,18px)}
   .nav__links::-webkit-scrollbar{display:none}
   .nav__link{padding:0 8px;font-size:13px;min-height:38px}
   .nav__link[aria-current="page"]::after{left:8px;right:8px}
+}
+/* five tabs do not fit in one phone row: the "Contact me" button moves up to row one, beside the name */
+@media (max-width:719px){
+  .nav__mark{padding-right:120px}
+  .nav__links{overflow:visible}
+  .nav__link[data-nav="contact"]{position:absolute;right:-6px;top:-40px;min-height:38px;margin-left:0;padding:0 14px}
 }
 @media (max-height:520px) and (max-width:719px){
   :root{ --nav-h:76px; }

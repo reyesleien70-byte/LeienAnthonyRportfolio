@@ -99,6 +99,7 @@ site: {
 nav: {
   home: "Home",
   cases: "Case studies",
+  sop: "SOP",
   certs: "Certifications",
   contact: "Contact me"
 },
@@ -6971,6 +6972,58 @@ certs: {
       ]
     }
 
+  ]
+},
+
+
+/* ================================================================
+   3b2. SOP PAGE: the "SOP" tab. How I run a brand's email marketing.
+       picture   the infographic. A click opens it full size in a new tab.
+       pdf       the same infographic as a PDF, for the download button.
+       steps     the same words as the picture, as text, SO it reads on a phone too.
+   ================================================================ */
+
+sop: {
+
+  tabTitle: "SOP · Leien",
+  tabNote: "How I run a brand's email marketing, in 6 steps.",
+
+  eyebrow: "SOP",
+  heading: "How I run a brand's email marketing.",
+  lede: "The more data we have, the more patterns we can see, then the more we can optimize the strategy. And that means continuous improvement.",
+
+  photo: "assets/sop-infographic.webp",
+  photoAlt: "The SOP infographic: How I run a brand's email marketing. 01 Know the brand, 02 Set up deliverability, 03 Set up ALL flows the brand needs, 04 Plan the campaign strategy, 05 Test, read data, revise then do better then repeat, 06 Continuous improvement, with an arrow from 06 back to 05",
+  zoomNote: "Please ZOOM in, or click the picture to open it full size.",
+  pdf: "assets/sop-how-i-run-email-marketing.pdf",
+  pdfLabel: "Download the PDF",
+  stepsHeading: "The 6 steps, as text",
+
+  steps: [
+    { n: "01", title: "Know the brand", bullets: [
+      "Who the competitors are, brand identity, brand design (fonts, color) and brand voice.",
+      "Brand's market customers: what are they trying to get or become by buying the product?",
+      "So we can angle the email marketing strategy to fit the brand perfectly." ] },
+    { n: "02", title: "Set up deliverability", bullets: [
+      "IF new THEN we need to set and/then warm it up first. IF low score THEN we need to fix it first.",
+      "We must set up SPF, DKIM and DMARC and follow guidelines inbox providers set. List must be clean.",
+      "SO ALL messages land in inbox." ] },
+    { n: "03", title: "Set up ALL flows the brand needs", sub: "Essentials and Custom flows.", bullets: [
+      "So every process will get its own work done and so we can get the data we need to build the strategy.",
+      "Once we got the data, we begin adding more and improving the flows for more optimized sales, retention and margin." ] },
+    { n: "04", title: "Plan the campaign strategy", bullets: [
+      "Market research + hypothesis first.",
+      "Then we learn from the data once we have it.",
+      "We keep testing new methods until we find the most optimal strategy for sales, repeat purchase and margin." ] },
+    { n: "05", title: "Test, read data, revise then do better then repeat.", bullets: [
+      "Learn what the data says.",
+      "The more customers we have, the more data we can read to see what type of email customers react the best at.",
+      "Then we use that to keep improving it until it's maximized." ], note: "Then we repeat it over and over again." },
+    { n: "06", title: "Continuous improvement", bullets: [
+      "Trends change, customers' likings change, so we need to adapt continuously.",
+      "We compare each message to its past results: is it reaching the inbox? How did it perform last year in this exact season?",
+      "We always log the time and date, so the longer we run the system, the less frequent we encounter new problems.",
+      "All Strategy that we built will go to step 5 again and stay there until a change happens again. SO this loop will continue forever. That means continuous improvement and adaptation for the brand." ] }
   ]
 },
 
